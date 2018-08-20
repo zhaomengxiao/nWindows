@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/myimages">
+        <file>Resources/Filenew.png</file>
+        <file>Resources/cameraERROR.jpg</file>
+        <file>Resources/camera.png</file>
+        <file>Resources/poweroff.png</file>
+        <file>Resources/save.png</file>
+        <file>Resources/warningcircle.png</file>
+        <file>Resources/checkcircle.png</file>
+        <file>Resources/nextstep.png</file>
+        <file>Resources/return.png</file>
+    </qresource>
+</RCC>
