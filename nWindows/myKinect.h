@@ -6,6 +6,10 @@
 #include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
+//Eigen (vector and matrix)
+#include <Eigen\Dense>
+#include <math.h>
+#define PI 3.14159265
 // Safe release for interfaces
 
 template<class Interface>
@@ -33,6 +37,7 @@ public:
 	myKinect();
 	~myKinect();
 	void                    Update();//获得骨架、背景二值图和深度信息
+	double					AngleBetweenTowVectors(Eigen::Vector3d vector_A, Eigen::Vector3d vector_B);//计算关节角度
 	HRESULT                 InitializeDefaultSensor();//用于初始化kinect
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
@@ -44,12 +49,12 @@ private:
 	IBodyIndexFrameReader*  m_pBodyIndexFrameReader;//用于背景二值图读取
 
 													//通过获得到的信息，把骨架和背景二值图画出来
-	void                    ProcessBody(int nBodyCount, IBody** ppBodies);
+	void ProcessBody(int nBodyCount, IBody** ppBodies);
 	//画骨架函数
 	void DrawBone(const Joint* pJoints, const DepthSpacePoint* depthSpacePosition, JointType joint0, JointType joint1);
 	//画手的状态函数
 	void DrawHandState(const DepthSpacePoint depthSpacePosition, HandState handState);
-
+	
 	//显示图像的Mat
 	cv::Mat skeletonImg;
 	cv::Mat depthImg;

@@ -45,6 +45,9 @@
     <ClCompile Include="asciiPicture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="myKinect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -78,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="asciiPicture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="myKinect.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

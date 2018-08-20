@@ -179,6 +179,20 @@ void myKinect::Update()
 
 }
 
+//计算关节角度
+double myKinect::AngleBetweenTowVectors(Eigen::Vector3d vector_A, Eigen::Vector3d vector_B)
+{
+
+	double dotProduct = 0.0;
+
+	dotProduct = vector_A.transpose() * vector_B;
+
+	return acos(dotProduct) /PI * 180;
+
+
+	
+}
+
 /// Handle new body data
 void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 {
