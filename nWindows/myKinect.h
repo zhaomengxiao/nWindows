@@ -1,6 +1,7 @@
 #pragma once
 #include <Kinect.h>
 #include <iostream>
+#include <fstream>
 //opencv include
 #include <OpenNI.h>
 #include <opencv2/opencv.hpp>
@@ -41,6 +42,12 @@ public:
 	HRESULT                 InitializeDefaultSensor();//用于初始化kinect
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
+	static Eigen::Vector3d QuaternionToEuler(Eigen::Vector4d &quat);
+	
+	//Return degrees (0->360) from radians
+	static double RadianToDegree(double angle);
+
+	std::ofstream csvfile;//用于输出csv文档
 private:
 	IKinectSensor * m_pKinectSensor;//kinect源
 	ICoordinateMapper*      m_pCoordinateMapper;//用于坐标变换

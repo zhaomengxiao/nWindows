@@ -93,6 +93,7 @@ cv::Mat myKinect::getSkeletonImg()
 }
 
 
+
 /// Main processing function
 void myKinect::Update()
 {
@@ -192,6 +193,38 @@ double myKinect::AngleBetweenTowVectors(Eigen::Vector3d vector_A, Eigen::Vector3
 
 	
 }
+Eigen::Vector3d myKinect::QuaternionToEuler(Eigen::Vector4d &quat)
+{
+	Eigen::Vector3d v(0.0, 0.0, 0.0);
+	v.x() = atan2(2 * quat.x() * quat.w() - 2 * quat.x() * quat.z(),
+		1 - 2 * pow(quat.y(), 2) - 2 * pow(quat.z(), 2));
+
+	v.z() = asin(2 * quat.x() * quat.y() + 2 * quat.z() * quat.w());
+
+	v.y() = atan2(2 * quat.x() * quat.w() - 2 * quat.y() * quat.z(),
+		1 - 2 * pow(quat.x(), 2) - 2 * pow(quat.z(), 2));
+
+	if (quat.x() * quat.y() + quat.z() * quat.w() == 0.5) {
+		v.x() = (2 * atan2(quat.x(), quat.w()));
+		v.y() = 0.;
+	}
+	else if (quat.x() * quat.y() + quat.z() * quat.w() == -0.5)
+	{
+		v.x() = (-2 * atan2(quat.x(), quat.w()));
+		v.y() = 0.;
+	}
+
+	v.x() = RadianToDegree(v.x());
+	v.y() = RadianToDegree(v.y());
+	v.z() = RadianToDegree(v.z());
+
+	return v;
+}
+
+double myKinect::RadianToDegree(double angle)
+{
+	return angle * (180.0 / PI) + 180;
+}
 
 /// Handle new body data
 void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
@@ -211,6 +244,7 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 			if (SUCCEEDED(hr) && bTracked)
 			{
 				Joint joints[JointType_Count];//存储关节点类
+				JointOrientation JointOrientations[JointType_Count];//存储关节旋转
 				HandState leftHandState = HandState_Unknown;//左手状态
 				HandState rightHandState = HandState_Unknown;//右手状态
 
@@ -223,10 +257,12 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 
 				//获得关节点类
 				hr = pBody->GetJoints(_countof(joints), joints);
+				
 				if (SUCCEEDED(hr))
 				{
 					for (int j = 0; j < _countof(joints); ++j)
 					{
+
 						//将关节点坐标从摄像机坐标系（-1~1）转到深度坐标系（424*512）
 						m_pCoordinateMapper->MapCameraPointToDepthSpace(joints[j].Position, &depthSpacePosition[j]);
 					}
@@ -270,6 +306,23 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					DrawBone(joints, depthSpacePosition, JointType_AnkleLeft, JointType_FootLeft);
 				}
 				delete[] depthSpacePosition;
+
+				//获得关节旋转
+				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
+				if (SUCCEEDED(hr))
+				{
+					Eigen::Vector4d quat;
+					quat << JointOrientations[JointType_ElbowLeft].Orientation.x ,
+							JointOrientations[JointType_ElbowLeft].Orientation.y ,
+							JointOrientations[JointType_ElbowLeft].Orientation.z ,
+							JointOrientations[JointType_ElbowLeft].Orientation.w ;
+					Eigen::Vector3d angles = QuaternionToEuler(quat);
+					//写出CSV文档
+					//std::cout << angles  << std::endl;
+					//csvfile.open("data.csv", std::ios::out);
+					csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
+					
+				}
 			}
 		}
 	}
@@ -341,7 +394,9 @@ void myKinect::DrawBone(const Joint* pJoints, const DepthSpacePoint* depthSpaceP
 myKinect::myKinect() :
 	m_pKinectSensor(NULL),
 	m_pCoordinateMapper(NULL),
-	m_pBodyFrameReader(NULL) {}
+	m_pBodyFrameReader(NULL) {
+	csvfile.open("data.csv", std::ios::out);
+}
 
 /// Destructor
 myKinect::~myKinect()
@@ -354,5 +409,6 @@ myKinect::~myKinect()
 		m_pKinectSensor->Close();
 	}
 	SafeRelease(m_pKinectSensor);
+	csvfile.close();
 }
 
