@@ -12,13 +12,15 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QHBoxLayout>
+#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
+#include <QtWidgets/QTabWidget>
+#include <QtWidgets/QTableView>
 #include <QtWidgets/QToolBar>
-#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -27,12 +29,17 @@ class Ui_MainWindowClass
 {
 public:
     QWidget *centralWidget;
-    QVBoxLayout *verticalLayout;
+    QPushButton *pushButton;
+    QPushButton *saveImageButton;
+    QTabWidget *tabWidget;
+    QWidget *tab_view;
+    QWidget *widget;
+    QWidget *horizontalLayoutWidget;
     QHBoxLayout *horizontalLayout;
     QLabel *colorwindow;
     QLabel *depthwindow;
-    QPushButton *pushButton;
-    QPushButton *saveImageButton;
+    QWidget *tab_table;
+    QTableView *tableView;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -41,43 +48,55 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(600, 400);
+        MainWindowClass->resize(1630, 704);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
-        verticalLayout = new QVBoxLayout(centralWidget);
-        verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        horizontalLayout = new QHBoxLayout();
+        pushButton = new QPushButton(centralWidget);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setGeometry(QRect(530, 160, 75, 23));
+        saveImageButton = new QPushButton(centralWidget);
+        saveImageButton->setObjectName(QStringLiteral("saveImageButton"));
+        saveImageButton->setGeometry(QRect(530, 190, 75, 23));
+        tabWidget = new QTabWidget(centralWidget);
+        tabWidget->setObjectName(QStringLiteral("tabWidget"));
+        tabWidget->setGeometry(QRect(10, 10, 1611, 761));
+        tabWidget->setSizeIncrement(QSize(0, 0));
+        tab_view = new QWidget();
+        tab_view->setObjectName(QStringLiteral("tab_view"));
+        tab_view->setCursor(QCursor(Qt::CrossCursor));
+        widget = new QWidget(tab_view);
+        widget->setObjectName(QStringLiteral("widget"));
+        widget->setGeometry(QRect(20, 20, 1021, 541));
+        horizontalLayoutWidget = new QWidget(widget);
+        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
+        horizontalLayoutWidget->setGeometry(QRect(10, 10, 1001, 631));
+        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
         horizontalLayout->setSpacing(6);
+        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        colorwindow = new QLabel(centralWidget);
+        horizontalLayout->setContentsMargins(0, 0, 0, 0);
+        colorwindow = new QLabel(horizontalLayoutWidget);
         colorwindow->setObjectName(QStringLiteral("colorwindow"));
+        colorwindow->setStyleSheet(QStringLiteral(""));
 
         horizontalLayout->addWidget(colorwindow);
 
-        depthwindow = new QLabel(centralWidget);
+        depthwindow = new QLabel(horizontalLayoutWidget);
         depthwindow->setObjectName(QStringLiteral("depthwindow"));
 
         horizontalLayout->addWidget(depthwindow);
 
-
-        verticalLayout->addLayout(horizontalLayout);
-
-        pushButton = new QPushButton(centralWidget);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-
-        verticalLayout->addWidget(pushButton);
-
-        saveImageButton = new QPushButton(centralWidget);
-        saveImageButton->setObjectName(QStringLiteral("saveImageButton"));
-
-        verticalLayout->addWidget(saveImageButton);
-
+        tabWidget->addTab(tab_view, QString());
+        tab_table = new QWidget();
+        tab_table->setObjectName(QStringLiteral("tab_table"));
+        tableView = new QTableView(tab_table);
+        tableView->setObjectName(QStringLiteral("tableView"));
+        tableView->setGeometry(QRect(105, 51, 891, 511));
+        tabWidget->addTab(tab_table, QString());
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 23));
+        menuBar->setGeometry(QRect(0, 0, 1630, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -88,16 +107,21 @@ public:
 
         retranslateUi(MainWindowClass);
 
+        tabWidget->setCurrentIndex(0);
+
+
         QMetaObject::connectSlotsByName(MainWindowClass);
     } // setupUi
 
     void retranslateUi(QMainWindow *MainWindowClass)
     {
         MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "MainWindow", nullptr));
-        colorwindow->setText(QString());
-        depthwindow->setText(QString());
         pushButton->setText(QApplication::translate("MainWindowClass", "\345\216\273\350\203\214", nullptr));
         saveImageButton->setText(QApplication::translate("MainWindowClass", "\344\277\235\345\255\230", nullptr));
+        colorwindow->setText(QString());
+        depthwindow->setText(QString());
+        tabWidget->setTabText(tabWidget->indexOf(tab_view), QApplication::translate("MainWindowClass", "Skeleton View", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_table), QApplication::translate("MainWindowClass", "Joint Angle", nullptr));
     } // retranslateUi
 
 };
