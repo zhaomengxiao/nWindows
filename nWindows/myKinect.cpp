@@ -320,7 +320,7 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					//Ð´³öCSVÎÄµµ
 					//std::cout << angles  << std::endl;
 					//csvfile.open("data.csv", std::ios::out);
-					csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
+					//csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
 					
 				}
 			}
@@ -395,7 +395,7 @@ myKinect::myKinect() :
 	m_pKinectSensor(NULL),
 	m_pCoordinateMapper(NULL),
 	m_pBodyFrameReader(NULL) {
-	csvfile.open("data.csv", std::ios::out);
+	//csvfile.open("data.csv", std::ios::out);
 }
 
 /// Destructor
@@ -409,6 +409,6 @@ myKinect::~myKinect()
 		m_pKinectSensor->Close();
 	}
 	SafeRelease(m_pKinectSensor);
-	csvfile.close();
+	//csvfile.close();
 }
 

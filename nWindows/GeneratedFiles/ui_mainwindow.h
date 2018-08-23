@@ -11,15 +11,11 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QTabWidget>
-#include <QtWidgets/QTableView>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
@@ -31,15 +27,9 @@ public:
     QWidget *centralWidget;
     QPushButton *pushButton;
     QPushButton *saveImageButton;
-    QTabWidget *tabWidget;
-    QWidget *tab_view;
-    QWidget *widget;
-    QWidget *horizontalLayoutWidget;
-    QHBoxLayout *horizontalLayout;
-    QLabel *colorwindow;
+    QWidget *widget_2;
     QLabel *depthwindow;
-    QWidget *tab_table;
-    QTableView *tableView;
+    QLabel *colorwindow;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -48,55 +38,33 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1630, 704);
+        MainWindowClass->resize(1269, 679);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         pushButton = new QPushButton(centralWidget);
         pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(530, 160, 75, 23));
+        pushButton->setGeometry(QRect(1130, 110, 75, 23));
+        pushButton->setStyleSheet(QStringLiteral("background-color: rgb(105, 165, 90);"));
         saveImageButton = new QPushButton(centralWidget);
         saveImageButton->setObjectName(QStringLiteral("saveImageButton"));
-        saveImageButton->setGeometry(QRect(530, 190, 75, 23));
-        tabWidget = new QTabWidget(centralWidget);
-        tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        tabWidget->setGeometry(QRect(10, 10, 1611, 761));
-        tabWidget->setSizeIncrement(QSize(0, 0));
-        tab_view = new QWidget();
-        tab_view->setObjectName(QStringLiteral("tab_view"));
-        tab_view->setCursor(QCursor(Qt::CrossCursor));
-        widget = new QWidget(tab_view);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(20, 20, 1021, 541));
-        horizontalLayoutWidget = new QWidget(widget);
-        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(10, 10, 1001, 631));
-        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
-        horizontalLayout->setSpacing(6);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
-        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        colorwindow = new QLabel(horizontalLayoutWidget);
-        colorwindow->setObjectName(QStringLiteral("colorwindow"));
-        colorwindow->setStyleSheet(QStringLiteral(""));
-
-        horizontalLayout->addWidget(colorwindow);
-
-        depthwindow = new QLabel(horizontalLayoutWidget);
+        saveImageButton->setGeometry(QRect(1130, 150, 75, 23));
+        saveImageButton->setStyleSheet(QStringLiteral("background-color: rgb(105, 165, 90);"));
+        widget_2 = new QWidget(centralWidget);
+        widget_2->setObjectName(QStringLiteral("widget_2"));
+        widget_2->setGeometry(QRect(40, 110, 1032, 430));
+        widget_2->setStyleSheet(QStringLiteral("background-color: rgb(59, 65, 72);"));
+        depthwindow = new QLabel(widget_2);
         depthwindow->setObjectName(QStringLiteral("depthwindow"));
-
-        horizontalLayout->addWidget(depthwindow);
-
-        tabWidget->addTab(tab_view, QString());
-        tab_table = new QWidget();
-        tab_table->setObjectName(QStringLiteral("tab_table"));
-        tableView = new QTableView(tab_table);
-        tableView->setObjectName(QStringLiteral("tableView"));
-        tableView->setGeometry(QRect(105, 51, 891, 511));
-        tabWidget->addTab(tab_table, QString());
+        depthwindow->setGeometry(QRect(2, 2, 512, 424));
+        depthwindow->setStyleSheet(QStringLiteral("background-color: rgb(100, 104, 97);"));
+        colorwindow = new QLabel(widget_2);
+        colorwindow->setObjectName(QStringLiteral("colorwindow"));
+        colorwindow->setGeometry(QRect(516, 2, 512, 424));
+        colorwindow->setStyleSheet(QStringLiteral("background-color: rgb(100, 104, 97);"));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1630, 23));
+        menuBar->setGeometry(QRect(0, 0, 1269, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -107,9 +75,6 @@ public:
 
         retranslateUi(MainWindowClass);
 
-        tabWidget->setCurrentIndex(0);
-
-
         QMetaObject::connectSlotsByName(MainWindowClass);
     } // setupUi
 
@@ -118,10 +83,8 @@ public:
         MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "MainWindow", nullptr));
         pushButton->setText(QApplication::translate("MainWindowClass", "\345\216\273\350\203\214", nullptr));
         saveImageButton->setText(QApplication::translate("MainWindowClass", "\344\277\235\345\255\230", nullptr));
-        colorwindow->setText(QString());
         depthwindow->setText(QString());
-        tabWidget->setTabText(tabWidget->indexOf(tab_view), QApplication::translate("MainWindowClass", "Skeleton View", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_table), QApplication::translate("MainWindowClass", "Joint Angle", nullptr));
+        colorwindow->setText(QString());
     } // retranslateUi
 
 };

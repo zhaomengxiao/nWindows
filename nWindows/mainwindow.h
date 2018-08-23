@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QLayout>
+//include <QtCharts>
 //opencv include
 #include <OpenNI.h>
 #include <opencv2/opencv.hpp>

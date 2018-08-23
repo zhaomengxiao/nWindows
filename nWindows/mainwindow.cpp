@@ -319,8 +319,10 @@ void MainWindow::on_pushButton_clicked()
 //关闭时清理内存使用
 MainWindow::~MainWindow()
 {
+	///!!这里的内存释放still have problem（这是Openni使用Xtion2时的代码）!!(kinect2的内存管理比较好)
+
 	//if(myCamera->isnotclosed()){ myCamera->closeCamera(); }
-	if (myCamera != NULL) {
-		myCamera->closeCamera();
-	}
+	//if (myCamera != NULL) {
+	//	myCamera->closeCamera();
+	//}
 }

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1630</width>
-    <height>704</height>
+    <width>1269</width>
+    <height>679</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,11 +17,14 @@
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>160</y>
+      <x>1130</x>
+      <y>110</y>
       <width>75</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(105, 165, 90);</string>
     </property>
     <property name="text">
      <string>去背</string>
@@ -30,95 +33,62 @@
    <widget class="QPushButton" name="saveImageButton">
     <property name="geometry">
      <rect>
-      <x>530</x>
-      <y>190</y>
+      <x>1130</x>
+      <y>150</y>
       <width>75</width>
       <height>23</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(105, 165, 90);</string>
     </property>
     <property name="text">
      <string>保存</string>
     </property>
    </widget>
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QWidget" name="widget_2" native="true">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>10</y>
-      <width>1611</width>
-      <height>761</height>
+      <x>40</x>
+      <y>110</y>
+      <width>1032</width>
+      <height>430</height>
      </rect>
     </property>
-    <property name="sizeIncrement">
-     <size>
-      <width>0</width>
-      <height>0</height>
-     </size>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(59, 65, 72);</string>
     </property>
-    <property name="currentIndex">
-     <number>0</number>
-    </property>
-    <widget class="QWidget" name="tab_view">
-     <property name="cursor">
-      <cursorShape>CrossCursor</cursorShape>
+    <widget class="QLabel" name="depthwindow">
+     <property name="geometry">
+      <rect>
+       <x>2</x>
+       <y>2</y>
+       <width>512</width>
+       <height>424</height>
+      </rect>
      </property>
-     <attribute name="title">
-      <string>Skeleton View</string>
-     </attribute>
-     <widget class="QWidget" name="widget" native="true">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>20</y>
-        <width>1021</width>
-        <height>541</height>
-       </rect>
-      </property>
-      <widget class="QWidget" name="horizontalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>1001</width>
-         <height>631</height>
-        </rect>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QLabel" name="colorwindow">
-          <property name="styleSheet">
-           <string notr="true"/>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QLabel" name="depthwindow">
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(100, 104, 97);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
     </widget>
-    <widget class="QWidget" name="tab_table">
-     <attribute name="title">
-      <string>Joint Angle</string>
-     </attribute>
-     <widget class="QTableView" name="tableView">
-      <property name="geometry">
-       <rect>
-        <x>105</x>
-        <y>51</y>
-        <width>891</width>
-        <height>511</height>
-       </rect>
-      </property>
-     </widget>
+    <widget class="QLabel" name="colorwindow">
+     <property name="geometry">
+      <rect>
+       <x>516</x>
+       <y>2</y>
+       <width>512</width>
+       <height>424</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(100, 104, 97);</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
     </widget>
    </widget>
   </widget>
@@ -127,7 +97,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1630</width>
+     <width>1269</width>
      <height>23</height>
     </rect>
    </property>
