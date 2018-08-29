@@ -221,6 +221,21 @@ Eigen::Vector3d myKinect::QuaternionToEuler(Eigen::Vector4d &quat)
 	return v;
 }
 
+double myKinect::getAngle_x()
+{
+	return angles.x();
+}
+
+double myKinect::getAngle_y()
+{
+	return angles.y();
+}
+
+double myKinect::getAngle_z()
+{
+	return angles.z();
+}
+
 double myKinect::RadianToDegree(double angle)
 {
 	return angle * (180.0 / PI) + 180;
@@ -311,16 +326,16 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
 				if (SUCCEEDED(hr))
 				{
-					Eigen::Vector4d quat;
+					
 					quat << JointOrientations[JointType_ElbowLeft].Orientation.x ,
 							JointOrientations[JointType_ElbowLeft].Orientation.y ,
 							JointOrientations[JointType_ElbowLeft].Orientation.z ,
 							JointOrientations[JointType_ElbowLeft].Orientation.w ;
-					Eigen::Vector3d angles = QuaternionToEuler(quat);
+					angles = QuaternionToEuler(quat);
 					//Ð´³öCSVÎÄµµ
 					//std::cout << angles  << std::endl;
 					//csvfile.open("data.csv", std::ios::out);
-					//csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
+					csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
 					
 				}
 			}
@@ -395,7 +410,7 @@ myKinect::myKinect() :
 	m_pKinectSensor(NULL),
 	m_pCoordinateMapper(NULL),
 	m_pBodyFrameReader(NULL) {
-	//csvfile.open("data.csv", std::ios::out);
+	csvfile.open("data.csv", std::ios::out);
 }
 
 /// Destructor
@@ -409,6 +424,6 @@ myKinect::~myKinect()
 		m_pKinectSensor->Close();
 	}
 	SafeRelease(m_pKinectSensor);
-	//csvfile.close();
+	csvfile.close();
 }
 

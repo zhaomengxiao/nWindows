@@ -183,7 +183,6 @@ background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, 
   </widget>
   <zorder>graphicsView</zorder>
   <zorder>label</zorder>
-  <zorder></zorder>
   <zorder>widget</zorder>
   <zorder>widget_2</zorder>
   <zorder>label_2</zorder>

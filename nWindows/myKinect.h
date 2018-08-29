@@ -34,6 +34,10 @@ private:
 	//kinect 2.0 的深度空间的高*宽是 424 * 512，在官网上有说明
 	static const int        cDepthWidth = 512;
 	static const int        cDepthHeight = 424;
+	//旋转角度数据存储
+	Eigen::Vector4d quat;
+	Eigen::Vector3d angles;
+	//
 public:
 	myKinect();
 	~myKinect();
@@ -43,7 +47,9 @@ public:
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
 	static Eigen::Vector3d QuaternionToEuler(Eigen::Vector4d &quat);
-	
+	double getAngle_x();
+	double getAngle_y();
+	double getAngle_z();
 	//Return degrees (0->360) from radians
 	static double RadianToDegree(double angle);
 

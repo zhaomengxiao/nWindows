@@ -2,7 +2,10 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup>
+    <IncludePath>E:\QT\5.11.1\msvc2017_64\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\QT\5.11.1\msvc2017_64\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Program Files\OpenNI2\Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

@@ -8,7 +8,10 @@
 #include <QDebug>
 #include <QTimer>
 #include <QLayout>
-//include <QtCharts>
+//charts
+#include <QtCharts/qchartview.h>
+#include <QtCharts\qsplineseries.h>
+#include <QDateTime>
 //opencv include
 #include <OpenNI.h>
 #include <opencv2/opencv.hpp>
@@ -21,6 +24,9 @@
 #include "myKinect.h"
 //cpp
 #include <math.h>
+
+QT_CHARTS_USE_NAMESPACE
+
 class MainWindow : public QMainWindow
 {
 	Q_OBJECT
@@ -57,6 +63,9 @@ private://**私有成员变量**
 	//Kinect2
 	QTimer *skeletontimer;
 	myKinect *mykinect;
+
+	//others
+	QTimer *lcdtimer;
 private://**私有函数**
 	//界面
 	void createAction();   //创建动作
@@ -71,7 +80,10 @@ private slots:
 	void showSkeleton_clicked();
 	void updateVideoFrame();
 	void updateSkeletonFrame();
+	void updateLCDnumber_date();
+	void updateLCDnumber_angle();
 	void stopCamera();
 	void startCamera();
 	void on_saveImageButton_clicked();
+	void on_pushButton_openrecord_clicked();
 };

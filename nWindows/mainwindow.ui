@@ -6,90 +6,513 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1269</width>
-    <height>679</height>
+    <width>1240</width>
+    <height>726</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
+   <property name="styleSheet">
+    <string notr="true">background-color:#464652;color:#E8E8E8</string>
+   </property>
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
-      <x>1130</x>
-      <y>110</y>
-      <width>75</width>
-      <height>23</height>
+      <x>20</x>
+      <y>20</y>
+      <width>1200</width>
+      <height>590</height>
      </rect>
     </property>
     <property name="styleSheet">
-     <string notr="true">background-color: rgb(105, 165, 90);</string>
+     <string notr="true">QTabBar::tab{
+             border-top-left-radius: 4px;
+             border-top-right-radius: 4px;
+             min-width:100px; min-height:25px;
+             font:20px Times New Roman;
+             padding:4px;
+             }
+QTabBar::tab:!selected { margin-top: 0px; margin-left: 30;}
+QTabBar::tab:selected {color: white}
+QTabBar::tab:hover:!selected {color: rgb(0, 170, 127); }
+
+QTabBar::tab:selected {margin-left: 30;}
+
+
+</string>
     </property>
-    <property name="text">
-     <string>去背</string>
+    <property name="currentIndex">
+     <number>1</number>
     </property>
-   </widget>
-   <widget class="QPushButton" name="saveImageButton">
-    <property name="geometry">
-     <rect>
-      <x>1130</x>
-      <y>150</y>
-      <width>75</width>
-      <height>23</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(105, 165, 90);</string>
-    </property>
-    <property name="text">
-     <string>保存</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="widget_2" native="true">
-    <property name="geometry">
-     <rect>
-      <x>40</x>
-      <y>110</y>
-      <width>1032</width>
-      <height>430</height>
-     </rect>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">background-color: rgb(59, 65, 72);</string>
-    </property>
-    <widget class="QLabel" name="depthwindow">
-     <property name="geometry">
-      <rect>
-       <x>2</x>
-       <y>2</y>
-       <width>512</width>
-       <height>424</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(100, 104, 97);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>View</string>
+     </attribute>
+     <widget class="QWidget" name="widget_2" native="true">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>70</y>
+        <width>941</width>
+        <height>435</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(59, 65, 72);
+border-radius: 20px</string>
+      </property>
+      <widget class="QLabel" name="colorwindow">
+       <property name="geometry">
+        <rect>
+         <x>200</x>
+         <y>5</y>
+         <width>512</width>
+         <height>424</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(100, 104, 97);</string>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <widget class="QWidget" name="LCDwidget" native="true">
+       <property name="geometry">
+        <rect>
+         <x>730</x>
+         <y>10</y>
+         <width>201</width>
+         <height>411</height>
+        </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(76, 120, 65)}
+
+QWidget::hover{
+background-color: rgb(76, 120, 65)}</string>
+       </property>
+       <widget class="QLCDNumber" name="lcdNumber_y">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>180</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 0, 0);</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="lcdNumber_x">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>59</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 0, 0);</string>
+        </property>
+       </widget>
+       <widget class="QLCDNumber" name="lcdNumber_z">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>300</y>
+          <width>161</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">background-color: rgb(0, 0, 0);</string>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QListWidget" name="listWidget_alljoint">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>7</y>
+         <width>160</width>
+         <height>420</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">background-color: rgb(76, 120, 65);
+border-radius:10px;</string>
+       </property>
+       <item>
+        <property name="text">
+         <string>SpinBase</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HipRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>KneeRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>AnkleRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FootRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HipLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>KneeLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>AnkleLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FootLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SpineMid</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SpineShoulder</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ShoulderRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ElbowRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WristRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HandRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HandTipRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ThumbRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ShoulderLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ElbowLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>WristLetf</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HandLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>HandTipLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>ThumbLeft</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string/>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Neck</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Head</string>
+        </property>
+       </item>
+      </widget>
+     </widget>
+     <widget class="QPushButton" name="pushButton">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>90</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+      </property>
+      <property name="text">
+       <string>START</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="saveImageButton">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>170</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+      </property>
+      <property name="text">
+       <string>SAVE</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="saveImageButton_2">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>130</y>
+        <width>71</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+      </property>
+      <property name="text">
+       <string>STOP</string>
+      </property>
+     </widget>
     </widget>
-    <widget class="QLabel" name="colorwindow">
-     <property name="geometry">
-      <rect>
-       <x>516</x>
-       <y>2</y>
-       <width>512</width>
-       <height>424</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(100, 104, 97);</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
+    <widget class="QWidget" name="tab_2">
+     <attribute name="title">
+      <string>Charts</string>
+     </attribute>
+     <widget class="QPushButton" name="pushButton_realtimedata">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>70</y>
+        <width>70</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+      </property>
+      <property name="text">
+       <string>RealTime</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_openrecord">
+      <property name="geometry">
+       <rect>
+        <x>1090</x>
+        <y>110</y>
+        <width>70</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+      </property>
+      <property name="text">
+       <string>OpenRecord</string>
+      </property>
+     </widget>
+     <widget class="QScrollArea" name="chartscrollArea">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>750</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>748</width>
+         <height>139</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QScrollArea" name="chartscrollArea_2">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>190</y>
+        <width>750</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_2">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>748</width>
+         <height>139</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
+     <widget class="QScrollArea" name="chartscrollArea_3">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>360</y>
+        <width>750</width>
+        <height>141</height>
+       </rect>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="scrollAreaWidgetContents_3">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>748</width>
+         <height>139</height>
+        </rect>
+       </property>
+      </widget>
+     </widget>
     </widget>
+   </widget>
+   <widget class="QLCDNumber" name="lcdNumber_date">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>630</y>
+      <width>201</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(0, 0, 0);</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -97,7 +520,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1269</width>
+     <width>1240</width>
      <height>23</height>
     </rect>
    </property>
@@ -118,4 +541,7 @@
   <include location="myicon.qrc"/>
  </resources>
  <connections/>
+ <slots>
+  <signal>showCharts()</signal>
+ </slots>
 </ui>
