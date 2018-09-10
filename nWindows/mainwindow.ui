@@ -44,7 +44,7 @@ QTabBar::tab:selected {margin-left: 30;}
 </string>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tab">
      <attribute name="title">
@@ -162,72 +162,37 @@ border-radius:10px;</string>
        </item>
        <item>
         <property name="text">
-         <string/>
+         <string>SpinMid</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>HipRight</string>
+         <string>Neck</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>KneeRight</string>
+         <string>Head</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>AnkleRight</string>
+         <string>ShoulderLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>FootRight</string>
+         <string>ElbowLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string/>
+         <string>WristLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>HipLeft</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>KneeLeft</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>AnkleLeft</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>FootLeft</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string/>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SpineMid</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SpineShoulder</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string/>
+         <string>HandLeft</string>
         </property>
        </item>
        <item>
@@ -252,37 +217,47 @@ border-radius:10px;</string>
        </item>
        <item>
         <property name="text">
-         <string>HandTipRight</string>
+         <string>HipLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>ThumbRight</string>
+         <string>KneeLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string/>
+         <string>AnkeLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>ShoulderLeft</string>
+         <string>FootLeft</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>ElbowLeft</string>
+         <string>HipRight</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>WristLetf</string>
+         <string>KneeRight</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>HandLeft</string>
+         <string>AnkleRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>FootRight</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>SpineShouder</string>
         </property>
        </item>
        <item>
@@ -297,17 +272,12 @@ border-radius:10px;</string>
        </item>
        <item>
         <property name="text">
-         <string/>
+         <string>HandTipRight</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>Neck</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Head</string>
+         <string>ThumbRight</string>
         </property>
        </item>
       </widget>
@@ -540,8 +510,27 @@ background-color: rgb(76, 120, 65)}
   <include location="mainwindow.qrc"/>
   <include location="myicon.qrc"/>
  </resources>
- <connections/>
+ <connections>
+  <connection>
+   <sender>listWidget_alljoint</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>ListCurChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>151</x>
+     <y>539</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>166</x>
+     <y>757</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <signal>showCharts()</signal>
+  <slot>ListCurChange(QString)</slot>
+  <slot>ListCurChange(int)</slot>
  </slots>
 </ui>

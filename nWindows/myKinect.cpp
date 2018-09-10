@@ -241,6 +241,11 @@ double myKinect::RadianToDegree(double angle)
 	return angle * (180.0 / PI) + 180;
 }
 
+bool myKinect::isAvailable()
+{
+	return false;
+}
+
 /// Handle new body data
 void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 {
@@ -326,11 +331,10 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
 				if (SUCCEEDED(hr))
 				{
-					
-					quat << JointOrientations[JointType_ElbowLeft].Orientation.x ,
-							JointOrientations[JointType_ElbowLeft].Orientation.y ,
-							JointOrientations[JointType_ElbowLeft].Orientation.z ,
-							JointOrientations[JointType_ElbowLeft].Orientation.w ;
+					quat << JointOrientations[jointnumber].Orientation.x ,
+							JointOrientations[jointnumber].Orientation.y ,
+							JointOrientations[jointnumber].Orientation.z ,
+							JointOrientations[jointnumber].Orientation.w ;
 					angles = QuaternionToEuler(quat);
 					//Ð´³öCSVÎÄµµ
 					//std::cout << angles  << std::endl;

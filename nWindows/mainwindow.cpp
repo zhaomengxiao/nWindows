@@ -288,7 +288,7 @@ void MainWindow::updateLCDnumber_date()
 	ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
 
 }
-
+//显示角度LCD
 void MainWindow::updateLCDnumber_angle()
 {
 	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
@@ -392,6 +392,17 @@ void MainWindow::on_pushButton_openrecord_clicked()
 	mychartview_z->chart()->setTheme(QChart::ChartThemeBrownSand);
 	series_z->setPen(QPen(Qt::blue, 1, Qt::SolidLine));
 	ui.chartscrollArea_3->setWidget(mychartview_z);
+}
+//从列表选择想要查看的关节
+void MainWindow::ListCurChange(int row)
+{
+	qDebug() << row << endl;
+	
+	if (mykinect != NULL) {
+		mykinect->jointnumber = row;
+	}
+	
+	else std::cout << "kinect not open" << endl;
 }
 
 

@@ -52,8 +52,9 @@ public:
 	double getAngle_z();
 	//Return degrees (0->360) from radians
 	static double RadianToDegree(double angle);
-
+	int jointnumber = 0;
 	std::ofstream csvfile;//用于输出csv文档
+	bool isAvailable();//todo
 private:
 	IKinectSensor * m_pKinectSensor;//kinect源
 	ICoordinateMapper*      m_pCoordinateMapper;//用于坐标变换

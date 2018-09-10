@@ -34,7 +34,6 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
 	~MainWindow();
-	 
 private://**私有成员变量**
 	Ui::MainWindowClass ui;
 	
@@ -62,8 +61,9 @@ private://**私有成员变量**
 	QPushButton *closecamera_button;
 	//Kinect2
 	QTimer *skeletontimer;
-	myKinect *mykinect;
-
+	myKinect *mykinect = NULL;//默认设置为NULL,可以判断是否初始化，不判断会有空指针的问题。
+	//Kinect skeleton
+	
 	//others
 	QTimer *lcdtimer;
 private://**私有函数**
@@ -86,4 +86,5 @@ private slots:
 	void startCamera();
 	void on_saveImageButton_clicked();
 	void on_pushButton_openrecord_clicked();
+	void ListCurChange(int row);
 };
