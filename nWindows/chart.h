@@ -21,7 +21,8 @@ public:
 
 public slots:
 	void handleTimeout();
-
+	void getX(double time);
+	void getY(double val);
 private:
 	QTimer m_timer;
 	QSplineSeries *m_series;

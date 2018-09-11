@@ -232,7 +232,7 @@ void MainWindow::showSkeleton_clicked()
 	if (SUCCEEDED(hr)) {
 		skeletontimer->setInterval(60);
 		skeletontimer->start();// 开始计时，超时则发出timeout()信号
-
+		chartX.start();
 	}
 	else {
 		std::cout << "kinect initialization failed!" << std::endl;
@@ -295,6 +295,13 @@ void MainWindow::updateLCDnumber_angle()
 	ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
 	ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
 	ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+	//更新charts数据
+	if (chart!=NULL)
+	{
+		chart->getY(mykinect->getAngle_y());
+		chart->getX(chartX.elapsed() / 1000.0);
+	}
+
 }
 
 void MainWindow::stopCamera()
@@ -316,12 +323,12 @@ void MainWindow::on_saveImageButton_clicked()
 	//std::string imagepath = tmp.toStdString().data();
 	cv::imwrite("E:/backremoved.png", backmoveimage);
 }
-
+//绘制曲线图
 void MainWindow::on_pushButton_openrecord_clicked()
 {
 	//画折线
 	///x
-	QGraphicsScene scene_x;
+	/*QGraphicsScene scene_x;
 	QSplineSeries *series_x = new QSplineSeries();
 	
 	series_x->setName("spline");
@@ -391,7 +398,15 @@ void MainWindow::on_pushButton_openrecord_clicked()
 	mychartview_z->setRenderHint(QPainter::Antialiasing);
 	mychartview_z->chart()->setTheme(QChart::ChartThemeBrownSand);
 	series_z->setPen(QPen(Qt::blue, 1, Qt::SolidLine));
-	ui.chartscrollArea_3->setWidget(mychartview_z);
+	ui.chartscrollArea_3->setWidget(mychartview_z);*/
+	chart = new Chart();
+	chart->setTitle("Dynamic spline chart");
+	chart->legend()->hide();
+	chart->setAnimationOptions(QChart::AllAnimations);
+	QChartView *mychartview = new QChartView();
+	mychartview->setChart(chart);
+	mychartview->setRenderHint(QPainter::Antialiasing);
+	ui.chartscrollArea_3->setWidget(mychartview);
 }
 //从列表选择想要查看的关节
 void MainWindow::ListCurChange(int row)

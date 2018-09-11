@@ -43,14 +43,14 @@ public:
     QPushButton *saveImageButton_2;
     QWidget *tab_2;
     QPushButton *pushButton_realtimedata;
-    QPushButton *pushButton_openrecord;
     QScrollArea *chartscrollArea;
     QWidget *scrollAreaWidgetContents;
     QScrollArea *chartscrollArea_2;
     QWidget *scrollAreaWidgetContents_2;
+    QLCDNumber *lcdNumber_date;
     QScrollArea *chartscrollArea_3;
     QWidget *scrollAreaWidgetContents_3;
-    QLCDNumber *lcdNumber_date;
+    QPushButton *pushButton_openrecord;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -59,7 +59,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1240, 726);
+        MainWindowClass->resize(2240, 894);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral("background-color:#464652;color:#E8E8E8"));
@@ -192,17 +192,6 @@ public:
 "QPushButton::hover{\n"
 "background-color: rgb(76, 120, 65)}\n"
 ""));
-        pushButton_openrecord = new QPushButton(tab_2);
-        pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
-        pushButton_openrecord->setGeometry(QRect(1090, 110, 70, 30));
-        pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-""));
         chartscrollArea = new QScrollArea(tab_2);
         chartscrollArea->setObjectName(QStringLiteral("chartscrollArea"));
         chartscrollArea->setGeometry(QRect(150, 30, 750, 141));
@@ -219,23 +208,34 @@ public:
         scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
         scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 748, 139));
         chartscrollArea_2->setWidget(scrollAreaWidgetContents_2);
-        chartscrollArea_3 = new QScrollArea(tab_2);
-        chartscrollArea_3->setObjectName(QStringLiteral("chartscrollArea_3"));
-        chartscrollArea_3->setGeometry(QRect(150, 360, 750, 141));
-        chartscrollArea_3->setWidgetResizable(true);
-        scrollAreaWidgetContents_3 = new QWidget();
-        scrollAreaWidgetContents_3->setObjectName(QStringLiteral("scrollAreaWidgetContents_3"));
-        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 748, 139));
-        chartscrollArea_3->setWidget(scrollAreaWidgetContents_3);
         tabWidget->addTab(tab_2, QString());
         lcdNumber_date = new QLCDNumber(centralWidget);
         lcdNumber_date->setObjectName(QStringLiteral("lcdNumber_date"));
         lcdNumber_date->setGeometry(QRect(1020, 630, 201, 21));
         lcdNumber_date->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        chartscrollArea_3 = new QScrollArea(centralWidget);
+        chartscrollArea_3->setObjectName(QStringLiteral("chartscrollArea_3"));
+        chartscrollArea_3->setGeometry(QRect(1250, 60, 881, 631));
+        chartscrollArea_3->setWidgetResizable(true);
+        scrollAreaWidgetContents_3 = new QWidget();
+        scrollAreaWidgetContents_3->setObjectName(QStringLiteral("scrollAreaWidgetContents_3"));
+        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 879, 629));
+        chartscrollArea_3->setWidget(scrollAreaWidgetContents_3);
+        pushButton_openrecord = new QPushButton(centralWidget);
+        pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
+        pushButton_openrecord->setGeometry(QRect(2150, 80, 70, 30));
+        pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1240, 23));
+        menuBar->setGeometry(QRect(0, 0, 2240, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -317,8 +317,8 @@ public:
         saveImageButton_2->setText(QApplication::translate("MainWindowClass", "STOP", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "View", nullptr));
         pushButton_realtimedata->setText(QApplication::translate("MainWindowClass", "RealTime", nullptr));
-        pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "OpenRecord", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Charts", nullptr));
+        pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "OpenRecord", nullptr));
     } // retranslateUi
 
 };

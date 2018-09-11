@@ -12,6 +12,7 @@
 #include <QtCharts/qchartview.h>
 #include <QtCharts\qsplineseries.h>
 #include <QDateTime>
+#include "chart.h"
 //opencv include
 #include <OpenNI.h>
 #include <opencv2/opencv.hpp>
@@ -63,7 +64,9 @@ private://**私有成员变量**
 	QTimer *skeletontimer;
 	myKinect *mykinect = NULL;//默认设置为NULL,可以判断是否初始化，不判断会有空指针的问题。
 	//Kinect skeleton
-	
+	//显示图表
+	Chart *chart = NULL;
+	QTime chartX;
 	//others
 	QTimer *lcdtimer;
 private://**私有函数**
