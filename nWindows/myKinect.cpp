@@ -221,17 +221,17 @@ Eigen::Vector3d myKinect::QuaternionToEuler(Eigen::Vector4d &quat)
 	return v;
 }
 
-double myKinect::getAngle_x()
+float myKinect::getAngle_x()
 {
 	return angles.x();
 }
 
-double myKinect::getAngle_y()
+float myKinect::getAngle_y()
 {
 	return angles.y();
 }
 
-double myKinect::getAngle_z()
+float myKinect::getAngle_z()
 {
 	return angles.z();
 }
@@ -331,11 +331,18 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
 				if (SUCCEEDED(hr))
 				{
-					quat << JointOrientations[jointnumber].Orientation.x ,
+					quats.w() = JointOrientations[jointnumber].Orientation.w;
+					quats.x() = JointOrientations[jointnumber].Orientation.x;
+					quats.y() = JointOrientations[jointnumber].Orientation.y;
+					quats.z() = JointOrientations[jointnumber].Orientation.z;
+					Eigen::Matrix3f Rx = quats.toRotationMatrix();
+					Eigen::Vector3f ea1 = Rx.eulerAngles(0, 1, 2);
+					/*quat << JointOrientations[jointnumber].Orientation.x ,
 							JointOrientations[jointnumber].Orientation.y ,
 							JointOrientations[jointnumber].Orientation.z ,
-							JointOrientations[jointnumber].Orientation.w ;
-					angles = QuaternionToEuler(quat);
+							JointOrientations[jointnumber].Orientation.w ;*/
+					//angles = QuaternionToEuler(quat);
+					angles = ea1;
 					//Ð´³öCSVÎÄµµ
 					//std::cout << angles  << std::endl;
 					//csvfile.open("data.csv", std::ios::out);

@@ -35,8 +35,9 @@ private:
 	static const int        cDepthWidth = 512;
 	static const int        cDepthHeight = 424;
 	//旋转角度数据存储
+	Eigen::Quaternionf quats;
 	Eigen::Vector4d quat;
-	Eigen::Vector3d angles;
+	Eigen::Vector3f angles;//changed f
 	//
 public:
 	myKinect();
@@ -47,9 +48,9 @@ public:
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
 	static Eigen::Vector3d QuaternionToEuler(Eigen::Vector4d &quat);
-	double getAngle_x();
-	double getAngle_y();
-	double getAngle_z();
+	float getAngle_x();//changed f
+	float getAngle_y();//changed f
+	float getAngle_z();//changed f
 	//Return degrees (0->360) from radians
 	static double RadianToDegree(double angle);
 	int jointnumber = 0;
