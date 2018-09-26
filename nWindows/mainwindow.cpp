@@ -230,9 +230,9 @@ void MainWindow::showSkeleton_clicked()
 	
 	HRESULT hr = mykinect->InitializeDefaultSensor();
 	if (SUCCEEDED(hr)) {
-		skeletontimer->setInterval(60);
+		skeletontimer->setInterval(33.33);
 		skeletontimer->start();// 开始计时，超时则发出timeout()信号
-		chartX.start();
+		dataTime.start();
 	}
 	else {
 		std::cout << "kinect initialization failed!" << std::endl;
@@ -288,18 +288,25 @@ void MainWindow::updateLCDnumber_date()
 	ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
 
 }
-//显示角度LCD
+//显示角度LCD并且储存数据
 void MainWindow::updateLCDnumber_angle()
 {
 	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
 	ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
 	ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
 	ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+	//储存数据
+	//AngleFrame angle;
+	//angle.x = mykinect->getAngle_x();
+	//angle.y = mykinect->getAngle_y();
+	//angle.z = mykinect->getAngle_z();
+	//angle.time = dataTime.elapsed() / 1000.0;
+	//angleStream.push_back(angle);
 	//更新charts数据
 	if (chart!=NULL)
 	{
 		chart->getY(mykinect->getAngle_y());
-		chart->getX(chartX.elapsed() / 1000.0);
+		chart->getX(dataTime.elapsed() / 1000.0);
 	}
 
 }

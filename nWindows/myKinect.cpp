@@ -181,21 +181,82 @@ void myKinect::Update()
 }
 
 //计算关节角度
-double myKinect::AngleBetweenTowVectors(Eigen::Vector3d vector_A, Eigen::Vector3d vector_B)
+double myKinect::AngleBetweenTowVectors(JointType jointA, JointType jointB, JointType jointC)
 {
 
-	double dotProduct = 0.0;
+	/*double angle = 0.0;
 
-	dotProduct = vector_A.transpose() * vector_B;
+	DirectX::XMVECTOR vBA = DirectX::XMVectorSubtract(vec[jointB], vec[jointA]);
+	DirectX::XMVECTOR vBC = DirectX::XMVectorSubtract(vec[jointB], vec[jointC]);
 
-	return acos(dotProduct) /PI * 180;
+	DirectX::XMVECTOR vAngle = DirectX::XMVector3AngleBetweenVectors(vBA, vBC);
 
+	angle = DirectX::XMVectorGetX(vAngle) * 180.0 * DirectX::XM_1DIVPI;    // XM_1DIVPI: An optimal representation of 1 / π
 
+	return angle;*/
+	return 0;
 	
 }
-Eigen::Vector3d myKinect::QuaternionToEuler(Eigen::Vector4d &quat)
+
+//计算segCOM_ /Dampster
+Eigen::Vector3f myKinect::SegCOM(Eigen::Vector3f &segcom,Eigen::Vector3f &coordP, Eigen::Vector3f &coordD,int &segNum)
 {
-	Eigen::Vector3d v(0.0, 0.0, 0.0);
+	
+	switch (segNum)
+	{
+	case 0://thigh
+		segcom = coordP + (coordD - coordP)* 0.433;
+		break;
+	case 1://shank
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case 2://foot
+		segcom = coordP + (coordD - coordP) * 0.5;
+		break;
+	case 3://Upper arm
+		segcom = coordP + (coordD - coordP) * 0.436;
+		break;
+	case 4://forearm and hand
+		segcom = coordP + (coordD - coordP) * 0.682;
+		break;
+	case 5://Pelvis
+		segcom = coordP + (coordD - coordP) * 0.105;
+		break;
+	case 6://Thorax and abdomen
+		segcom = coordP + (coordD - coordP) * 0.63;
+		break;
+	case 7://Head and neck
+		segcom = coordP + (coordD - coordP) * 1.0;
+		break;
+	default:
+		break;
+	}
+	//forearm and hand
+	segcom = coordP + (coordD - coordP) * 0.433;
+}
+//计算bodyCOM
+Eigen::Vector3f myKinect::BodyCOM(Eigen::Vector3f &thighcom_L, Eigen::Vector3f &thighcom_R, Eigen::Vector3f &shankcom_L,
+	Eigen::Vector3f &shankcom_R, Eigen::Vector3f &footcom_L, Eigen::Vector3f &footcom_R, Eigen::Vector3f &upperArmCom_L, 
+	Eigen::Vector3f &upperArmCom_R, Eigen::Vector3f &fArmHand_L, Eigen::Vector3f &fArmHand_R,
+	Eigen::Vector3f &Pelvis, Eigen::Vector3f &ThoraxAbdomen, Eigen::Vector3f &Headneck)
+{
+	Eigen::Vector3f thigh_M(0, 0, 0.1), shank_M(0, 0, 0.0465), foot_M(0, 0, 0.0145),
+		upperArm_M(0, 0, 0.028),fArmhand_M(0, 0, 0.022), Pelvis_M(0, 0, 0.142), ThoraxAbdomen_M(0, 0, 0.355),
+		Headneck_M(0, 0, 0.081);
+	Eigen::Vector3f BodyCOM = 
+		  thighcom_L.cross(thigh_M) + thighcom_R.cross(thigh_M)
+		+ shankcom_L.cross(shank_M) + shankcom_R.cross(shank_M)
+		+ footcom_L.cross(foot_M) + footcom_R.cross(foot_M)
+		+ upperArmCom_L.cross(upperArm_M) + upperArmCom_R.cross(upperArm_M)
+		+ fArmHand_L.cross(fArmhand_M) + fArmHand_R.cross(fArmhand_M)
+		+ Pelvis.cross(Pelvis_M) + ThoraxAbdomen.cross(ThoraxAbdomen_M) + Headneck.cross(Headneck_M);
+	return BodyCOM;
+}
+
+
+Eigen::Vector3f myKinect::QuaternionToEuler(Eigen::Vector4f &quat)
+{
+	Eigen::Vector3f v(0.0, 0.0, 0.0);
 	v.x() = atan2(2 * quat.x() * quat.w() - 2 * quat.x() * quat.z(),
 		1 - 2 * pow(quat.y(), 2) - 2 * pow(quat.z(), 2));
 
@@ -213,6 +274,7 @@ Eigen::Vector3d myKinect::QuaternionToEuler(Eigen::Vector4d &quat)
 		v.x() = (-2 * atan2(quat.x(), quat.w()));
 		v.y() = 0.;
 	}
+
 
 	v.x() = RadianToDegree(v.x());
 	v.y() = RadianToDegree(v.y());
@@ -280,6 +342,9 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 				
 				if (SUCCEEDED(hr))
 				{
+					
+					//float angle = AngleBetweenTowVectors(JointType_WristRight, JointType_ElbowRight, JointType_ShoulderRight); // Get ElbowRight joint angle
+
 					for (int j = 0; j < _countof(joints); ++j)
 					{
 
@@ -331,22 +396,41 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
 				if (SUCCEEDED(hr))
 				{
-					quats.w() = JointOrientations[jointnumber].Orientation.w;
+					/*quats.w() = JointOrientations[jointnumber].Orientation.w;
 					quats.x() = JointOrientations[jointnumber].Orientation.x;
 					quats.y() = JointOrientations[jointnumber].Orientation.y;
 					quats.z() = JointOrientations[jointnumber].Orientation.z;
 					Eigen::Matrix3f Rx = quats.toRotationMatrix();
-					Eigen::Vector3f ea1 = Rx.eulerAngles(0, 1, 2);
-					/*quat << JointOrientations[jointnumber].Orientation.x ,
-							JointOrientations[jointnumber].Orientation.y ,
-							JointOrientations[jointnumber].Orientation.z ,
-							JointOrientations[jointnumber].Orientation.w ;*/
-					//angles = QuaternionToEuler(quat);
-					angles = ea1;
+					Eigen::Vector3f ea1 = Rx.eulerAngles(0, 1, 2);*/
+					//std::cout << quats.w() << "," << quats.x() << "," << quats.y() << quats.z() << std::endl;
+					quatshow[0] = JointOrientations[jointnumber].Orientation.x;
+					quatshow[1] = JointOrientations[jointnumber].Orientation.y;
+					quatshow[2] = JointOrientations[jointnumber].Orientation.z;
+					quatshow[3] = JointOrientations[jointnumber].Orientation.w;
+					angles = QuaternionToEuler(quatshow);
+					//储存quat
+					//for (int i = 0; i < JointType_Count; i++)
+					//{
+					//	quat[0] = JointOrientations[i].Orientation.x;
+					//	quat[1] = JointOrientations[i].Orientation.y;
+					//	quat[2] = JointOrientations[i].Orientation.z;
+					//	quat[3] = JointOrientations[i].Orientation.w;
+
+					//	/*quat << JointOrientations[i].Orientation.x,
+					//			JointOrientations[i].Orientation.y,
+					//			JointOrientations[i].Orientation.z,
+					//			JointOrientations[i].Orientation.w;*/
+					//	quatstream.push_back(quat);
+					//}
+					//Eigen::Vector4f quats = quatstream[jointnumber];
+					//angles = QuaternionToEuler(quats);
+					
+					//angles = ea1;
+					//std::cout << angles.x() << "," << angles.y() << "," << angles.z() << std::endl;
 					//写出CSV文档
 					//std::cout << angles  << std::endl;
 					//csvfile.open("data.csv", std::ios::out);
-					csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
+					//csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
 					
 				}
 			}

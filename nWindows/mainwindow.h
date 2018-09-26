@@ -23,8 +23,9 @@
 //class
 #include "camera.h"
 #include "myKinect.h"
-//cpp
+//h
 #include <math.h>
+
 
 QT_CHARTS_USE_NAMESPACE
 
@@ -66,7 +67,7 @@ private://**私有成员变量**
 	//Kinect skeleton
 	//显示图表
 	Chart *chart = NULL;
-	QTime chartX;
+	QTime dataTime;
 	//others
 	QTimer *lcdtimer;
 private://**私有函数**
