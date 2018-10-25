@@ -51,6 +51,9 @@
     <ClCompile Include="chart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="filerec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="chart.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="filerec.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>

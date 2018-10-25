@@ -23,8 +23,11 @@
 //class
 #include "camera.h"
 #include "myKinect.h"
+#include "filerec.h"
 //h
 #include <math.h>
+#include <fstream>
+
 
 
 QT_CHARTS_USE_NAMESPACE
@@ -70,13 +73,19 @@ private://**私有成员变量**
 	QTime dataTime;
 	//others
 	QTimer *lcdtimer;
+
+	//std::ofstream jointsData{ "TEST.txt", std::ios::app };
+
+	//保存数据到文件
+	FileREC *recorder = NULL;
+	QTimer *filetimer;
+	QThread *thread;
 private://**私有函数**
 	//界面
 	void createAction();   //创建动作
 	void createMenu();     //创建菜单
 	void connectSignalSlot(); //链接信号和槽
 	//功能
-	
 private slots:
 	void on_pushButton_clicked();
 	void fileOpenImage_clicked();
@@ -91,4 +100,6 @@ private slots:
 	void on_saveImageButton_clicked();
 	void on_pushButton_openrecord_clicked();
 	void ListCurChange(int row);
+	void startRec();
+	void stopRec();
 };

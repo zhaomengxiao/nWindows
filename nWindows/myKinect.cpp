@@ -199,9 +199,10 @@ double myKinect::AngleBetweenTowVectors(JointType jointA, JointType jointB, Join
 }
 
 //计算segCOM_ /Dampster
-Eigen::Vector3f myKinect::SegCOM(Eigen::Vector3f &segcom,Eigen::Vector3f &coordP, Eigen::Vector3f &coordD,int &segNum)
+void myKinect::SegCOM(Eigen::Vector3f &segcom,Joint &jointP, Joint &jointD,const int &segNum)
 {
-	
+	Eigen::Vector3f coordP(jointP.Position.X, jointP.Position.Y, jointP.Position.Z);
+	Eigen::Vector3f coordD(jointD.Position.X, jointD.Position.Y, jointD.Position.Z);
 	switch (segNum)
 	{
 	case 0://thigh
@@ -325,7 +326,7 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 
 			if (SUCCEEDED(hr) && bTracked)
 			{
-				Joint joints[JointType_Count];//存储关节点类
+				//Joint joints[JointType_Count];//存储关节点类
 				JointOrientation JointOrientations[JointType_Count];//存储关节旋转
 				HandState leftHandState = HandState_Unknown;//左手状态
 				HandState rightHandState = HandState_Unknown;//右手状态
@@ -336,7 +337,7 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 
 				//存储深度坐标系中的关节点位置
 				DepthSpacePoint *depthSpacePosition = new DepthSpacePoint[_countof(joints)];
-
+			
 				//获得关节点类
 				hr = pBody->GetJoints(_countof(joints), joints);
 				
@@ -389,9 +390,40 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					DrawBone(joints, depthSpacePosition, JointType_HipLeft, JointType_KneeLeft);
 					DrawBone(joints, depthSpacePosition, JointType_KneeLeft, JointType_AnkleLeft);
 					DrawBone(joints, depthSpacePosition, JointType_AnkleLeft, JointType_FootLeft);
+
+					//---------------------------------------------------------------------------------
+					
+					//取得COM
+					/*Eigen::Vector3f thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R,
+						upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R,
+						Pelvis, ThoraxAbdomen, Headneck;
+					SegCOM(thighcom_L, joints[12], joints[13], 0);
+					SegCOM(thighcom_R, joints[16], joints[17], 0);
+					SegCOM(shankcom_L, joints[13], joints[14], 1);
+					SegCOM(shankcom_R, joints[17], joints[18], 1);
+					SegCOM(footcom_L, joints[14], joints[15], 2);
+					SegCOM(footcom_R, joints[18], joints[19], 2);
+					SegCOM(upperArmCom_L, joints[4], joints[5], 3);
+					SegCOM(upperArmCom_R, joints[8], joints[9], 3);
+					SegCOM(fArmHand_L, joints[5], joints[6], 4);
+					SegCOM(fArmHand_R, joints[9], joints[10], 4);
+					SegCOM(Pelvis, joints[1], joints[0], 5);
+					SegCOM(ThoraxAbdomen, joints[20], joints[1], 6);
+					SegCOM(Headneck, joints[3], joints[20], 7);
+					
+					myCOM =
+						BodyCOM(thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R, upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R, Pelvis, ThoraxAbdomen, Headneck);
+					std::cout << myCOM.x() << "," << myCOM.y() << "," << myCOM.z() << "," << std::endl;*/
 				}
 				delete[] depthSpacePosition;
+				
+				
+				//---------test -------------------
 
+
+
+
+				//-----------------------test
 				//获得关节旋转
 				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
 				if (SUCCEEDED(hr))

@@ -41,6 +41,8 @@ public:
     QPushButton *pushButton;
     QPushButton *saveImageButton;
     QPushButton *saveImageButton_2;
+    QPushButton *pushButton_2;
+    QPushButton *pushButton_3;
     QWidget *tab_2;
     QPushButton *pushButton_realtimedata;
     QScrollArea *chartscrollArea;
@@ -178,6 +180,26 @@ public:
 "\n"
 "QPushButton::hover{\n"
 "background-color: rgb(76, 120, 65)}"));
+        pushButton_2 = new QPushButton(tab);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(1090, 230, 71, 31));
+        pushButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+        pushButton_3 = new QPushButton(tab);
+        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
+        pushButton_3->setGeometry(QRect(1090, 270, 71, 31));
+        pushButton_3->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
         tabWidget->addTab(tab, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
@@ -246,6 +268,8 @@ public:
 
         retranslateUi(MainWindowClass);
         QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
+        QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindowClass, SLOT(startRec()));
+        QObject::connect(pushButton_3, SIGNAL(clicked()), MainWindowClass, SLOT(stopRec()));
 
         tabWidget->setCurrentIndex(0);
 
@@ -315,6 +339,8 @@ public:
         pushButton->setText(QApplication::translate("MainWindowClass", "START", nullptr));
         saveImageButton->setText(QApplication::translate("MainWindowClass", "SAVE", nullptr));
         saveImageButton_2->setText(QApplication::translate("MainWindowClass", "STOP", nullptr));
+        pushButton_2->setText(QApplication::translate("MainWindowClass", "StartREC", nullptr));
+        pushButton_3->setText(QApplication::translate("MainWindowClass", "StopREC", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "View", nullptr));
         pushButton_realtimedata->setText(QApplication::translate("MainWindowClass", "RealTime", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Charts", nullptr));

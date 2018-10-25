@@ -48,10 +48,12 @@ public:
 	~myKinect();
 	void                    Update();//获得骨架、背景二值图和深度信息
 	double					AngleBetweenTowVectors( JointType jointA, JointType jointB, JointType jointC);//计算关节角度
-	Eigen::Vector3f         SegCOM(Eigen::Vector3f &segcom, Eigen::Vector3f &coordP, Eigen::Vector3f &coordD, int &segNum);
+	void         SegCOM(Eigen::Vector3f &segcom, Joint &jointP, Joint &jointD, const int &segNum);
 	Eigen::Vector3f			BodyCOM(Eigen::Vector3f & thighcom_L, Eigen::Vector3f & thighcom_R, Eigen::Vector3f & shankcom_L, Eigen::Vector3f & shankcom_R, Eigen::Vector3f & footcom_L, Eigen::Vector3f & footcom_R, Eigen::Vector3f & upperArmCom_L, Eigen::Vector3f & upperArmCom_R, Eigen::Vector3f & fArmHand_L, Eigen::Vector3f & fArmHand_R, Eigen::Vector3f & Pelvis, Eigen::Vector3f & ThoraxAbdomen, Eigen::Vector3f & Headneck);
 	//计算COM
+	Eigen::Vector3f myCOM; //传出COM用于显示
 	HRESULT                 InitializeDefaultSensor();//用于初始化kinect
+	Joint joints[JointType_Count]; //储存关节信息
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
 	static Eigen::Vector3f  QuaternionToEuler(Eigen::Vector4f &quat);
@@ -81,6 +83,7 @@ private:
 	//显示图像的Mat
 	cv::Mat skeletonImg;
 	cv::Mat depthImg;
+	
 };
 
 

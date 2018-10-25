@@ -230,8 +230,7 @@ void MainWindow::showSkeleton_clicked()
 	
 	HRESULT hr = mykinect->InitializeDefaultSensor();
 	if (SUCCEEDED(hr)) {
-		skeletontimer->setInterval(33.33);
-		skeletontimer->start();// 开始计时，超时则发出timeout()信号
+		skeletontimer->start(120);// 开始计时，超时则发出timeout()信号
 		dataTime.start();
 	}
 	else {
@@ -257,16 +256,26 @@ void MainWindow::updateVideoFrame()
 	//this->showcolorimage_label->setPixmap(QPixmap::fromImage(myCamera->colorImage));
 	//this->showdepthimage_label->setPixmap(QPixmap::fromImage(myCamera->depthImage));
 }
+//===============test 存储关节数据=================================
+
 //更新骨骼帧
 void MainWindow::updateSkeletonFrame()
 {
 	mykinect->Update();
-	mykinect->getDepthImg();
-	mykinect->getSkeletonImg();
+	//mykinect->getDepthImg();
+	//mykinect->getSkeletonImg();
 	QImage qdepthImage    = Mat2QImage(mykinect->getDepthImg());
 	QImage qskeletonImage = Mat2QImage(mykinect->getSkeletonImg());
 	//ui.label->setPixmap(QPixmap::fromImage(myCamera->colorImage));
 	ui.colorwindow->setPixmap(QPixmap::fromImage(qskeletonImage));
+	if (recorder !=NULL)
+	{
+		recorder->updateJoints(mykinect->joints);
+	}
+	
+
+	//}
+	
 	//ui.depthwindow->setPixmap(QPixmap::fromImage(qdepthImage));
 	//this->showcolorimage_label->setPixmap(QPixmap::fromImage(myCamera->colorImage));
 	//this->showdepthimage_label->setPixmap(QPixmap::fromImage(myCamera->depthImage));
@@ -295,20 +304,13 @@ void MainWindow::updateLCDnumber_angle()
 	ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
 	ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
 	ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
-	//储存数据
-	//AngleFrame angle;
-	//angle.x = mykinect->getAngle_x();
-	//angle.y = mykinect->getAngle_y();
-	//angle.z = mykinect->getAngle_z();
-	//angle.time = dataTime.elapsed() / 1000.0;
-	//angleStream.push_back(angle);
-	//更新charts数据
-	if (chart!=NULL)
+	
+	/*if (chart!=NULL)
 	{
 		chart->getY(mykinect->getAngle_y());
 		chart->getX(dataTime.elapsed() / 1000.0);
 	}
-
+*/
 }
 
 void MainWindow::stopCamera()
@@ -425,6 +427,25 @@ void MainWindow::ListCurChange(int row)
 	}
 	
 	else std::cout << "kinect not open" << endl;
+}
+//存储joint数据 
+void MainWindow::startRec()
+{
+	filetimer = new QTimer(this);
+	thread = new QThread(this);
+	this->recorder = new FileREC();
+	this->recorder->moveToThread(thread);
+	connect(filetimer, SIGNAL(timeout()), this->recorder, SLOT(processfile()));
+	//connect(thread, SIGNAL(finished()), this->recorder, SLOT(deleteLater()));
+	thread->start();
+	filetimer->start(1000);
+
+}
+
+void MainWindow::stopRec()
+{
+	filetimer->stop();
+	thread->quit();
 }
 
 
