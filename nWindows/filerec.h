@@ -21,6 +21,7 @@ public slots:
 
 public:
 	void updateJoints(Joint jointdate[JointType_Count]);
+	std::vector<Joint> record();
 
 private:
 	//const char* m_fileName;

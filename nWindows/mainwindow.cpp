@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 //a function that turn cvMat file into QImage
 QImage  Mat2QImage(cv::Mat cvImg);
+extern FileREC *pSender ;
 //×é×°Çø
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -268,9 +269,9 @@ void MainWindow::updateSkeletonFrame()
 	QImage qskeletonImage = Mat2QImage(mykinect->getSkeletonImg());
 	//ui.label->setPixmap(QPixmap::fromImage(myCamera->colorImage));
 	ui.colorwindow->setPixmap(QPixmap::fromImage(qskeletonImage));
-	if (recorder !=NULL)
+	if (pSender !=NULL)
 	{
-		recorder->updateJoints(mykinect->joints);
+		pSender->updateJoints(mykinect->joints);
 	}
 	
 
@@ -433,9 +434,9 @@ void MainWindow::startRec()
 {
 	filetimer = new QTimer(this);
 	thread = new QThread(this);
-	this->recorder = new FileREC();
-	this->recorder->moveToThread(thread);
-	connect(filetimer, SIGNAL(timeout()), this->recorder, SLOT(processfile()));
+	//this->recorder = new FileREC();
+	pSender->moveToThread(thread);
+	connect(filetimer, SIGNAL(timeout()), pSender, SLOT(processfile()));
 	//connect(thread, SIGNAL(finished()), this->recorder, SLOT(deleteLater()));
 	thread->start();
 	filetimer->start(1000);

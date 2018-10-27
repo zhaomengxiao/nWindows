@@ -54,6 +54,9 @@
     <ClCompile Include="filerec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="plot3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -99,6 +102,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="plot3d.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

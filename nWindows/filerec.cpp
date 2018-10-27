@@ -19,6 +19,11 @@ void FileREC::updateJoints(Joint jointdata[JointType_Count])
 	jointdata_saved.assign(&jointdata[0], &jointdata[JointType_Count]);
 }
 
+std::vector<Joint> FileREC::record()
+{
+	return jointdata_saved;
+}
+
 void FileREC::processfile() {
 	frameNum++;
 	//qDebug() << "process()" << QThread::currentThreadId();
@@ -38,4 +43,5 @@ void FileREC::processfile() {
 		}
 	}
 }
+
 

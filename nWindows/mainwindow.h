@@ -77,7 +77,7 @@ private://**私有成员变量**
 	//std::ofstream jointsData{ "TEST.txt", std::ios::app };
 
 	//保存数据到文件
-	FileREC *recorder = NULL;
+	//FileREC *recorder = NULL;
 	QTimer *filetimer;
 	QThread *thread;
 private://**私有函数**
