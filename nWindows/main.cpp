@@ -3,9 +3,11 @@
 #include <QtWidgets/QApplication>
 #include <QTextCodec>
 #include <thread>
+#include <array>
 //vtk
 #include <vtkSphereSource.h>
 #include <vtkCubeSource.h>
+#include <vtkArrowSource.h>
 #include <vtkAxesActor.h>
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
@@ -16,6 +18,7 @@
 #include <vtkRenderWindowInteractor.h>
 #include <vtkNamedColors.h>
 #include <vtkProperty.h>
+#include <vtkCamera.h>
 #include "vtkAutoInit.h" 
 
 #include "filerec.h"
@@ -24,31 +27,93 @@ VTK_MODULE_INIT(vtkRenderingOpenGL2); // VTK was built with vtkRenderingOpenGL2
 VTK_MODULE_INIT(vtkInteractionStyle);
 VTK_MODULE_INIT(vtkRenderingFreeType);
 
-
+//from extern 
 FileREC *pSender = new FileREC();
+int jointSelected;
+float force ;
+float bodyWeight;
+float bagX ;
+float bagY ;
+float bagZ ;
+bool bag ;
 
-static void initRender() {
-	vtkSmartPointer<vtkRenderer> renderer =
-		vtkSmartPointer<vtkRenderer>::New();
-	vtkSmartPointer<vtkRenderWindow> renderWindow =
-		vtkSmartPointer<vtkRenderWindow>::New();
-	renderWindow->SetWindowName("render");
-	renderWindow->AddRenderer(renderer);
-	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
-		vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	renderWindowInteractor->SetRenderWindow(renderWindow);
+//extern
+extern float F_spinebase;
+extern Eigen::Vector3f M_spinebase;
+
+class Arrow
+{
+public:
+	Arrow()
+	{
+		// Create a sphere
+		arrowSource =
+			vtkSmartPointer<vtkArrowSource>::New();
+		arrowSource->SetShaftRadius(0.05);
+		arrowSource->SetTipRadius(0.1);
+		arrowSource->SetTipLength(0.3);
+		arrowSource->SetInvert(1);
+		
+
+		arrowSource->Update();
+
+
+		vtkSmartPointer<vtkPolyDataMapper> mapper =
+			vtkSmartPointer<vtkPolyDataMapper>::New();
+		mapper->SetInputConnection(arrowSource->GetOutputPort());
+
+		actor =
+			vtkSmartPointer<vtkActor>::New();
+		actor->SetMapper(mapper);
+		actor->GetProperty()->SetColor(1, 0, 0);//red
+		actor->SetPosition(0, 0, 1500);
+		actor->SetScale(200);
+		actor->RotateZ(90);
+	};
+	Arrow( float TipLength) : m_TipLength(TipLength)
+	{
+		// Create a sphere
+		arrowSource =
+			vtkSmartPointer<vtkArrowSource>::New();
+		arrowSource->SetShaftRadius(30);
+		arrowSource->SetTipLength(TipLength);
+		arrowSource->SetTipRadius(15);
+		
+		arrowSource->Update();
+		vtkSmartPointer<vtkPolyDataMapper> mapper =
+			vtkSmartPointer<vtkPolyDataMapper>::New();
+		mapper->SetInputConnection(arrowSource->GetOutputPort());
+
+		actor =
+			vtkSmartPointer<vtkActor>::New();
+		actor->SetMapper(mapper);
+		actor->GetProperty()->SetColor(1, 0, 0);//red
+		actor->SetPosition(-100, -100, 1500);
+	};
+	~Arrow() {};
+public:
+	vtkSmartPointer<vtkActor> Actor() {
+		return actor;
+	}
+private:
+	float m_TipLength{};
+	vtkSmartPointer<vtkArrowSource> arrowSource;
+	vtkSmartPointer<vtkActor> actor;
+public:
+
+
 };
 
 class Sphere
 {
 public:
-	Sphere(float x, float y, float z, float r) :m_x(x), m_y(y), m_z(z), m_r(r)
+	Sphere() 
 	{
 		// Create a sphere
 		sphereSource =
 			vtkSmartPointer<vtkSphereSource>::New();
-		sphereSource->SetCenter(x, y, z);
-		sphereSource->SetRadius(r);
+		//sphereSource->SetCenter(m_x, m_y, m_z);
+		sphereSource->SetRadius(m_r);
 		// Make the surface smooth.
 		sphereSource->SetPhiResolution(100);
 		sphereSource->SetThetaResolution(100);
@@ -60,6 +125,38 @@ public:
 			vtkSmartPointer<vtkActor>::New();
 		actor->SetMapper(mapper);
 		actor->GetProperty()->SetColor(0, 1, 0);
+		actor->SetPosition(0, 0, 1500);
+	};
+	Sphere(float r,char color) : m_r(r)
+	{
+		// Create a sphere
+		sphereSource =
+			vtkSmartPointer<vtkSphereSource>::New();
+		//sphereSource->SetCenter(x, y, z);
+		sphereSource->SetRadius(r);
+		// Make the surface smooth.
+		sphereSource->SetPhiResolution(100);
+		sphereSource->SetThetaResolution(100);
+		vtkSmartPointer<vtkPolyDataMapper> mapper =
+			vtkSmartPointer<vtkPolyDataMapper>::New();
+		mapper->SetInputConnection(sphereSource->GetOutputPort());
+
+		actor =
+			vtkSmartPointer<vtkActor>::New();
+		actor->SetMapper(mapper);
+		if (color == 'r')
+		{
+			actor->GetProperty()->SetColor(1, 0, 0);
+		}
+		if (color == 'g')
+		{
+			actor->GetProperty()->SetColor(0, 1, 0);
+		}
+		if (color == 'b')
+		{
+			actor->GetProperty()->SetColor(0, 0, 1);
+		}
+		actor->SetPosition(0, 0, 1500);
 	};
 	~Sphere() {};
 public:
@@ -67,16 +164,16 @@ public:
 		return actor;
 	}
 private:
-	float m_x;
-	float m_y;
-	float m_z;
-	float m_r;
+
+	float m_r{30};
 	vtkSmartPointer<vtkSphereSource> sphereSource;
 	vtkSmartPointer<vtkActor> actor;
 public:
 
 
 };
+
+
 //callback_vtk
 class vtkTimerCallback2 : public vtkCommand
 {
@@ -96,41 +193,63 @@ public:
 			++this->TimerCount;
 		}
 		//std::cout << this->TimerCount << std::endl;
-		actor_wrist_R->SetPosition(m_x_10, m_y_10, m_z_10);
-		actor_elbow_R->SetPosition(m_x_09, m_y_09, m_z_09);
-		actor_wrist_L->SetPosition(m_x_06, m_y_06, m_z_06);
-		actor_elbow_L->SetPosition(m_x_05, m_y_05, m_z_05);
+		//actor_wrist_R->SetPosition   (m_X[10], m_Y[10], m_Z[10]);
+
+
+		for (int i = 0; i < 25; i++)
+		{
+			if (actor_joints[i]!= NULL)
+			{
+				updatePosition(i);
+			}
+			
+			
+		}
+
+		if (actor_arrow != NULL)
+		{
+			actor_arrow->SetPosition(m_fx, m_fy, m_fz);
+		}
+
+		for (int i = 0; i < 13; i++)
+		{
+			if (actor_COMs[i] != NULL)
+			{
+				updateCOMPosition(i);
+			}
+		}
+
 		//==test==
-		if (pSender->record().empty())
+		if (pSender->record().empty()||pSender->segCOM().empty())
 		{
 			std::cout << "wait for data" << std::endl;
 		}
 		else
 		{
-			if (pSender->record()[10].TrackingState == 2)
+			for (int i = 0; i < 25; i++)
 			{
-				m_x_10 = pSender->record()[10].Position.X * 1000;
-				m_y_10 = pSender->record()[10].Position.Y * 1000;
-				m_z_10 = pSender->record()[10].Position.Z * 1000;
+				updateXYZ(i);
 			}
-			if (pSender->record()[9].TrackingState == 2)
+			
+			for (int i = 0; i < 13; i++) {
+				updateCOMXYZ(i);
+			}
+
+			//updateForcePosition
+			if (bag)
 			{
-				m_x_09 = pSender->record()[9].Position.X * 1000;
-				m_y_09 = pSender->record()[9].Position.Y * 1000;
-				m_z_09 = pSender->record()[9].Position.Z * 1000;
+				m_fx = pSender->record()[1].Position.X * 1000 + bagX;
+				m_fy = pSender->record()[1].Position.Y * 1000 + bagY;
+				m_fz = pSender->record()[1].Position.Z * 1000 + bagZ;
+				calcSpinebaseFMwithBag();
 			}
-			if (pSender->record()[6].TrackingState == 2)
+			else
 			{
-				m_x_06 = pSender->record()[6].Position.X * 1000;
-				m_y_06 = pSender->record()[6].Position.Y * 1000;
-				m_z_06 = pSender->record()[6].Position.Z * 1000;
+				m_fx = pSender->record()[jointSelected].Position.X * 1000;
+				m_fy = pSender->record()[jointSelected].Position.Y * 1000;
+				m_fz = pSender->record()[jointSelected].Position.Z * 1000;
 			}
-			if (pSender->record()[5].TrackingState == 2)
-			{
-				m_x_05 = pSender->record()[5].Position.X * 1000;
-				m_y_05 = pSender->record()[5].Position.Y * 1000;
-				m_z_05 = pSender->record()[5].Position.Z * 1000;
-			}
+			
 
 
 		}
@@ -141,27 +260,101 @@ public:
 
 private:
 	int TimerCount;
-	float m_x_10{  }, m_y_10{  }, m_z_10{  };//wrist_R
-	float m_x_09{  }, m_y_09{  }, m_z_09{  };//elbow_R
-	float m_x_06{  }, m_y_06{  }, m_z_06{  };//wrist_L
-	float m_x_05{  }, m_y_05{  }, m_z_05{  };//elbow_L
+
+	std::array<float, 25> m_X{0};
+	std::array<float, 25> m_Y{0};
+	std::array<float, 25> m_Z{1500};
+	//float m_COM_x{0}, m_COM_y{0}, m_COM_z{1500};
+	std::array<float, 13> m_COM_x{ 0 };
+	std::array<float, 13> m_COM_y{ 0 };
+	std::array<float, 13> m_COM_z{ 0 };
+	std::array<Eigen::Vector3f, 13> m_COMs{ };
+	float m_fx, m_fy, m_fz;
+
+	void updateXYZ(int jointNumber) {
+		if (pSender->record()[jointNumber].TrackingState == 2)
+		{
+			m_X[jointNumber] = pSender->record()[jointNumber].Position.X * 1000;
+			m_Y[jointNumber] = pSender->record()[jointNumber].Position.Y * 1000;
+			m_Z[jointNumber] = pSender->record()[jointNumber].Position.Z * 1000;
+		}
+	}
+	void updateCOMXYZ(int segNumber) {
+		m_COM_x[segNumber] = pSender->segCOM()[segNumber].x() * 1000;
+		m_COM_y[segNumber] = pSender->segCOM()[segNumber].y() * 1000;
+		m_COM_z[segNumber] = pSender->segCOM()[segNumber].z() * 1000;
+		m_COMs[segNumber] = pSender->segCOM()[segNumber];
+	}
+
+
+
+	
+
 
 public:
-	//Right forearm and hand
-	vtkSmartPointer<vtkActor> actor_wrist_R;
-	vtkSmartPointer<vtkActor> actor_elbow_R;
-	vtkSmartPointer<vtkActor> actor_wrist_L;
-	vtkSmartPointer<vtkActor> actor_elbow_L;
+	////Right arm and hand
+	//vtkSmartPointer<vtkActor> actor_wrist_R;
+	//vtkSmartPointer<vtkActor> actor_elbow_R;
+	//vtkSmartPointer<vtkActor> actor_shoulder_R;
+	////Left arm and hand
+	//vtkSmartPointer<vtkActor> actor_wrist_L;
+	//vtkSmartPointer<vtkActor> actor_elbow_L;
+	//vtkSmartPointer<vtkActor> actor_shoulder_L;
+	////spine
+	//vtkSmartPointer<vtkActor> actor_spinebase;
+	//vtkSmartPointer<vtkActor> actor_spineShoulder;
+	//+++
+	std::array<vtkSmartPointer<vtkActor>, 25> actor_joints{};
+	std::array<vtkSmartPointer<vtkActor>, 13> actor_COMs{};
+	vtkSmartPointer<vtkActor> actor_arrow;
+	//+++
+	void updatePosition(int jointNumber) {
+		actor_joints[jointNumber]->SetPosition(m_X[jointNumber], m_Y[jointNumber], m_Z[jointNumber]);
+	}
+	void updateCOMPosition(int segNumber) {
+		actor_COMs[segNumber]->SetPosition(m_COM_x[segNumber], m_COM_y[segNumber], m_COM_z[segNumber]);
+	}
+
+	void calcSpinebaseFMwithBag() {
+		F_spinebase = bodyWeight * (0.081 + 0.142 + 0.355 + 0.028 * 2 + 0.022 * 2)*9.8 + force *9.8;
+		
+		Eigen::Vector3f thigh_M(0, 0, -0.1*9.8 *bodyWeight), shank_M(0, 0, -0.0465*9.8 *bodyWeight), foot_M(0, 0, -0.0145*9.8 *bodyWeight),
+			upperArm_M(0, 0, -0.028 *9.8 *bodyWeight), fArmhand_M(0, 0, -0.022*9.8 *bodyWeight), Pelvis_M(0, 0, -0.142*9.8 *bodyWeight), ThoraxAbdomen_M(0, 0, -0.355*9.8 *bodyWeight),
+			Headneck_M(0, 0, -0.081*9.8 *bodyWeight);
+		Eigen::Vector3f fPosition(m_fx/1000, m_fy/1000, m_fz/1000);
+		Eigen::Vector3f vforce(0, 0, -force * 9.8);
+		Eigen::Vector3f spinebaseXYZ(m_X[0]/1000, m_Y[0]/1000, m_Z[0]/1000);
+		M_spinebase = ((m_COMs[6]- spinebaseXYZ).cross(upperArm_M)+ (m_COMs[7] - spinebaseXYZ).cross(upperArm_M)
+			+ (m_COMs[8] - spinebaseXYZ).cross(fArmhand_M) + (m_COMs[9] - spinebaseXYZ).cross(fArmhand_M)
+			+ (m_COMs[10] - spinebaseXYZ).cross(Pelvis_M) + (m_COMs[11] - spinebaseXYZ).cross(ThoraxAbdomen_M)
+			+ (m_COMs[12] - spinebaseXYZ).cross(Headneck_M)) + (fPosition - spinebaseXYZ).cross(vforce) ;
+
+
+	}
 };
 
 int ballrenderer()
 {
 	// Create a sphere
 	//++++++
-	Sphere wrist_R(-100, 0, 600, 30);
-	Sphere wrist_L( 100, 0, 600, 30);
-	Sphere elbow_R(-50, 0, 600, 30);
-	Sphere elbow_L( 50, 0, 600, 30);
+	//Sphere wrist_R(-100, 0, 1000, 30);
+	//Sphere wrist_L( 100, 0, 1000, 30);
+	//Sphere elbow_R(-50, 0, 1000, 30);
+	//Sphere elbow_L( 50, 0, 1000, 30);
+	//Sphere shoulder_R(-10, 0, 1000, 30);
+	//Sphere shoulder_L( 10, 0, 1000, 30);
+	//Sphere spinebase(0, -100, 1000, 50);
+	//Sphere spineShoulder(0,0, 1000, 50);
+	//++++++
+	Arrow arrow;
+	std::array<Sphere, 13> COMSphere;
+	std::array<Sphere, 25> jointsSphere;
+
+	//com 为红色
+	for (int i = 0; i < 13; i++)
+	{
+		COMSphere[i].Actor()->GetProperty()->SetColor(1, 0, 0);
+	}
 	//++++++
 	//==以下内容已封装入Sphere中=======================
 	//vtkSmartPointer<vtkSphereSource> sphereSource =
@@ -197,20 +390,42 @@ int ballrenderer()
 	vtkSmartPointer<vtkRenderWindow> renderWindow =
 		vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
+	renderWindow->SetSize(900, 600);
+
+	//相机设置
+	vtkSmartPointer<vtkCamera>myCamera = vtkSmartPointer<vtkCamera>::New();
+	myCamera->SetClippingRange(0.0475, 2.3786); //这些值随便设置的，为了演示用法而已
+	myCamera->SetFocalPoint(0.0573, -0.2134, -0.0523);
+	myCamera->SetPosition(0.3245, -0.1139, -0.2932);
+	myCamera->ComputeViewPlaneNormal();
+	myCamera->SetViewUp(-0.2234, 0.9983, 0.0345);
+	renderer->SetActiveCamera(myCamera);
+	
 	vtkSmartPointer<vtkRenderWindowInteractor> renderWindowInteractor =
 		vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);
-
+	
 	
 
 	// Add the actor to the scene
 	//++++++
-	renderer->AddActor(wrist_R.Actor());
-	renderer->AddActor(wrist_L.Actor());
-	renderer->AddActor(elbow_R.Actor());
-	renderer->AddActor(elbow_L.Actor());
+	//exp:renderer->AddActor(wrist_R.Actor());
+
+	renderer->AddActor(arrow.Actor());
+	//renderer->AddActor(rArmCOM.Actor());
+	for (int i = 0; i < 13; i++)
+	{
+		renderer->AddActor(COMSphere[i].Actor());
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		renderer->AddActor(jointsSphere[i].Actor());
+	}
+
 	//++++++
 	renderer->AddActor(actor_camera);
+
+
 	//画坐标轴
 	vtkSmartPointer<vtkAxesActor> axes =
 		vtkSmartPointer<vtkAxesActor>::New();
@@ -218,7 +433,6 @@ int ballrenderer()
 	axes->SetTotalLength(150, 150, 150);
 	renderer->AddActor(axes);
 	renderer->ResetCamera();
-
 	renderer->SetBackground(.1, .2, .3); // Background color white
 
 	// Render and interact
@@ -231,10 +445,19 @@ int ballrenderer()
 	vtkSmartPointer<vtkTimerCallback2> cb =
 		vtkSmartPointer<vtkTimerCallback2>::New();
 	//++++++
-	cb->actor_wrist_R = wrist_R.Actor();
-	cb->actor_wrist_L = wrist_L.Actor();
-	cb->actor_elbow_R = elbow_R.Actor();
-	cb->actor_elbow_L = elbow_L.Actor();
+	//exp:cb->actor_wrist_R = wrist_R.Actor();
+	//	  cb->actor_wrist_L = wrist_L.Actor();
+	//	  cb->actor_elbow_R = elbow_R.Actor();
+	cb->actor_arrow = arrow.Actor();
+	//cb->actor_rArmCOM = rArmCOM.Actor();
+	for (int i = 0; i < 13; i++)
+	{
+		cb->actor_COMs[i] = COMSphere[i].Actor();
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		cb->actor_joints[i] = jointsSphere[i].Actor();
+	}
 	//++++++
 	renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);
 

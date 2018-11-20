@@ -24,6 +24,16 @@ std::vector<Joint> FileREC::record()
 	return jointdata_saved;
 }
 
+std::array<Eigen::Vector3f, 13> FileREC::segCOM()
+{
+	return segCOM_saved;
+}
+
+void FileREC::updateSegCOM(std::array<Eigen::Vector3f, 13> segCOMdata)
+{
+	segCOM_saved = segCOMdata;
+}
+
 void FileREC::processfile() {
 	frameNum++;
 	//qDebug() << "process()" << QThread::currentThreadId();

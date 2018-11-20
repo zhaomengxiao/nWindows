@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>2240</width>
-    <height>894</height>
+    <width>1240</width>
+    <height>725</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -393,6 +393,317 @@ background-color: rgb(76, 120, 65)}</string>
        <string>StopREC</string>
       </property>
      </widget>
+     <widget class="QLabel" name="label_text">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>30</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(76, 120, 65);
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>Select to add force</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_f">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>30</y>
+        <width>121</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="checkBox">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>510</y>
+        <width>91</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(76, 120, 65);
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>bag</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_bagX">
+      <property name="geometry">
+       <rect>
+        <x>130</x>
+        <y>510</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_bagY">
+      <property name="geometry">
+       <rect>
+        <x>170</x>
+        <y>510</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_bagZ">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>510</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_text_2">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>510</y>
+        <width>161</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>&lt;-- Position here(MM)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_text_3">
+      <property name="geometry">
+       <rect>
+        <x>300</x>
+        <y>30</y>
+        <width>181</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>&lt;--Force Magnitude(KG)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_bodyWeight">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>510</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_text_4">
+      <property name="geometry">
+       <rect>
+        <x>480</x>
+        <y>510</y>
+        <width>151</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>&lt;-- Body Weight(KG)</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_force">
+      <property name="geometry">
+       <rect>
+        <x>700</x>
+        <y>510</y>
+        <width>131</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);</string>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_M">
+      <property name="geometry">
+       <rect>
+        <x>880</x>
+        <y>510</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_text_5">
+      <property name="geometry">
+       <rect>
+        <x>660</x>
+        <y>510</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>F -&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_text_6">
+      <property name="geometry">
+       <rect>
+        <x>840</x>
+        <y>510</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+      </property>
+      <property name="text">
+       <string>M -&gt;</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_M_2">
+      <property name="geometry">
+       <rect>
+        <x>970</x>
+        <y>510</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);</string>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdNumber_M_3">
+      <property name="geometry">
+       <rect>
+        <x>1070</x>
+        <y>510</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);</string>
+      </property>
+     </widget>
+     <zorder>widget_2</zorder>
+     <zorder>pushButton</zorder>
+     <zorder>saveImageButton</zorder>
+     <zorder>saveImageButton_2</zorder>
+     <zorder>pushButton_2</zorder>
+     <zorder>pushButton_3</zorder>
+     <zorder>lineEdit_f</zorder>
+     <zorder>label_text</zorder>
+     <zorder>checkBox</zorder>
+     <zorder>lineEdit_bagX</zorder>
+     <zorder>lineEdit_bagY</zorder>
+     <zorder>lineEdit_bagZ</zorder>
+     <zorder>label_text_2</zorder>
+     <zorder>label_text_3</zorder>
+     <zorder>lineEdit_bodyWeight</zorder>
+     <zorder>label_text_4</zorder>
+     <zorder>lcdNumber_force</zorder>
+     <zorder>lcdNumber_M</zorder>
+     <zorder>label_text_5</zorder>
+     <zorder>label_text_6</zorder>
+     <zorder>lcdNumber_M_2</zorder>
+     <zorder>lcdNumber_M_3</zorder>
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
@@ -534,7 +845,7 @@ background-color: rgb(76, 120, 65)}
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>2240</width>
+     <width>1240</width>
      <height>23</height>
     </rect>
    </property>
@@ -567,7 +878,7 @@ background-color: rgb(76, 120, 65)}
     </hint>
     <hint type="destinationlabel">
      <x>166</x>
-     <y>757</y>
+     <y>744</y>
     </hint>
    </hints>
   </connection>
@@ -583,7 +894,7 @@ background-color: rgb(76, 120, 65)}
     </hint>
     <hint type="destinationlabel">
      <x>1219</x>
-     <y>762</y>
+     <y>744</y>
     </hint>
    </hints>
   </connection>
@@ -599,7 +910,103 @@ background-color: rgb(76, 120, 65)}
     </hint>
     <hint type="destinationlabel">
      <x>1141</x>
-     <y>800</y>
+     <y>744</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_f</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_f(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>284</x>
+     <y>135</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>305</x>
+     <y>853</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bodyWeight</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bodyWeight(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>458</x>
+     <y>619</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>456</x>
+     <y>787</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bagX</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagX(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>624</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>184</x>
+     <y>812</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bagY</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagY(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>215</x>
+     <y>620</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>217</x>
+     <y>834</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bagZ</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagZ(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>620</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>824</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>bagSelect(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>96</x>
+     <y>616</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>104</x>
+     <y>832</y>
     </hint>
    </hints>
   </connection>
@@ -610,5 +1017,11 @@ background-color: rgb(76, 120, 65)}
   <slot>ListCurChange(int)</slot>
   <slot>startRec()</slot>
   <slot>stopRec()</slot>
+  <slot>LineEdit_f(QString)</slot>
+  <slot>LineEdit_bodyWeight(QString)</slot>
+  <slot>LineEdit_bagX(QString)</slot>
+  <slot>LineEdit_bagY(QString)</slot>
+  <slot>LineEdit_bagZ(QString)</slot>
+  <slot>bagSelect(bool)</slot>
  </slots>
 </ui>

@@ -1,7 +1,21 @@
 #include "mainwindow.h"
 //a function that turn cvMat file into QImage
 QImage  Mat2QImage(cv::Mat cvImg);
+
+//传出区
+//===============================
 extern FileREC *pSender ;
+extern int jointSelected;
+extern float force;
+extern float bodyWeight;
+extern float bagX;
+extern float bagY;
+extern float bagZ;
+extern bool bag;
+//================================
+float F_spinebase;
+Eigen::Vector3f M_spinebase;
+
 //组装区
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -33,6 +47,8 @@ MainWindow::MainWindow(QWidget *parent)
 	lcdtimer->setInterval(1000);
 	lcdtimer->start();
 	
+	//初始化external输出值
+
 	
 }
 
@@ -272,6 +288,7 @@ void MainWindow::updateSkeletonFrame()
 	if (pSender !=NULL)
 	{
 		pSender->updateJoints(mykinect->joints);
+		pSender->updateSegCOM(mykinect->segCOMs);
 	}
 	
 
@@ -297,10 +314,18 @@ void MainWindow::updateLCDnumber_date()
 	// 显示的内容
 	ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
 
+
+
 }
 //显示角度LCD并且储存数据
 void MainWindow::updateLCDnumber_angle()
 {
+
+
+	ui.lcdNumber_M->display(int(M_spinebase.x()));
+	ui.lcdNumber_M_2->display(int(M_spinebase.y()));
+	ui.lcdNumber_M_3->display(int(M_spinebase.z()));
+	ui.lcdNumber_force->display(int(F_spinebase));
 	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
 	ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
 	ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
@@ -425,9 +450,46 @@ void MainWindow::ListCurChange(int row)
 	
 	if (mykinect != NULL) {
 		mykinect->jointnumber = row;
+		jointSelected = row;
 	}
 	
 	else std::cout << "kinect not open" << endl;
+}
+//面板输入数据
+void MainWindow::LineEdit_f(QString str)
+{
+	qDebug() << str << endl;
+	
+	force = str.toFloat();
+}
+void MainWindow::LineEdit_bodyWeight(QString str)
+{
+	qDebug() << str << endl;
+
+	bodyWeight = str.toFloat();
+}
+void MainWindow::LineEdit_bagX(QString str)
+{
+	qDebug() << str << endl;
+
+	bagX = str.toFloat();
+}
+void MainWindow::LineEdit_bagY(QString str)
+{
+	qDebug() << str << endl;
+
+	bagY = str.toFloat();
+}
+void MainWindow::LineEdit_bagZ(QString str)
+{
+	qDebug() << str << endl;
+
+	bagZ = str.toFloat();
+}
+void MainWindow::bagSelect(bool i)
+{
+	qDebug() << i << endl;
+	bag = i;
 }
 //存储joint数据 
 void MainWindow::startRec()

@@ -11,6 +11,7 @@
 #include <Eigen\Dense>
 #include <math.h>
 #include <vector>
+#include <array>
 #define PI 3.14159265
 //h
 
@@ -52,6 +53,10 @@ public:
 	Eigen::Vector3f			BodyCOM(Eigen::Vector3f & thighcom_L, Eigen::Vector3f & thighcom_R, Eigen::Vector3f & shankcom_L, Eigen::Vector3f & shankcom_R, Eigen::Vector3f & footcom_L, Eigen::Vector3f & footcom_R, Eigen::Vector3f & upperArmCom_L, Eigen::Vector3f & upperArmCom_R, Eigen::Vector3f & fArmHand_L, Eigen::Vector3f & fArmHand_R, Eigen::Vector3f & Pelvis, Eigen::Vector3f & ThoraxAbdomen, Eigen::Vector3f & Headneck);
 	//计算COM
 	Eigen::Vector3f myCOM; //传出COM用于显示
+	Eigen::Vector3f thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R,
+		upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R,
+		Pelvis, ThoraxAbdomen, Headneck;
+	std::array<Eigen::Vector3f, 13> segCOMs;//储存13个肢段质量中心
 	HRESULT                 InitializeDefaultSensor();//用于初始化kinect
 	Joint joints[JointType_Count]; //储存关节信息
 	cv::Mat					getDepthImg();//取得深度图

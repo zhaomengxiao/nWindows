@@ -394,9 +394,7 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					//---------------------------------------------------------------------------------
 					
 					//È¡µÃCOM
-					/*Eigen::Vector3f thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R,
-						upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R,
-						Pelvis, ThoraxAbdomen, Headneck;
+					
 					SegCOM(thighcom_L, joints[12], joints[13], 0);
 					SegCOM(thighcom_R, joints[16], joints[17], 0);
 					SegCOM(shankcom_L, joints[13], joints[14], 1);
@@ -410,10 +408,14 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					SegCOM(Pelvis, joints[1], joints[0], 5);
 					SegCOM(ThoraxAbdomen, joints[20], joints[1], 6);
 					SegCOM(Headneck, joints[3], joints[20], 7);
+
+					segCOMs[0] = thighcom_L; segCOMs[1] = thighcom_R; segCOMs[2] = shankcom_L; segCOMs[3] = shankcom_R; segCOMs[4] = footcom_L; segCOMs[5] = footcom_R; segCOMs[6] = upperArmCom_L;
+					segCOMs[7] = upperArmCom_R; segCOMs[8] = fArmHand_L; segCOMs[9] = fArmHand_R; segCOMs[10] = Pelvis; segCOMs[11] = ThoraxAbdomen; segCOMs[12] = Headneck;
+
 					
 					myCOM =
 						BodyCOM(thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R, upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R, Pelvis, ThoraxAbdomen, Headneck);
-					std::cout << myCOM.x() << "," << myCOM.y() << "," << myCOM.z() << "," << std::endl;*/
+					//std::cout << myCOM.x() << "," << myCOM.y() << "," << myCOM.z() << "," << std::endl;
 				}
 				delete[] depthSpacePosition;
 				

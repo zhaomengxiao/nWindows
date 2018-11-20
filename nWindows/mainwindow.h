@@ -99,7 +99,15 @@ private slots:
 	void startCamera();
 	void on_saveImageButton_clicked();
 	void on_pushButton_openrecord_clicked();
+	//面板数据输入
 	void ListCurChange(int row);
+	void LineEdit_f(QString str);
+	void LineEdit_bodyWeight(QString str);
+	void LineEdit_bagX(QString str);
+	void LineEdit_bagY(QString str);
+	void LineEdit_bagZ(QString str);
+	void bagSelect(bool);
+
 	void startRec();
 	void stopRec();
 };
