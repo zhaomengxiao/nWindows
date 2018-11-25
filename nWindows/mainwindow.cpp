@@ -1,4 +1,6 @@
 #include "mainwindow.h"
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
 //a function that turn cvMat file into QImage
 QImage  Mat2QImage(cv::Mat cvImg);
 
@@ -287,7 +289,9 @@ void MainWindow::updateSkeletonFrame()
 	ui.colorwindow->setPixmap(QPixmap::fromImage(qskeletonImage));
 	if (pSender !=NULL)
 	{
+		//把资料传到fierec类中储存并进行后续处理
 		pSender->updateJoints(mykinect->joints);
+		pSender->updateOrientations (mykinect->JointOrientations);
 		pSender->updateSegCOM(mykinect->segCOMs);
 	}
 	
@@ -317,7 +321,7 @@ void MainWindow::updateLCDnumber_date()
 
 
 }
-//显示角度LCD并且储存数据
+//显示角度LCD
 void MainWindow::updateLCDnumber_angle()
 {
 
@@ -331,12 +335,7 @@ void MainWindow::updateLCDnumber_angle()
 	ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
 	ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
 	
-	/*if (chart!=NULL)
-	{
-		chart->getY(mykinect->getAngle_y());
-		chart->getX(dataTime.elapsed() / 1000.0);
-	}
-*/
+
 }
 
 void MainWindow::stopCamera()
@@ -434,8 +433,37 @@ void MainWindow::on_pushButton_openrecord_clicked()
 	mychartview_z->chart()->setTheme(QChart::ChartThemeBrownSand);
 	series_z->setPen(QPen(Qt::blue, 1, Qt::SolidLine));
 	ui.chartscrollArea_3->setWidget(mychartview_z);*/
-	chart = new Chart();
-	chart->setTitle("Dynamic spline chart");
+	
+	//=====read file=====
+	std::vector<double> X;
+	std::vector<double> Y;
+	QFile jointPosition("./test.csv");
+	if (!jointPosition.open(QIODevice::ReadOnly )) {
+		qDebug() << "cant read joint file" << endl;
+	}
+
+	QTextStream stream(&jointPosition);
+	while (!stream.atEnd())
+	{
+		QString line = stream.readLine();
+		if (line.startsWith("#"))
+		{
+			continue;
+		}
+		
+		QStringList values = line.split(",", QString::SkipEmptyParts);
+		if (values[1].toInt() == 4)/*选择要画图的节点*/
+		{
+			X.push_back(values[0].toDouble());
+			Y.push_back(values[3].toDouble());
+		}
+		
+	}
+	/*std::vector<double> X{ 0,1,2,3,4 };
+	std::vector<double> Y{ 0,1,2,3,4 };*/
+	LineChart *chart = new LineChart();
+	chart->SetXY(X, Y);
+	chart->setTitle("static line chart");
 	chart->legend()->hide();
 	chart->setAnimationOptions(QChart::AllAnimations);
 	QChartView *mychartview = new QChartView();
@@ -498,6 +526,7 @@ void MainWindow::startRec()
 	thread = new QThread(this);
 	//this->recorder = new FileREC();
 	pSender->moveToThread(thread);
+	pSender->setfilehead();
 	connect(filetimer, SIGNAL(timeout()), pSender, SLOT(processfile()));
 	//connect(thread, SIGNAL(finished()), this->recorder, SLOT(deleteLater()));
 	thread->start();

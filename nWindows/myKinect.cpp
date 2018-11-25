@@ -284,6 +284,7 @@ Eigen::Vector3f myKinect::QuaternionToEuler(Eigen::Vector4f &quat)
 	return v;
 }
 
+//传出XYZ的旋转角-----------------------
 float myKinect::getAngle_x()
 {
 	return angles.x();
@@ -298,6 +299,7 @@ float myKinect::getAngle_z()
 {
 	return angles.z();
 }
+//------------------------------------
 
 double myKinect::RadianToDegree(double angle)
 {
@@ -327,7 +329,7 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 			if (SUCCEEDED(hr) && bTracked)
 			{
 				//Joint joints[JointType_Count];//存储关节点类
-				JointOrientation JointOrientations[JointType_Count];//存储关节旋转
+				//JointOrientation JointOrientations[JointType_Count];//存储关节旋转
 				HandState leftHandState = HandState_Unknown;//左手状态
 				HandState rightHandState = HandState_Unknown;//右手状态
 

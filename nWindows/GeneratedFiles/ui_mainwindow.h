@@ -79,7 +79,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1240, 725);
+        MainWindowClass->resize(1659, 882);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral("background-color:#464652;color:#E8E8E8"));
@@ -376,15 +376,15 @@ public:
         lcdNumber_date->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
         chartscrollArea_3 = new QScrollArea(centralWidget);
         chartscrollArea_3->setObjectName(QStringLiteral("chartscrollArea_3"));
-        chartscrollArea_3->setGeometry(QRect(1250, 60, 881, 631));
+        chartscrollArea_3->setGeometry(QRect(1250, 60, 361, 231));
         chartscrollArea_3->setWidgetResizable(true);
         scrollAreaWidgetContents_3 = new QWidget();
         scrollAreaWidgetContents_3->setObjectName(QStringLiteral("scrollAreaWidgetContents_3"));
-        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 879, 629));
+        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 359, 229));
         chartscrollArea_3->setWidget(scrollAreaWidgetContents_3);
         pushButton_openrecord = new QPushButton(centralWidget);
         pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
-        pushButton_openrecord->setGeometry(QRect(2150, 80, 70, 30));
+        pushButton_openrecord->setGeometry(QRect(1260, 340, 70, 30));
         pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
 "\n"
 "QPushButton::!hover{\n"
@@ -396,7 +396,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1240, 23));
+        menuBar->setGeometry(QRect(0, 0, 1659, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));

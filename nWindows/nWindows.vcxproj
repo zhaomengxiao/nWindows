@@ -233,6 +233,7 @@
     <ClCompile Include="chart.cpp" />
     <ClCompile Include="filerec.cpp" />
     <ClCompile Include="imagewindow.cpp" />
+    <ClCompile Include="linechart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="myKinect.cpp" />
@@ -282,6 +283,7 @@
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|x64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;QT_OPENGL_LIB;QT_QUICK_LIB;QT_QUICKWIDGETS_LIB</Define>
       <Define Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">UNICODE;_UNICODE;WIN32;WIN64;QT_DLL;QT_NO_DEBUG;NDEBUG;QT_CORE_LIB;QT_GUI_LIB;QT_WIDGETS_LIB;QT_OPENGL_LIB;QT_QUICK_LIB;QT_QUICKWIDGETS_LIB</Define>
     </QtMoc>
+    <ClInclude Include="linechart.h" />
     <ClInclude Include="myKinect.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

@@ -220,9 +220,9 @@ public:
 		}
 
 		//==test==
-		if (pSender->record().empty()||pSender->segCOM().empty())
+		if (pSender->jointPositions().empty()||pSender->segCOMs().empty())
 		{
-			std::cout << "wait for data" << std::endl;
+			//std::cout << "wait for data" << std::endl;
 		}
 		else
 		{
@@ -238,16 +238,16 @@ public:
 			//updateForcePosition
 			if (bag)
 			{
-				m_fx = pSender->record()[1].Position.X * 1000 + bagX;
-				m_fy = pSender->record()[1].Position.Y * 1000 + bagY;
-				m_fz = pSender->record()[1].Position.Z * 1000 + bagZ;
+				m_fx = pSender->jointPositions()[1].Position.X * 1000 + bagX;
+				m_fy = pSender->jointPositions()[1].Position.Y * 1000 + bagY;
+				m_fz = pSender->jointPositions()[1].Position.Z * 1000 + bagZ;
 				calcSpinebaseFMwithBag();
 			}
 			else
 			{
-				m_fx = pSender->record()[jointSelected].Position.X * 1000;
-				m_fy = pSender->record()[jointSelected].Position.Y * 1000;
-				m_fz = pSender->record()[jointSelected].Position.Z * 1000;
+				m_fx = pSender->jointPositions()[jointSelected].Position.X * 1000;
+				m_fy = pSender->jointPositions()[jointSelected].Position.Y * 1000;
+				m_fz = pSender->jointPositions()[jointSelected].Position.Z * 1000;
 			}
 			
 
@@ -272,18 +272,18 @@ private:
 	float m_fx, m_fy, m_fz;
 
 	void updateXYZ(int jointNumber) {
-		if (pSender->record()[jointNumber].TrackingState == 2)
+		if (pSender->jointPositions()[jointNumber].TrackingState == 2)
 		{
-			m_X[jointNumber] = pSender->record()[jointNumber].Position.X * 1000;
-			m_Y[jointNumber] = pSender->record()[jointNumber].Position.Y * 1000;
-			m_Z[jointNumber] = pSender->record()[jointNumber].Position.Z * 1000;
+			m_X[jointNumber] = pSender->jointPositions()[jointNumber].Position.X * 1000;
+			m_Y[jointNumber] = pSender->jointPositions()[jointNumber].Position.Y * 1000;
+			m_Z[jointNumber] = pSender->jointPositions()[jointNumber].Position.Z * 1000;
 		}
 	}
 	void updateCOMXYZ(int segNumber) {
-		m_COM_x[segNumber] = pSender->segCOM()[segNumber].x() * 1000;
-		m_COM_y[segNumber] = pSender->segCOM()[segNumber].y() * 1000;
-		m_COM_z[segNumber] = pSender->segCOM()[segNumber].z() * 1000;
-		m_COMs[segNumber] = pSender->segCOM()[segNumber];
+		m_COM_x[segNumber] = pSender->segCOMs()[segNumber].x() * 1000;
+		m_COM_y[segNumber] = pSender->segCOMs()[segNumber].y() * 1000;
+		m_COM_z[segNumber] = pSender->segCOMs()[segNumber].z() * 1000;
+		m_COMs[segNumber] =  pSender->segCOMs()[segNumber];
 	}
 
 
