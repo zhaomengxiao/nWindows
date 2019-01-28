@@ -1,16 +1,56 @@
 #include "filerec.h"
-
+#include "myKinect.h"
 FileREC::FileREC( QObject *parent )
 	: QObject(parent)
 {
+	m_subName = new char[20];
 	fileTimeRec.start();
 	//jointsDatafile.open(,);
 }
 
+FileREC::FileREC(char* subjName, QObject *parent) : QObject(parent) 
+{
+	m_subName = subjName;
+	
+	char  *a = "_Position.csv";
+	std::string  ac = std::string(subjName) + std::string(a);
+	//拼接positionfilename
+	//strcpy(m_fileName, ac.c_str());
+	jointsPositionfile.open(ac.c_str(), std::ios::app);
+
+
+	char  *b = "_Orient.csv";
+	std::string  bc = std::string(subjName) + std::string(b);
+	//strcpy(m_fileName, bc.c_str());
+	jointsOrientfile.open(bc.c_str(), std::ios::app);
+	fileTimeRec.start();
+}
+
 FileREC::~FileREC()
 {
-	jointsPositionfile.close();
-	jointsOrientfile.close();
+	if (jointsOrientfile.is_open())
+	{
+		jointsPositionfile.close();
+		jointsOrientfile.close();
+	}
+	
+	
+	delete[]m_subName;
+}
+
+void FileREC::setfilename(char * subjname)
+{
+	m_subName = subjname;
+	char  *a = "_Position.csv";
+	std::string  ac = std::string("../") + std::string(subjname) + std::string(a);
+	//拼接positionfilename
+	jointsPositionfile.open(ac.c_str(), std::ios::app);
+
+
+	char  *b = "_Orient.csv";
+	std::string  bc = std::string("../") + std::string(subjname) + std::string(b);
+	//strcpy(m_fileName, bc.c_str());
+	jointsOrientfile.open(bc.c_str(), std::ios::app);
 }
 
 void FileREC::updateJoints(Joint jointdata[JointType_Count])
@@ -58,9 +98,59 @@ void FileREC::setfilehead()
 	if (jointsOrientfile.is_open())
 	{
 		//标题行
-		jointsPositionfile << "# " << "frame " << "," << "time " << "," << "JointType " << "," << "x " << "," << "y" << "," << "z" << "," << "w" << std::endl;
+		jointsOrientfile << "# " << "frame " << "," << "time " << "," << "JointType " << "," << "x " << "," << "y" << "," << "z" << "," << "w" << std::endl;
 	
 	}
+}
+
+void FileREC::closefile()
+{
+	jointsPositionfile.close();
+	jointsOrientfile.close();
+}
+
+void FileREC::Orient2angelFile()
+{
+	//建立新的文件_Angle.csv
+	char  *angstr = "_Angle.csv";
+	std::string  fn = std::string(m_subName) + std::string(angstr);
+	std::ofstream jointsAnglefile;
+	jointsAnglefile.open(fn.c_str(), std::ios::app);
+	if (jointsAnglefile.is_open()){
+		//标题行
+		jointsAnglefile << "# " << "frame " << "," << "time " << "," << "JointType " << "," << "x " << "," << "y" << "," << "z"  << std::endl;
+	}
+	//从orient.csv读取data
+	char  *b = "_Orient.csv";
+	std::string  filename = std::string(m_subName) + std::string(b);
+	QFile * p_file = new QFile(QString::fromStdString(filename));
+	if (!p_file->open(QIODevice::ReadOnly)) {
+		qDebug() << "cant read joint file" << endl;
+	}
+	QTextStream	*p_stream = new QTextStream(p_file);
+
+	p_stream->seek(0);//seek可以把文件流指针移到想要的位置
+
+	//存下整个表
+	Eigen::Vector4f quats;
+	Eigen::Vector3f ang;
+	while (!p_stream->atEnd())
+	{
+		QString fetures = p_stream->readLine();
+		QStringList blocks = fetures.split(",", QString::SkipEmptyParts);
+		if (fetures.startsWith("#"))
+		{
+			continue;
+		}
+		quats[0] = blocks[3].toFloat();
+		quats[1] = blocks[4].toFloat();
+		quats[2] = blocks[5].toFloat();
+		quats[3] = blocks[6].toFloat();
+		ang = myKinect::QuaternionToEuler(quats);
+
+		jointsAnglefile << blocks[0].toInt() << "," << blocks[1].toFloat()/1000.0 << "," << blocks[2].toInt() << "," << ang.x() << "," << ang.y() << "," << ang.z()  << std::endl;
+	}
+	jointsAnglefile.close();
 }
 
 //When filetimer time out, call processfile, 每隔一定时间记录一个frame，间隔时间由filetimer设定

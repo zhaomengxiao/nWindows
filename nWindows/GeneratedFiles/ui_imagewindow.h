@@ -28,6 +28,10 @@ public:
     QGraphicsView *graphicsView;
     QLabel *label;
     QLabel *label_2;
+    QLabel *label_3;
+    QGraphicsView *graphicsView_2;
+    QGraphicsView *graphicsView_3;
+    QGraphicsView *graphicsView_4;
 
     void setupUi(QWidget *ImageWindow)
     {
@@ -42,7 +46,7 @@ public:
 ""));
         widget = new QWidget(ImageWindow);
         widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(320, 270, 81, 81));
+        widget->setGeometry(QRect(290, 290, 81, 81));
         widget->setStyleSheet(QLatin1String("QWidget{border-radius: 15px;background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.495, stop:0 rgba(161, 159, 159, 255), stop:0.460227 rgba(92, 92, 108, 241))}\n"
 "\n"
 "QWidget::!hover{\n"
@@ -59,7 +63,7 @@ public:
 "background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, stop:0 rgba(161, 161, 161, 255), stop:1 rgba(70, 70, 82, 255));"));
         widget_2 = new QWidget(ImageWindow);
         widget_2->setObjectName(QStringLiteral("widget_2"));
-        widget_2->setGeometry(QRect(130, 270, 81, 81));
+        widget_2->setGeometry(QRect(150, 290, 81, 81));
         widget_2->setStyleSheet(QLatin1String("QWidget{border-radius: 15px;background-color: qlineargradient(spread:reflect, x1:1, y1:1, x2:1, y2:0.495, stop:0 rgba(161, 159, 159, 255), stop:0.460227 rgba(92, 92, 108, 241))}\n"
 "\n"
 "QWidget::!hover{\n"
@@ -77,10 +81,10 @@ public:
         pushButton->setFlat(false);
         graphicsView = new QGraphicsView(ImageWindow);
         graphicsView->setObjectName(QStringLiteral("graphicsView"));
-        graphicsView->setGeometry(QRect(40, 120, 441, 51));
+        graphicsView->setGeometry(QRect(100, 140, 321, 81));
         label = new QLabel(ImageWindow);
         label->setObjectName(QStringLiteral("label"));
-        label->setGeometry(QRect(10, 400, 511, 41));
+        label->setGeometry(QRect(-10, 400, 551, 41));
         QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
@@ -95,11 +99,11 @@ public:
         label->setMouseTracking(false);
         label->setLayoutDirection(Qt::LeftToRight);
         label->setAutoFillBackground(false);
-        label->setStyleSheet(QStringLiteral(""));
+        label->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 0);"));
         label->setAlignment(Qt::AlignCenter);
         label_2 = new QLabel(ImageWindow);
         label_2->setObjectName(QStringLiteral("label_2"));
-        label_2->setGeometry(QRect(70, 60, 381, 171));
+        label_2->setGeometry(QRect(110, 140, 291, 81));
         QFont font2;
         font2.setFamily(QStringLiteral("Niagara Solid"));
         font2.setPointSize(71);
@@ -108,12 +112,45 @@ public:
         font2.setWeight(50);
         font2.setStrikeOut(false);
         label_2->setFont(font2);
+        label_2->setStyleSheet(QStringLiteral(""));
         label_2->setAlignment(Qt::AlignCenter);
+        label_3 = new QLabel(ImageWindow);
+        label_3->setObjectName(QStringLiteral("label_3"));
+        label_3->setGeometry(QRect(340, 130, 41, 41));
+        sizePolicy.setHeightForWidth(label_3->sizePolicy().hasHeightForWidth());
+        label_3->setSizePolicy(sizePolicy);
+        label_3->setFont(font1);
+        label_3->setMouseTracking(false);
+        label_3->setLayoutDirection(Qt::LeftToRight);
+        label_3->setAutoFillBackground(false);
+        label_3->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 0);"));
+        label_3->setAlignment(Qt::AlignCenter);
+        graphicsView_2 = new QGraphicsView(ImageWindow);
+        graphicsView_2->setObjectName(QStringLiteral("graphicsView_2"));
+        graphicsView_2->setGeometry(QRect(-270, -40, 550, 550));
+        graphicsView_2->setStyleSheet(QLatin1String("background-color: rgba(255, 255, 255, 0);\n"
+"\n"
+"border-image: url(:/myimages/Resources/enford-logo-01darkgray.png);"));
+        graphicsView_3 = new QGraphicsView(ImageWindow);
+        graphicsView_3->setObjectName(QStringLiteral("graphicsView_3"));
+        graphicsView_3->setGeometry(QRect(70, 20, 101, 31));
+        graphicsView_3->setStyleSheet(QLatin1String("\n"
+"border-image: url(:/myimages/Resources/enford-logo-02dark.png);\n"
+"background-color: rgba(255, 255, 255, 0);"));
+        graphicsView_4 = new QGraphicsView(ImageWindow);
+        graphicsView_4->setObjectName(QStringLiteral("graphicsView_4"));
+        graphicsView_4->setGeometry(QRect(10, 10, 60, 60));
+        graphicsView_4->setStyleSheet(QLatin1String("border-image: url(:/myimages/Resources/enford-logo-01.png);\n"
+"background-color: rgba(255, 255, 255, 0);"));
+        graphicsView_2->raise();
+        graphicsView_3->raise();
         graphicsView->raise();
         label->raise();
         widget->raise();
         widget_2->raise();
         label_2->raise();
+        label_3->raise();
+        graphicsView_4->raise();
 
         retranslateUi(ImageWindow);
         QObject::connect(pushButton, SIGNAL(clicked()), ImageWindow, SLOT(accept()));
@@ -124,11 +161,12 @@ public:
 
     void retranslateUi(QWidget *ImageWindow)
     {
-        ImageWindow->setWindowTitle(QApplication::translate("ImageWindow", "ImageWindow", nullptr));
+        ImageWindow->setWindowTitle(QApplication::translate("ImageWindow", "Welcome", nullptr));
         pushButton_2->setText(QString());
         pushButton->setText(QString());
-        label->setText(QApplication::translate("ImageWindow", "OEMAL\302\256", nullptr));
-        label_2->setText(QApplication::translate("ImageWindow", "Motion Capture", nullptr));
+        label->setText(QApplication::translate("ImageWindow", " a kinect-based motion analysis system -  Enford International Co.,Ltd", nullptr));
+        label_2->setText(QApplication::translate("ImageWindow", "KineMAS", nullptr));
+        label_3->setText(QApplication::translate("ImageWindow", "TM", nullptr));
     } // retranslateUi
 
 };

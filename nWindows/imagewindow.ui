@@ -17,7 +17,7 @@
    </font>
   </property>
   <property name="windowTitle">
-   <string>ImageWindow</string>
+   <string>Welcome</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget{background-color:#464652;color:#E8E8E8}
@@ -27,8 +27,8 @@
   <widget class="QWidget" name="widget" native="true">
    <property name="geometry">
     <rect>
-     <x>320</x>
-     <y>270</y>
+     <x>290</x>
+     <y>290</y>
      <width>81</width>
      <height>81</height>
     </rect>
@@ -65,8 +65,8 @@ background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, 
   <widget class="QWidget" name="widget_2" native="true">
    <property name="geometry">
     <rect>
-     <x>130</x>
-     <y>270</y>
+     <x>150</x>
+     <y>290</y>
      <width>81</width>
      <height>81</height>
     </rect>
@@ -106,19 +106,19 @@ background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, 
   <widget class="QGraphicsView" name="graphicsView">
    <property name="geometry">
     <rect>
-     <x>40</x>
-     <y>120</y>
-     <width>441</width>
-     <height>51</height>
+     <x>100</x>
+     <y>140</y>
+     <width>321</width>
+     <height>81</height>
     </rect>
    </property>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>10</x>
+     <x>-10</x>
      <y>400</y>
-     <width>511</width>
+     <width>551</width>
      <height>41</height>
     </rect>
    </property>
@@ -146,10 +146,10 @@ background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, 
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
    </property>
    <property name="text">
-    <string>OEMAL®</string>
+    <string> a kinect-based motion analysis system -  Enford International Co.,Ltd</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
@@ -158,10 +158,10 @@ background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, 
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>60</y>
-     <width>381</width>
-     <height>171</height>
+     <x>110</x>
+     <y>140</y>
+     <width>291</width>
+     <height>81</height>
     </rect>
    </property>
    <property name="font">
@@ -174,18 +174,111 @@ background-color: qlineargradient(spread:reflect, x1:1, y1:0.5, x2:1, y2:0.017, 
      <strikeout>false</strikeout>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true"/>
+   </property>
    <property name="text">
-    <string>Motion Capture</string>
+    <string>KineMAS</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignCenter</set>
    </property>
   </widget>
+  <widget class="QLabel" name="label_3">
+   <property name="geometry">
+    <rect>
+     <x>340</x>
+     <y>130</y>
+     <width>41</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <family>Franklin Gothic Medium Cond</family>
+     <pointsize>10</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+    </font>
+   </property>
+   <property name="mouseTracking">
+    <bool>false</bool>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::LeftToRight</enum>
+   </property>
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0);</string>
+   </property>
+   <property name="text">
+    <string>TM</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_2">
+   <property name="geometry">
+    <rect>
+     <x>-270</x>
+     <y>-40</y>
+     <width>550</width>
+     <height>550</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(255, 255, 255, 0);
+
+border-image: url(:/myimages/Resources/enford-logo-01darkgray.png);</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_3">
+   <property name="geometry">
+    <rect>
+     <x>70</x>
+     <y>20</y>
+     <width>101</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">
+border-image: url(:/myimages/Resources/enford-logo-02dark.png);
+background-color: rgba(255, 255, 255, 0);</string>
+   </property>
+  </widget>
+  <widget class="QGraphicsView" name="graphicsView_4">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>60</width>
+     <height>60</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">border-image: url(:/myimages/Resources/enford-logo-01.png);
+background-color: rgba(255, 255, 255, 0);</string>
+   </property>
+  </widget>
+  <zorder>graphicsView_2</zorder>
+  <zorder>graphicsView_3</zorder>
   <zorder>graphicsView</zorder>
   <zorder>label</zorder>
   <zorder>widget</zorder>
   <zorder>widget_2</zorder>
   <zorder>label_2</zorder>
+  <zorder>label_3</zorder>
+  <zorder>graphicsView_4</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>

@@ -405,6 +405,8 @@ int ballrenderer()
 		vtkSmartPointer<vtkRenderWindowInteractor>::New();
 	renderWindowInteractor->SetRenderWindow(renderWindow);
 	
+	//·ÅÈëqt
+	//ui->
 	
 
 	// Add the actor to the scene

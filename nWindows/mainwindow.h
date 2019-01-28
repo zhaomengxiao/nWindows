@@ -106,7 +106,9 @@ private slots:
 	void LineEdit_bagX(QString str);
 	void LineEdit_bagY(QString str);
 	void LineEdit_bagZ(QString str);
+	void LineEdit_subjName(QString str);
 	void bagSelect(bool);
+
 
 	void startRec();
 	void stopRec();

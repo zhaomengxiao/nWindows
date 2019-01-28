@@ -14,6 +14,8 @@ extern float bagX;
 extern float bagY;
 extern float bagZ;
 extern bool bag;
+
+char* subjName = new char[20];
 //================================
 float F_spinebase;
 Eigen::Vector3f M_spinebase;
@@ -65,22 +67,22 @@ void MainWindow::createAction()
 {
 	//打开图片
 	fileOpenImage = new QAction(this);
-	fileOpenImage->setText(QString::fromLocal8Bit("打开图片"));
+	fileOpenImage->setText("Image");
 	fileOpenImage->setStatusTip("open a picture from file.");
 	fileOpenImage->setShortcut(QKeySequence("Ctrl+8")); //随意指定快捷方式
 	QIcon openImageIcon(":/myimages/Resources/Filenew.png");
 	fileOpenImage->setIcon(openImageIcon);													//ui.mainToolBar->addAction(fileOpenImage);           //工具条
 	//打开视频
 	fileOpenVedio = new QAction(this);
-	fileOpenVedio->setText(QString::fromLocal8Bit("打开视频"));
+	fileOpenVedio->setText("Vedio");
 	fileOpenVedio->setStatusTip("open a video from camera.");
 	fileOpenVedio->setShortcut(QKeySequence("Ctrl+9")); //随意指定快捷方式
 	QIcon opencameraIcon(":/myimages/Resources/camera.png");
 	fileOpenVedio->setIcon(opencameraIcon);
 	//显示骨骼
 	showSkeleton = new QAction(this);
-	showSkeleton->setText(QString::fromLocal8Bit("显示骨骼"));
-	showSkeleton->setStatusTip("show basic skeleton.");
+	showSkeleton->setText("Open camera");
+	showSkeleton->setStatusTip("show 2d and vtk3d skeleton.");
 	showSkeleton->setShortcut(QKeySequence("Ctrl+1")); //随意指定快捷方式
 	QIcon showskeletonIcon(":/myimages/Resources/camera.png");
 	showSkeleton->setIcon(showskeletonIcon);
@@ -91,12 +93,12 @@ void MainWindow::createAction()
 void MainWindow::createMenu()
 {
 	
-	fileMenu = menuBar()->addMenu(QString::fromLocal8Bit("文件"));
+	fileMenu = menuBar()->addMenu("file");
 
 	fileMenu->addAction(fileOpenImage);
 	fileMenu->addAction(fileOpenVedio);
 
-	fileMenu = menuBar()->addMenu(QString::fromLocal8Bit("动作捕捉"));
+	fileMenu = menuBar()->addMenu("MotionCap");
 	fileMenu->addAction(showSkeleton);
 	
 }
@@ -433,11 +435,43 @@ void MainWindow::on_pushButton_openrecord_clicked()
 	mychartview_z->chart()->setTheme(QChart::ChartThemeBrownSand);
 	series_z->setPen(QPen(Qt::blue, 1, Qt::SolidLine));
 	ui.chartscrollArea_3->setWidget(mychartview_z);*/
+
+	//选择要打开的文件
+		//定义文件对话框类
+	QFileDialog *fileDialog = new QFileDialog(this);
+
+	//定义文件对话框标题
+	fileDialog->setWindowTitle("Select the file");
+
+	//设置默认文件路径
+	//fileDialog->setDirectory(".");
+
+	//设置文件过滤器
+	fileDialog->setNameFilter(tr("file(*.csv *.txt )"));
+
+	//设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
+	fileDialog->setFileMode(QFileDialog::ExistingFiles);
+
+	//设置视图模式
+	fileDialog->setViewMode(QFileDialog::Detail);
+
+	//打印所有选择的文件的路径
 	
+	QStringList fileNames;
+
+	if (fileDialog->exec())
+	{
+		fileNames = fileDialog->selectedFiles();
+	}
+	//qDebug() << fileNames[0] << endl;
+	/*for (auto tmp : fileNames) {
+		qDebug() << tmp << endl;
+
+	}*/
 	//=====read file=====
-	std::vector<double> X;
-	std::vector<double> Y;
-	QFile jointPosition("./test.csv");
+	std::vector<double> frames;
+	std::vector<double> X,Y,Z;
+	QFile jointPosition("./jointsPosition.csv");
 	if (!jointPosition.open(QIODevice::ReadOnly )) {
 		qDebug() << "cant read joint file" << endl;
 	}
@@ -452,24 +486,46 @@ void MainWindow::on_pushButton_openrecord_clicked()
 		}
 		
 		QStringList values = line.split(",", QString::SkipEmptyParts);
-		if (values[1].toInt() == 4)/*选择要画图的节点*/
+		if (values[2].toInt() == 4)/*选择要画图的节点*/
 		{
-			X.push_back(values[0].toDouble());
-			Y.push_back(values[3].toDouble());
+			frames.push_back(values[0].toDouble());
+			X.push_back(values[4].toDouble());
+			Y.push_back(values[5].toDouble());
+			Z.push_back(values[6].toDouble());
 		}
 		
 	}
 	/*std::vector<double> X{ 0,1,2,3,4 };
 	std::vector<double> Y{ 0,1,2,3,4 };*/
-	LineChart *chart = new LineChart();
-	chart->SetXY(X, Y);
-	chart->setTitle("static line chart");
-	chart->legend()->hide();
-	chart->setAnimationOptions(QChart::AllAnimations);
+	LineChart *chart_x = new LineChart();
+	chart_x->SetXY(frames, X);
+	chart_x->setTitle("Position_X");
+	chart_x->legend()->hide();
+	chart_x->setAnimationOptions(QChart::AllAnimations);
 	QChartView *mychartview = new QChartView();
-	mychartview->setChart(chart);
+	mychartview->setChart(chart_x);
 	mychartview->setRenderHint(QPainter::Antialiasing);
-	ui.chartscrollArea_3->setWidget(mychartview);
+	ui.chartscrollArea->setWidget(mychartview);
+
+	LineChart *chart_y = new LineChart();
+	chart_y->SetXY(frames, Y);
+	chart_y->setTitle("Position_Y");
+	chart_y->legend()->hide();
+	chart_y->setAnimationOptions(QChart::AllAnimations);
+	QChartView *mychartview_y = new QChartView();
+	mychartview_y->setChart(chart_y);
+	mychartview_y->setRenderHint(QPainter::Antialiasing);
+	ui.chartscrollArea_2->setWidget(mychartview_y);
+
+	LineChart *chart_z = new LineChart();
+	chart_z->SetXY(frames, Z);
+	chart_z->setTitle("Position_Z");
+	chart_z->legend()->hide();
+	chart_z->setAnimationOptions(QChart::AllAnimations);
+	QChartView *mychartview_z = new QChartView();
+	mychartview_z->setChart(chart_z);
+	mychartview_z->setRenderHint(QPainter::Antialiasing);
+	ui.chartscrollArea_3->setWidget(mychartview_z);
 }
 //从列表选择想要查看的关节
 void MainWindow::ListCurChange(int row)
@@ -519,9 +575,16 @@ void MainWindow::bagSelect(bool i)
 	qDebug() << i << endl;
 	bag = i;
 }
+void MainWindow::LineEdit_subjName(QString str)
+{
+	qDebug() << str << endl;
+	
+	strcpy(subjName, str.toStdString().c_str());
+}
 //存储joint数据 
 void MainWindow::startRec()
 {
+	pSender->setfilename(subjName);
 	filetimer = new QTimer(this);
 	thread = new QThread(this);
 	//this->recorder = new FileREC();
@@ -530,14 +593,17 @@ void MainWindow::startRec()
 	connect(filetimer, SIGNAL(timeout()), pSender, SLOT(processfile()));
 	//connect(thread, SIGNAL(finished()), this->recorder, SLOT(deleteLater()));
 	thread->start();
-	filetimer->start(1000);
+	filetimer->start(300);
 
 }
 
 void MainWindow::stopRec()
 {
 	filetimer->stop();
+	pSender->closefile();
+	pSender->Orient2angelFile();
 	thread->quit();
+	
 }
 
 
@@ -585,4 +651,5 @@ MainWindow::~MainWindow()
 	//if (myCamera != NULL) {
 	//	myCamera->closeCamera();
 	//}
+	delete[]subjName;
 }

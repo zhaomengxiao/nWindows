@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nWindows", "nWindows\nWindows.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MotionCap", "MotionCap\MotionCap.vdproj", "{C355A8AF-D5FD-4063-B0E0-C72D1A45B511}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "KineMAS", "MotionCap\MotionCap.vdproj", "{C355A8AF-D5FD-4063-B0E0-C72D1A45B511}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +29,7 @@ Global
 		{C355A8AF-D5FD-4063-B0E0-C72D1A45B511}.Release|ARM64.ActiveCfg = Release
 		{C355A8AF-D5FD-4063-B0E0-C72D1A45B511}.Release|ARM64.Build.0 = Release
 		{C355A8AF-D5FD-4063-B0E0-C72D1A45B511}.Release|x64.ActiveCfg = Release
+		{C355A8AF-D5FD-4063-B0E0-C72D1A45B511}.Release|x64.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

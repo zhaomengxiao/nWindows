@@ -9,5 +9,11 @@
         <file>Resources/checkcircle.png</file>
         <file>Resources/nextstep.png</file>
         <file>Resources/return.png</file>
+        <file>Resources/enford-logo-01.png</file>
+        <file>Resources/enford-logo-02.png</file>
+        <file>Resources/enford-logo-01gray.png</file>
+        <file>Resources/enford-logo-02green.png</file>
+        <file>Resources/enford-logo-01darkgray.png</file>
+        <file>Resources/enford-logo-02dark.png</file>
     </qresource>
 </RCC>
