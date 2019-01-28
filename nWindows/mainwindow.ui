@@ -18,6 +18,19 @@
     <string notr="true">background-color:#464652;color:#E8E8E8</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
+    <item row="3" column="0">
+     <widget class="QLCDNumber" name="lcdNumber_date">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>18</height>
+       </size>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(0, 0, 0);</string>
+      </property>
+     </widget>
+    </item>
     <item row="2" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
@@ -752,11 +765,6 @@ border-radius: 10px;</string>
        <zorder>label_text_7</zorder>
        <zorder>label_text_2</zorder>
       </widget>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="title">
-        <string>3D View</string>
-       </attribute>
-      </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
         <string>Charts</string>
@@ -879,19 +887,6 @@ background-color: rgb(76, 120, 65)}
       </widget>
      </widget>
     </item>
-    <item row="3" column="0">
-     <widget class="QLCDNumber" name="lcdNumber_date">
-      <property name="maximumSize">
-       <size>
-        <width>100</width>
-        <height>18</height>
-       </size>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">background-color: rgb(0, 0, 0);</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -953,38 +948,6 @@ background-color: rgb(76, 120, 65)}
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindowClass</receiver>
-   <slot>stopRec()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1141</x>
-     <y>379</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1141</x>
-     <y>744</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>lineEdit_f</sender>
-   <signal>textChanged(QString)</signal>
-   <receiver>MainWindowClass</receiver>
-   <slot>LineEdit_f(QString)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>284</x>
-     <y>135</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>305</x>
-     <y>853</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>lineEdit_bodyWeight</sender>
    <signal>textChanged(QString)</signal>
    <receiver>MainWindowClass</receiver>
@@ -1017,6 +980,38 @@ background-color: rgb(76, 120, 65)}
    </hints>
   </connection>
   <connection>
+   <sender>lineEdit_bagZ</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagZ(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>258</x>
+     <y>620</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>249</x>
+     <y>824</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>stopRec()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1141</x>
+     <y>379</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1141</x>
+     <y>744</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>lineEdit_bagY</sender>
    <signal>textChanged(QString)</signal>
    <receiver>MainWindowClass</receiver>
@@ -1033,18 +1028,18 @@ background-color: rgb(76, 120, 65)}
    </hints>
   </connection>
   <connection>
-   <sender>lineEdit_bagZ</sender>
+   <sender>lineEdit_f</sender>
    <signal>textChanged(QString)</signal>
    <receiver>MainWindowClass</receiver>
-   <slot>LineEdit_bagZ(QString)</slot>
+   <slot>LineEdit_f(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>620</y>
+     <x>284</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
-     <x>249</x>
-     <y>824</y>
+     <x>305</x>
+     <y>853</y>
     </hint>
    </hints>
   </connection>

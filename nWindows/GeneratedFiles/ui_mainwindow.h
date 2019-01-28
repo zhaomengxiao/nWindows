@@ -33,6 +33,7 @@ class Ui_MainWindowClass
 public:
     QWidget *centralWidget;
     QGridLayout *gridLayout;
+    QLCDNumber *lcdNumber_date;
     QTabWidget *tabWidget;
     QWidget *tab;
     QWidget *widget_2;
@@ -63,7 +64,6 @@ public:
     QLineEdit *lineEdit_subjectName;
     QLabel *label_text_7;
     QLabel *label_text_2;
-    QWidget *tab_3;
     QWidget *tab_2;
     QPushButton *pushButton_realtimedata;
     QScrollArea *chartscrollArea;
@@ -73,7 +73,6 @@ public:
     QScrollArea *chartscrollArea_3;
     QWidget *scrollAreaWidgetContents_3;
     QPushButton *pushButton_openrecord;
-    QLCDNumber *lcdNumber_date;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -90,6 +89,13 @@ public:
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        lcdNumber_date = new QLCDNumber(centralWidget);
+        lcdNumber_date->setObjectName(QStringLiteral("lcdNumber_date"));
+        lcdNumber_date->setMaximumSize(QSize(100, 18));
+        lcdNumber_date->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout->addWidget(lcdNumber_date, 3, 0, 1, 1);
+
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         tabWidget->setMinimumSize(QSize(1200, 740));
@@ -354,9 +360,6 @@ public:
         pushButton_2->raise();
         label_text_7->raise();
         label_text_2->raise();
-        tab_3 = new QWidget();
-        tab_3->setObjectName(QStringLiteral("tab_3"));
-        tabWidget->addTab(tab_3, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         pushButton_realtimedata = new QPushButton(tab_2);
@@ -409,13 +412,6 @@ public:
 
         gridLayout->addWidget(tabWidget, 2, 0, 1, 1);
 
-        lcdNumber_date = new QLCDNumber(centralWidget);
-        lcdNumber_date->setObjectName(QStringLiteral("lcdNumber_date"));
-        lcdNumber_date->setMaximumSize(QSize(100, 18));
-        lcdNumber_date->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-
-        gridLayout->addWidget(lcdNumber_date, 3, 0, 1, 1);
-
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -431,12 +427,12 @@ public:
         retranslateUi(MainWindowClass);
         QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
         QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindowClass, SLOT(startRec()));
-        QObject::connect(pushButton_3, SIGNAL(clicked()), MainWindowClass, SLOT(stopRec()));
-        QObject::connect(lineEdit_f, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_f(QString)));
         QObject::connect(lineEdit_bodyWeight, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bodyWeight(QString)));
         QObject::connect(lineEdit_bagX, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagX(QString)));
-        QObject::connect(lineEdit_bagY, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagY(QString)));
         QObject::connect(lineEdit_bagZ, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagZ(QString)));
+        QObject::connect(pushButton_3, SIGNAL(clicked()), MainWindowClass, SLOT(stopRec()));
+        QObject::connect(lineEdit_bagY, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagY(QString)));
+        QObject::connect(lineEdit_f, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_f(QString)));
         QObject::connect(checkBox, SIGNAL(clicked(bool)), MainWindowClass, SLOT(bagSelect(bool)));
         QObject::connect(lineEdit_subjectName, SIGNAL(textEdited(QString)), MainWindowClass, SLOT(LineEdit_subjName(QString)));
 
@@ -519,7 +515,6 @@ public:
         label_text_7->setText(QApplication::translate("MainWindowClass", "Body Weight(KG)", nullptr));
         label_text_2->setText(QApplication::translate("MainWindowClass", "Force Magnitude(KG)", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "View", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "3D View", nullptr));
         pushButton_realtimedata->setText(QApplication::translate("MainWindowClass", "RealTime", nullptr));
         pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "OpenRecord", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Charts", nullptr));

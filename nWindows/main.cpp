@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "ui_MainWindow.h"
 #include "imagewindow.h"
 #include <QtWidgets/QApplication>
 #include <QTextCodec>
@@ -391,7 +392,8 @@ int ballrenderer()
 		vtkSmartPointer<vtkRenderWindow>::New();
 	renderWindow->AddRenderer(renderer);
 	renderWindow->SetSize(900, 600);
-
+	
+	
 	//相机设置
 	vtkSmartPointer<vtkCamera>myCamera = vtkSmartPointer<vtkCamera>::New();
 	myCamera->SetClippingRange(0.0475, 2.3786); //这些值随便设置的，为了演示用法而已

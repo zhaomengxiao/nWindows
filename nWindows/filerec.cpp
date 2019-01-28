@@ -1,5 +1,31 @@
 #include "filerec.h"
 #include "myKinect.h"
+#include <io.h>
+#include <direct.h>
+#define PATH_DELIMITER '\\'
+bool createDirectory(const std::string folder) {
+	std::string folder_builder;
+	std::string sub;
+	sub.reserve(folder.size());
+	for (auto it = folder.begin(); it != folder.end(); ++it) {
+		//cout << *(folder.end()-1) << endl;
+		const char c = *it;
+		sub.push_back(c);
+		if (c == PATH_DELIMITER || it == folder.end() - 1) {
+			folder_builder.append(sub);
+			if (0 != ::_access(folder_builder.c_str(), 0)) {
+				// this folder not exist
+				if (0 != ::_mkdir(folder_builder.c_str())) {
+					// create failed
+					return false;
+				}
+			}
+			sub.clear();
+		}
+	}
+	return true;
+}
+
 FileREC::FileREC( QObject *parent )
 	: QObject(parent)
 {
@@ -40,15 +66,17 @@ FileREC::~FileREC()
 
 void FileREC::setfilename(char * subjname)
 {
+	createDirectory(".\\Record");
 	m_subName = subjname;
+	
 	char  *a = "_Position.csv";
-	std::string  ac = std::string("../") + std::string(subjname) + std::string(a);
+	std::string  ac = std::string(".\\Record\\") + std::string(subjname) + std::string(a);
 	//Æ´½Ópositionfilename
 	jointsPositionfile.open(ac.c_str(), std::ios::app);
 
 
 	char  *b = "_Orient.csv";
-	std::string  bc = std::string("../") + std::string(subjname) + std::string(b);
+	std::string  bc = std::string(".\\Record\\") + std::string(subjname) + std::string(b);
 	//strcpy(m_fileName, bc.c_str());
 	jointsOrientfile.open(bc.c_str(), std::ios::app);
 }
@@ -122,7 +150,7 @@ void FileREC::Orient2angelFile()
 	}
 	//´Óorient.csv¶ÁÈ¡data
 	char  *b = "_Orient.csv";
-	std::string  filename = std::string(m_subName) + std::string(b);
+	std::string  filename = std::string(".\\Record\\")+std::string(m_subName) + std::string(b);
 	QFile * p_file = new QFile(QString::fromStdString(filename));
 	if (!p_file->open(QIODevice::ReadOnly)) {
 		qDebug() << "cant read joint file" << endl;
