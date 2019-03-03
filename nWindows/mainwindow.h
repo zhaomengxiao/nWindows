@@ -78,7 +78,7 @@ private://**私有成员变量**
 
 	//保存数据到文件
 	//FileREC *recorder = NULL;
-	QTimer *filetimer;
+	//QTimer *filetimer;
 	QThread *thread;
 private://**私有函数**
 	//界面
@@ -87,7 +87,7 @@ private://**私有函数**
 	void connectSignalSlot(); //链接信号和槽
 	//功能
 private slots:
-	void on_pushButton_clicked();
+	void on_pushButton_calibration_clicked();
 	void fileOpenImage_clicked();
 	void fileOpenVedio_clicked();
 	void showSkeleton_clicked();
@@ -108,8 +108,11 @@ private slots:
 	void LineEdit_bagZ(QString str);
 	void LineEdit_subjName(QString str);
 	void bagSelect(bool);
+	void SimpleMode(bool);
 
-
+	//记录数据流程控制
+	void ready4Rec();
 	void startRec();
 	void stopRec();
+	void calSubcaliAngle(); 
 };

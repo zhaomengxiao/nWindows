@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1218</width>
+    <width>1018</width>
     <height>839</height>
    </rect>
   </property>
@@ -35,7 +35,7 @@
      <widget class="QTabWidget" name="tabWidget">
       <property name="minimumSize">
        <size>
-        <width>1200</width>
+        <width>1000</width>
         <height>740</height>
        </size>
       </property>
@@ -63,300 +63,548 @@ QTabBar::tab:selected {margin-left: 30;}
        <attribute name="title">
         <string>View</string>
        </attribute>
-       <widget class="QWidget" name="widget_2" native="true">
-        <property name="geometry">
-         <rect>
-          <x>20</x>
-          <y>70</y>
-          <width>940</width>
-          <height>435</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>940</width>
-          <height>435</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(59, 65, 72);
+       <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="saveImageButton_2">
+          <property name="minimumSize">
+           <size>
+            <width>31</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>72</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+          </property>
+          <property name="text">
+           <string>STOP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="saveImageButton">
+          <property name="minimumSize">
+           <size>
+            <width>31</width>
+            <height>21</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>72</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+          </property>
+          <property name="text">
+           <string>SAVE</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0" colspan="10">
+         <widget class="QWidget" name="widget_2" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>940</width>
+            <height>435</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(59, 65, 72);
 border-radius: 20px</string>
-        </property>
-        <widget class="QLabel" name="colorwindow">
-         <property name="geometry">
-          <rect>
-           <x>200</x>
-           <y>5</y>
-           <width>512</width>
-           <height>424</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>512</width>
-           <height>424</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>512</width>
-           <height>424</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(100, 104, 97);</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-        <widget class="QWidget" name="LCDwidget" native="true">
-         <property name="geometry">
-          <rect>
-           <x>720</x>
-           <y>20</y>
-           <width>200</width>
-           <height>400</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>400</height>
-          </size>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QWidget{border-radius: 10px}
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <item row="0" column="0">
+            <widget class="QListWidget" name="listWidget_alljoint">
+             <property name="minimumSize">
+              <size>
+               <width>160</width>
+               <height>420</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>160</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="font">
+              <font>
+               <pointsize>12</pointsize>
+              </font>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(76, 120, 65);
+border-radius:10px;</string>
+             </property>
+             <item>
+              <property name="text">
+               <string>SpinBase</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SpinMid</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Neck</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>Head</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ShoulderLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ElbowLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>WristLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HandLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ShoulderRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ElbowRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>WristRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HandRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HipLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>KneeLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>AnkeLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FootLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HipRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>KneeRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>AnkleRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>FootRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>SpineShouder</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HandTipLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ThumbLeft</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>HandTipRight</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>ThumbRight</string>
+              </property>
+             </item>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="colorwindow">
+             <property name="minimumSize">
+              <size>
+               <width>512</width>
+               <height>424</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(100, 104, 97);</string>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QWidget" name="LCDwidget" native="true">
+             <property name="minimumSize">
+              <size>
+               <width>200</width>
+               <height>400</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>200</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">QWidget{border-radius: 10px}
 
 QWidget::!hover{
 background-color: rgb(76, 120, 65)}
 
 QWidget::hover{
 background-color: rgb(76, 120, 65)}</string>
-         </property>
-         <widget class="QLCDNumber" name="lcdNumber_y">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>180</y>
-            <width>161</width>
-            <height>61</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(0, 0, 0);</string>
-          </property>
+             </property>
+             <widget class="QLCDNumber" name="lcdNumber_y">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>100</y>
+                <width>161</width>
+                <height>61</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+             <widget class="QLCDNumber" name="lcdNumber_x">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>30</y>
+                <width>161</width>
+                <height>61</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+             <widget class="QLCDNumber" name="lcdNumber_z">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>170</y>
+                <width>161</width>
+                <height>61</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+             <widget class="QLabel" name="label_text_4">
+              <property name="geometry">
+               <rect>
+                <x>10</x>
+                <y>0</y>
+                <width>181</width>
+                <height>31</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+              </property>
+              <property name="text">
+               <string>Chosed Joint Angle</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+             <widget class="QCheckBox" name="checkBox_2">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>260</y>
+                <width>101</width>
+                <height>16</height>
+               </rect>
+              </property>
+              <property name="text">
+               <string>Simple Mode</string>
+              </property>
+             </widget>
+             <widget class="QLCDNumber" name="lcdNumber_KneeR">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>280</y>
+                <width>161</width>
+                <height>40</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+             <widget class="QLCDNumber" name="lcdNumber_KneeL">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>330</y>
+                <width>161</width>
+                <height>40</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+             <widget class="QLCDNumber" name="lcdNumber_ElbowL">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>380</y>
+                <width>161</width>
+                <height>40</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+             <widget class="QLCDNumber" name="lcdNumber_ElbowR">
+              <property name="geometry">
+               <rect>
+                <x>20</x>
+                <y>430</y>
+                <width>161</width>
+                <height>40</height>
+               </rect>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(0, 0, 0);</string>
+              </property>
+             </widget>
+            </widget>
+           </item>
+          </layout>
          </widget>
-         <widget class="QLCDNumber" name="lcdNumber_x">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>60</y>
-            <width>161</width>
-            <height>61</height>
-           </rect>
+        </item>
+        <item row="2" column="0">
+         <widget class="QCheckBox" name="checkBox">
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>30</height>
+           </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(0, 0, 0);</string>
-          </property>
-         </widget>
-         <widget class="QLCDNumber" name="lcdNumber_z">
-          <property name="geometry">
-           <rect>
-            <x>20</x>
-            <y>300</y>
-            <width>161</width>
-            <height>61</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(0, 0, 0);</string>
-          </property>
-         </widget>
-         <widget class="QLabel" name="label_text_4">
-          <property name="geometry">
-           <rect>
-            <x>10</x>
-            <y>10</y>
-            <width>181</width>
-            <height>31</height>
-           </rect>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">
+           <string notr="true">background-color: rgb(76, 120, 65);
 font: 87 10pt &quot;Arial Black&quot;;
 border-radius: 10px;</string>
           </property>
           <property name="text">
-           <string>Chosed Joint Angle</string>
+           <string>Force Position</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="lineEdit_bagX">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
           </property>
          </widget>
-        </widget>
-        <widget class="QListWidget" name="listWidget_alljoint">
-         <property name="geometry">
-          <rect>
-           <x>20</x>
-           <y>7</y>
-           <width>160</width>
-           <height>420</height>
-          </rect>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>160</width>
-           <height>420</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>12</pointsize>
-          </font>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">background-color: rgb(76, 120, 65);
-border-radius:10px;</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>SpinBase</string>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLineEdit" name="lineEdit_bagY">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>30</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>SpinMid</string>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>60</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Neck</string>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Head</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ShoulderLeft</string>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QLineEdit" name="lineEdit_bagZ">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>30</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ElbowLeft</string>
+          <property name="maximumSize">
+           <size>
+            <width>80</width>
+            <height>60</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>WristLeft</string>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>HandLeft</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ShoulderRight</string>
+         </widget>
+        </item>
+        <item row="2" column="4">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ElbowRight</string>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>WristRight</string>
+         </spacer>
+        </item>
+        <item row="2" column="5" colspan="2">
+         <widget class="QLineEdit" name="lineEdit_subjectName">
+          <property name="minimumSize">
+           <size>
+            <width>121</width>
+            <height>31</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>HandRight</string>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
           </property>
-         </item>
-         <item>
           <property name="text">
-           <string>HipLeft</string>
+           <string/>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>KneeLeft</string>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>AnkeLeft</string>
+         </widget>
+        </item>
+        <item row="2" column="7">
+         <widget class="QPushButton" name="pushButton_ready">
+          <property name="minimumSize">
+           <size>
+            <width>71</width>
+            <height>31</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>FootLeft</string>
+          <property name="maximumSize">
+           <size>
+            <width>72</width>
+            <height>16777215</height>
+           </size>
           </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>HipRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>KneeRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>AnkleRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>FootRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>SpineShouder</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>HandTipLeft</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ThumbLeft</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>HandTipRight</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>ThumbRight</string>
-          </property>
-         </item>
-        </widget>
-       </widget>
-       <widget class="QPushButton" name="pushButton">
-        <property name="geometry">
-         <rect>
-          <x>30</x>
-          <y>20</y>
-          <width>71</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{border-radius: 10px}
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
 
 QPushButton::!hover{
 background-color: rgb(105, 165, 90)}
@@ -364,390 +612,264 @@ background-color: rgb(105, 165, 90)}
 QPushButton::hover{
 background-color: rgb(76, 120, 65)}
 </string>
-        </property>
-        <property name="text">
-         <string>START</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="saveImageButton">
-        <property name="geometry">
-         <rect>
-          <x>220</x>
-          <y>20</y>
-          <width>71</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{border-radius: 10px}
+          </property>
+          <property name="text">
+           <string>Comfirm</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_text_2">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(76, 120, 65);
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+          </property>
+          <property name="text">
+           <string>Force Magnitude(KG)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1" colspan="2">
+         <widget class="QLineEdit" name="lineEdit_f">
+          <property name="minimumSize">
+           <size>
+            <width>121</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>121</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="7">
+         <widget class="QPushButton" name="pushButton_calibration">
+          <property name="minimumSize">
+           <size>
+            <width>71</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>72</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+          </property>
+          <property name="text">
+           <string>Calibration</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="QLabel" name="label_text_7">
+          <property name="minimumSize">
+           <size>
+            <width>90</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(76, 120, 65);
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+          </property>
+          <property name="text">
+           <string>Body Weight(KG)</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="1" colspan="2">
+         <widget class="QLineEdit" name="lineEdit_bodyWeight">
+          <property name="minimumSize">
+           <size>
+            <width>121</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>121</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 10pt &quot;Arial Black&quot;;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="5">
+         <widget class="QLabel" name="label_text_5">
+          <property name="styleSheet">
+           <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+          </property>
+          <property name="text">
+           <string>F -&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="6" colspan="2">
+         <widget class="QLCDNumber" name="lcdNumber_force">
+          <property name="minimumSize">
+           <size>
+            <width>131</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="8">
+         <widget class="QLabel" name="label_text_6">
+          <property name="styleSheet">
+           <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+          </property>
+          <property name="text">
+           <string>M -&gt;</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignCenter</set>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="9">
+         <widget class="QLCDNumber" name="lcdNumber_M">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="10">
+         <widget class="QLCDNumber" name="lcdNumber_M_2">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="11">
+         <widget class="QLCDNumber" name="lcdNumber_M_3">
+          <property name="minimumSize">
+           <size>
+            <width>81</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="9">
+         <widget class="QPushButton" name="pushButton_StartRec">
+          <property name="minimumSize">
+           <size>
+            <width>71</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
 
 QPushButton::!hover{
 background-color: rgb(105, 165, 90)}
 
 QPushButton::hover{
 background-color: rgb(76, 120, 65)}</string>
-        </property>
-        <property name="text">
-         <string>SAVE</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="saveImageButton_2">
-        <property name="geometry">
-         <rect>
-          <x>120</x>
-          <y>20</y>
-          <width>71</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{border-radius: 10px}
+          </property>
+          <property name="text">
+           <string>StartREC</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="9">
+         <widget class="QPushButton" name="pushButton_StopRec">
+          <property name="minimumSize">
+           <size>
+            <width>71</width>
+            <height>31</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
 
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
+QPushButton::!hover{background-color: rgb(189, 0, 0)}
 
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}</string>
-        </property>
-        <property name="text">
-         <string>STOP</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>510</y>
-          <width>71</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{border-radius: 10px}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
 
 QPushButton::hover{
-background-color: rgb(76, 120, 65)}</string>
-        </property>
-        <property name="text">
-         <string>StartREC</string>
-        </property>
-       </widget>
-       <widget class="QPushButton" name="pushButton_3">
-        <property name="geometry">
-         <rect>
-          <x>470</x>
-          <y>550</y>
-          <width>71</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{border-radius: 10px}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}</string>
-        </property>
-        <property name="text">
-         <string>StopREC</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_f">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>550</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 104, 97);
-border-radius: 10px;
-font: 87 10pt &quot;Arial Black&quot;;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QCheckBox" name="checkBox">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>510</y>
-          <width>161</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>90</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(76, 120, 65);
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-        </property>
-        <property name="text">
-         <string>Force Position</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_bagX">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>510</y>
-          <width>40</width>
-          <height>30</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 104, 97);
-border-radius: 10px;
-font: 87 10pt &quot;Arial Black&quot;;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_bagY">
-        <property name="geometry">
-         <rect>
-          <x>250</x>
-          <y>510</y>
-          <width>40</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>40</width>
-          <height>30</height>
-         </size>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 104, 97);
-border-radius: 10px;
-font: 87 10pt &quot;Arial Black&quot;;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_bagZ">
-        <property name="geometry">
-         <rect>
-          <x>290</x>
-          <y>510</y>
-          <width>41</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 104, 97);
-border-radius: 10px;
-font: 87 10pt &quot;Arial Black&quot;;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_bodyWeight">
-        <property name="geometry">
-         <rect>
-          <x>210</x>
-          <y>590</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 104, 97);
-border-radius: 10px;
-font: 87 10pt &quot;Arial Black&quot;;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLCDNumber" name="lcdNumber_force">
-        <property name="geometry">
-         <rect>
-          <x>410</x>
-          <y>590</y>
-          <width>131</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 0, 0);</string>
-        </property>
-       </widget>
-       <widget class="QLCDNumber" name="lcdNumber_M">
-        <property name="geometry">
-         <rect>
-          <x>590</x>
-          <y>590</y>
-          <width>81</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 0, 0);</string>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_text_5">
-        <property name="geometry">
-         <rect>
-          <x>370</x>
-          <y>590</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-        </property>
-        <property name="text">
-         <string>F -&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_text_6">
-        <property name="geometry">
-         <rect>
-          <x>550</x>
-          <y>590</y>
-          <width>31</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-        </property>
-        <property name="text">
-         <string>M -&gt;</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLCDNumber" name="lcdNumber_M_2">
-        <property name="geometry">
-         <rect>
-          <x>680</x>
-          <y>590</y>
-          <width>81</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 0, 0);</string>
-        </property>
-       </widget>
-       <widget class="QLCDNumber" name="lcdNumber_M_3">
-        <property name="geometry">
-         <rect>
-          <x>780</x>
-          <y>590</y>
-          <width>81</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(0, 0, 0);</string>
-        </property>
-       </widget>
-       <widget class="QLineEdit" name="lineEdit_subjectName">
-        <property name="geometry">
-         <rect>
-          <x>360</x>
-          <y>510</y>
-          <width>121</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(100, 104, 97);
-border-radius: 10px;
-font: 87 10pt &quot;Arial Black&quot;;</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_text_7">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>590</y>
-          <width>161</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(76, 120, 65);
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-        </property>
-        <property name="text">
-         <string>Body Weight(KG)</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-       <widget class="QLabel" name="label_text_2">
-        <property name="geometry">
-         <rect>
-          <x>40</x>
-          <y>550</y>
-          <width>161</width>
-          <height>31</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">background-color: rgb(76, 120, 65);
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-        </property>
-        <property name="text">
-         <string>Force Magnitude(KG)</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
+	background-color: rgb(148, 0, 0)}</string>
+          </property>
+          <property name="text">
+           <string>StopREC</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
        <zorder>widget_2</zorder>
-       <zorder>pushButton</zorder>
        <zorder>saveImageButton</zorder>
        <zorder>saveImageButton_2</zorder>
-       <zorder>pushButton_3</zorder>
        <zorder>lineEdit_f</zorder>
        <zorder>checkBox</zorder>
        <zorder>lineEdit_bagX</zorder>
@@ -761,9 +883,14 @@ border-radius: 10px;</string>
        <zorder>lcdNumber_M_2</zorder>
        <zorder>lcdNumber_M_3</zorder>
        <zorder>lineEdit_subjectName</zorder>
-       <zorder>pushButton_2</zorder>
        <zorder>label_text_7</zorder>
        <zorder>label_text_2</zorder>
+       <zorder>horizontalSpacer</zorder>
+       <zorder>horizontalSpacer_2</zorder>
+       <zorder>pushButton_StartRec</zorder>
+       <zorder>pushButton_ready</zorder>
+       <zorder>pushButton_StopRec</zorder>
+       <zorder>pushButton_calibration</zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="title">
@@ -894,7 +1021,7 @@ background-color: rgb(76, 120, 65)}
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1218</width>
+     <width>1018</width>
      <height>23</height>
     </rect>
    </property>
@@ -932,17 +1059,17 @@ background-color: rgb(76, 120, 65)}
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>pushButton_StartRec</sender>
    <signal>clicked()</signal>
    <receiver>MainWindowClass</receiver>
    <slot>startRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1113</x>
-     <y>330</y>
+     <x>809</x>
+     <y>696</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1219</x>
+     <x>1017</x>
      <y>744</y>
     </hint>
    </hints>
@@ -954,8 +1081,8 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_bodyWeight(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>458</x>
-     <y>619</y>
+     <x>244</x>
+     <y>770</y>
     </hint>
     <hint type="destinationlabel">
      <x>456</x>
@@ -970,8 +1097,8 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_bagX(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>182</x>
-     <y>624</y>
+     <x>203</x>
+     <y>696</y>
     </hint>
     <hint type="destinationlabel">
      <x>184</x>
@@ -986,8 +1113,8 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_bagZ(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>258</x>
-     <y>620</y>
+     <x>375</x>
+     <y>696</y>
     </hint>
     <hint type="destinationlabel">
      <x>249</x>
@@ -996,17 +1123,17 @@ background-color: rgb(76, 120, 65)}
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_3</sender>
+   <sender>pushButton_StopRec</sender>
    <signal>clicked()</signal>
    <receiver>MainWindowClass</receiver>
    <slot>stopRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1141</x>
-     <y>379</y>
+     <x>809</x>
+     <y>733</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1141</x>
+     <x>1017</x>
      <y>744</y>
     </hint>
    </hints>
@@ -1018,8 +1145,8 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_bagY(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>215</x>
-     <y>620</y>
+     <x>289</x>
+     <y>696</y>
     </hint>
     <hint type="destinationlabel">
      <x>217</x>
@@ -1034,12 +1161,12 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_f(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>284</x>
-     <y>135</y>
+     <x>244</x>
+     <y>733</y>
     </hint>
     <hint type="destinationlabel">
      <x>305</x>
-     <y>853</y>
+     <y>838</y>
     </hint>
    </hints>
   </connection>
@@ -1050,8 +1177,8 @@ background-color: rgb(76, 120, 65)}
    <slot>bagSelect(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>96</x>
-     <y>616</y>
+     <x>107</x>
+     <y>695</y>
     </hint>
     <hint type="destinationlabel">
      <x>104</x>
@@ -1066,12 +1193,44 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_subjName(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1039</x>
-     <y>340</y>
+     <x>622</x>
+     <y>696</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1032</x>
+     <x>1017</x>
      <y>794</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_2</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>SimpleMode(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>871</x>
+     <y>398</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1017</x>
+     <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_ready</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>ready4Rec()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>679</x>
+     <y>682</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1057</x>
+     <y>670</y>
     </hint>
    </hints>
   </connection>
@@ -1089,5 +1248,7 @@ background-color: rgb(76, 120, 65)}
   <slot>LineEdit_bagZ(QString)</slot>
   <slot>bagSelect(bool)</slot>
   <slot>LineEdit_subjName(QString)</slot>
+  <slot>SimpleMode(bool)</slot>
+  <slot>ready4Rec()</slot>
  </slots>
 </ui>

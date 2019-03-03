@@ -40,7 +40,7 @@ private:
 	static const int        cDepthWidth { 512 };//c++ 11
 	static const int        cDepthHeight{ 424 };
 	//旋转角度数据存储
-	Eigen::Vector4f quat;
+	//Eigen::Vector4f quat;
 	Eigen::Vector4f quatshow;
 	Eigen::Vector3f angles;//changed f
 	//
@@ -55,7 +55,10 @@ public:
 	void                    Update();//获得骨架、背景二值图和深度信息
 	//计算关节角度
 	static double			RadianToDegree(double angle);
-	double					AngleBetweenTowVectors( JointType jointA, JointType jointB, JointType jointC);
+	float norm(std::vector<float> v);
+	//关节角度
+	//1d
+	float KneeAgR{ 0.0 }, KneeAgL{ 0.0 }, ElbowAgR{ 0.0 }, ElbowAgL{ 0.0 };
 	static Eigen::Vector3f  QuaternionToEuler(Eigen::Vector4f &quat);
 	//计算COM
 	void					SegCOM(Eigen::Vector3f &segcom, Joint &jointP, Joint &jointD, const int &segNum);
@@ -69,10 +72,15 @@ public:
 	Joint joints[JointType_Count]; //储存关节信息
 	JointOrientation JointOrientations[JointType_Count];//存储关节旋转
 	std::array<Eigen::Vector3f, 13> segCOMs;//储存13个肢段质量中心
-
+	std::array<float, 4> JointAngles{-190,-190,-190,-190 };//储存4个单自由度关节角度
+	//JointAngles[0] = ElbowAgR;
+	//JointAngles[1] = ElbowAgL;
+	//JointAngles[2] = KneeAgR;
+	//JointAngles[3] = KneeAgL;
 	
 	
-	//std::vector<Eigen::Vector4f> quatstream;//保存quat数据
+	
+	//3d
 
 	float getAngle_x();
 	float getAngle_y();
@@ -94,7 +102,8 @@ private:
 	void DrawBone(const Joint* pJoints, const DepthSpacePoint* depthSpacePosition, JointType joint0, JointType joint1);
 	//画手的状态函数
 	void DrawHandState(const DepthSpacePoint depthSpacePosition, HandState handState);
-	
+	//计算一维的关节角度
+	float CalJangle1(const Joint* pJoints,  JointType joint0, JointType joint1, JointType joint2);
 	//显示图像的Mat
 	cv::Mat skeletonImg;
 	cv::Mat depthImg;

@@ -15,6 +15,7 @@ extern float bagY;
 extern float bagZ;
 extern bool bag;
 
+bool isSimpleMode;
 char* subjName = new char[20];
 //================================
 float F_spinebase;
@@ -51,9 +52,12 @@ MainWindow::MainWindow(QWidget *parent)
 	lcdtimer->setInterval(1000);
 	lcdtimer->start();
 	
-	//初始化external输出值
-
+	//初始化pSender 放入thread
+	pSender->filetimer = new QTimer(this);
+	thread = new QThread(this);
+	pSender->moveToThread(thread);
 	
+	thread->start();
 }
 
 
@@ -283,11 +287,9 @@ void MainWindow::updateVideoFrame()
 void MainWindow::updateSkeletonFrame()
 {
 	mykinect->Update();
-	//mykinect->getDepthImg();
-	//mykinect->getSkeletonImg();
 	QImage qdepthImage    = Mat2QImage(mykinect->getDepthImg());
 	QImage qskeletonImage = Mat2QImage(mykinect->getSkeletonImg());
-	//ui.label->setPixmap(QPixmap::fromImage(myCamera->colorImage));
+	
 	ui.colorwindow->setPixmap(QPixmap::fromImage(qskeletonImage));
 	if (pSender !=NULL)
 	{
@@ -295,6 +297,7 @@ void MainWindow::updateSkeletonFrame()
 		pSender->updateJoints(mykinect->joints);
 		pSender->updateOrientations (mykinect->JointOrientations);
 		pSender->updateSegCOM(mykinect->segCOMs);
+		pSender->updateJointAngles(mykinect->JointAngles);
 	}
 	
 
@@ -333,9 +336,20 @@ void MainWindow::updateLCDnumber_angle()
 	ui.lcdNumber_M_3->display(int(M_spinebase.z()));
 	ui.lcdNumber_force->display(int(F_spinebase));
 	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
-	ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
-	ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
-	ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+	if (isSimpleMode)
+	{
+		ui.lcdNumber_ElbowR->display(int(mykinect->ElbowAgR));
+		ui.lcdNumber_ElbowL->display(int(mykinect->ElbowAgL));
+		ui.lcdNumber_KneeR->display(int(mykinect->KneeAgR));
+		ui.lcdNumber_KneeL->display(int(mykinect->KneeAgL));
+	}
+	else
+	{
+		ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
+		ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
+		ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+	}
+	
 	
 
 }
@@ -575,73 +589,68 @@ void MainWindow::bagSelect(bool i)
 	qDebug() << i << endl;
 	bag = i;
 }
+
+void MainWindow::SimpleMode(bool i)
+{
+	isSimpleMode = i;
+}
 void MainWindow::LineEdit_subjName(QString str)
 {
 	qDebug() << str << endl;
 	
 	strcpy(subjName, str.toStdString().c_str());
 }
+
+
 //存储joint数据 
+void MainWindow::ready4Rec() {
+	if (subjName)
+	{
+		QMessageBox::warning(this, "Warning Message", "Key in subj Name first");
+		return;
+	}
+
+	pSender->setfilename(subjName);
+	pSender->setfilehead();
+	qDebug() << "ready " << endl;
+
+}
+
+//calibration
+void MainWindow::on_pushButton_calibration_clicked()
+{
+	qDebug() << "start calibaration" << endl;
+	this->startRec();
+	//10s 后自动停止
+	QTimer::singleShot(10000, this, SLOT(stopRec()));
+
+	//计算平均角度
+	QTimer::singleShot(15000, this, SLOT(calSubcaliAngle()));
+}
+
+
 void MainWindow::startRec()
 {
-	pSender->setfilename(subjName);
-	filetimer = new QTimer(this);
-	thread = new QThread(this);
-	//this->recorder = new FileREC();
-	pSender->moveToThread(thread);
-	pSender->setfilehead();
-	connect(filetimer, SIGNAL(timeout()), pSender, SLOT(processfile()));
-	//connect(thread, SIGNAL(finished()), this->recorder, SLOT(deleteLater()));
-	thread->start();
-	filetimer->start(300);
-
+	pSender->start();
+	qDebug() << "start Rec  at " << 30 << " fps" << endl;
 }
 
 void MainWindow::stopRec()
 {
-	filetimer->stop();
-	pSender->closefile();
-	pSender->Orient2angelFile();
-	thread->quit();
-	
+	pSender->stop();
+	qDebug() << "stop Rec succeed" << endl;
 }
 
-
-
-
-
-//预留按钮
-void MainWindow::on_pushButton_clicked()
+void MainWindow::calSubcaliAngle()
 {
-	//去背
-	//image = cv::imread("E:\\learnOpenCV\\learnopencv-master\\learnopencv-master\\OpenPose\\example\\x64\\Release\\single.jpeg");
-	//QImage qImage = Mat2QImage(image);
-
-	//ui.colorwindow->setPixmap(QPixmap::fromImage(qImage));
-	//cv::Mat backmoveimage(image);
-	image.copyTo(backmoveimage);
-	for (int row =0; row < backmoveimage.rows; row++) {
-		for (int col=0; col < backmoveimage.cols; col++)
-		{
-			if(row !=0 && col !=0){
-//				if (backmoveimage.at<cv::Vec3b>(1, 1)[0]-rand[0] <= backmoveimage.at<cv::Vec3b>(row, col)[0] && backmoveimage.at<cv::Vec3b>(row, col)[0] <= backmoveimage.at<cv::Vec3b>(1, 1)[0] + rand[0] &&
-//					backmoveimage.at<cv::Vec3b>(1, 1)[1]-rand[1] <= backmoveimage.at<cv::Vec3b>(row, col)[1] && backmoveimage.at<cv::Vec3b>(row, col)[1] <= backmoveimage.at<cv::Vec3b>(1, 1)[1] + rand[1] &&
-//					backmoveimage.at<cv::Vec3b>(1, 1)[2]-rand[2] <= backmoveimage.at<cv::Vec3b>(row, col)[2] && backmoveimage.at<cv::Vec3b>(row, col)[2] <= backmoveimage.at<cv::Vec3b>(1, 1)[2] + rand[2])
-				if( std::abs(backmoveimage.at<cv::Vec3b>(0, 0)[0] - backmoveimage.at<cv::Vec3b>(row, col)[0] ) <= 3 &&
-					abs(backmoveimage.at<cv::Vec3b>(0, 0)[1] - backmoveimage.at<cv::Vec3b>(row, col)[1] ) <= 3 &&
-					abs(backmoveimage.at<cv::Vec3b>(0, 0)[2] - backmoveimage.at<cv::Vec3b>(row, col)[2] ) <= 3 )
-				{
-					backmoveimage.at<cv::Vec3b>(row, col)[0] = 0;
-					backmoveimage.at<cv::Vec3b>(row, col)[1] = 0;
-					backmoveimage.at<cv::Vec3b>(row, col)[2] = 0;
-				}
-			}
-			
-			
-		}
-	}
-	cv::imshow("backmove", backmoveimage);
+	pSender->CalSubcaliAngle();
+	qDebug() << "calibration finished" << endl;
 }
+
+
+
+
+
 //关闭时清理内存使用
 MainWindow::~MainWindow()
 {
@@ -652,4 +661,6 @@ MainWindow::~MainWindow()
 	//	myCamera->closeCamera();
 	//}
 	delete[]subjName;
+	thread->quit();
+	thread->wait();
 }

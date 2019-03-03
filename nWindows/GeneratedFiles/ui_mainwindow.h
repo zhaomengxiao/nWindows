@@ -21,6 +21,7 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolBar>
@@ -36,34 +37,44 @@ public:
     QLCDNumber *lcdNumber_date;
     QTabWidget *tabWidget;
     QWidget *tab;
+    QGridLayout *gridLayout_2;
+    QPushButton *saveImageButton_2;
+    QPushButton *saveImageButton;
+    QSpacerItem *horizontalSpacer_2;
     QWidget *widget_2;
+    QGridLayout *gridLayout_3;
+    QListWidget *listWidget_alljoint;
     QLabel *colorwindow;
     QWidget *LCDwidget;
     QLCDNumber *lcdNumber_y;
     QLCDNumber *lcdNumber_x;
     QLCDNumber *lcdNumber_z;
     QLabel *label_text_4;
-    QListWidget *listWidget_alljoint;
-    QPushButton *pushButton;
-    QPushButton *saveImageButton;
-    QPushButton *saveImageButton_2;
-    QPushButton *pushButton_2;
-    QPushButton *pushButton_3;
-    QLineEdit *lineEdit_f;
+    QCheckBox *checkBox_2;
+    QLCDNumber *lcdNumber_KneeR;
+    QLCDNumber *lcdNumber_KneeL;
+    QLCDNumber *lcdNumber_ElbowL;
+    QLCDNumber *lcdNumber_ElbowR;
     QCheckBox *checkBox;
     QLineEdit *lineEdit_bagX;
     QLineEdit *lineEdit_bagY;
     QLineEdit *lineEdit_bagZ;
+    QSpacerItem *horizontalSpacer;
+    QLineEdit *lineEdit_subjectName;
+    QPushButton *pushButton_ready;
+    QLabel *label_text_2;
+    QLineEdit *lineEdit_f;
+    QPushButton *pushButton_calibration;
+    QLabel *label_text_7;
     QLineEdit *lineEdit_bodyWeight;
-    QLCDNumber *lcdNumber_force;
-    QLCDNumber *lcdNumber_M;
     QLabel *label_text_5;
+    QLCDNumber *lcdNumber_force;
     QLabel *label_text_6;
+    QLCDNumber *lcdNumber_M;
     QLCDNumber *lcdNumber_M_2;
     QLCDNumber *lcdNumber_M_3;
-    QLineEdit *lineEdit_subjectName;
-    QLabel *label_text_7;
-    QLabel *label_text_2;
+    QPushButton *pushButton_StartRec;
+    QPushButton *pushButton_StopRec;
     QWidget *tab_2;
     QPushButton *pushButton_realtimedata;
     QScrollArea *chartscrollArea;
@@ -81,7 +92,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1218, 839);
+        MainWindowClass->resize(1018, 839);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral("background-color:#464652;color:#E8E8E8"));
@@ -98,7 +109,7 @@ public:
 
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
-        tabWidget->setMinimumSize(QSize(1200, 740));
+        tabWidget->setMinimumSize(QSize(1000, 740));
         tabWidget->setStyleSheet(QLatin1String("QTabBar::tab{\n"
 "             border-top-left-radius: 4px;\n"
 "             border-top-right-radius: 4px;\n"
@@ -116,48 +127,51 @@ public:
 ""));
         tab = new QWidget();
         tab->setObjectName(QStringLiteral("tab"));
+        gridLayout_2 = new QGridLayout(tab);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        saveImageButton_2 = new QPushButton(tab);
+        saveImageButton_2->setObjectName(QStringLiteral("saveImageButton_2"));
+        saveImageButton_2->setMinimumSize(QSize(31, 21));
+        saveImageButton_2->setMaximumSize(QSize(72, 16777215));
+        saveImageButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+
+        gridLayout_2->addWidget(saveImageButton_2, 0, 0, 1, 1);
+
+        saveImageButton = new QPushButton(tab);
+        saveImageButton->setObjectName(QStringLiteral("saveImageButton"));
+        saveImageButton->setMinimumSize(QSize(31, 21));
+        saveImageButton->setMaximumSize(QSize(72, 16777215));
+        saveImageButton->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+
+        gridLayout_2->addWidget(saveImageButton, 0, 1, 1, 1);
+
+        horizontalSpacer_2 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer_2, 0, 3, 1, 1);
+
         widget_2 = new QWidget(tab);
         widget_2->setObjectName(QStringLiteral("widget_2"));
-        widget_2->setGeometry(QRect(20, 70, 940, 435));
         widget_2->setMinimumSize(QSize(940, 435));
         widget_2->setStyleSheet(QLatin1String("background-color: rgb(59, 65, 72);\n"
 "border-radius: 20px"));
-        colorwindow = new QLabel(widget_2);
-        colorwindow->setObjectName(QStringLiteral("colorwindow"));
-        colorwindow->setGeometry(QRect(200, 5, 512, 424));
-        colorwindow->setMinimumSize(QSize(512, 424));
-        colorwindow->setMaximumSize(QSize(512, 424));
-        colorwindow->setStyleSheet(QStringLiteral("background-color: rgb(100, 104, 97);"));
-        LCDwidget = new QWidget(widget_2);
-        LCDwidget->setObjectName(QStringLiteral("LCDwidget"));
-        LCDwidget->setGeometry(QRect(720, 20, 200, 400));
-        LCDwidget->setMinimumSize(QSize(200, 400));
-        LCDwidget->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
-"\n"
-"QWidget::!hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-"\n"
-"QWidget::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-        lcdNumber_y = new QLCDNumber(LCDwidget);
-        lcdNumber_y->setObjectName(QStringLiteral("lcdNumber_y"));
-        lcdNumber_y->setGeometry(QRect(20, 180, 161, 61));
-        lcdNumber_y->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        lcdNumber_x = new QLCDNumber(LCDwidget);
-        lcdNumber_x->setObjectName(QStringLiteral("lcdNumber_x"));
-        lcdNumber_x->setGeometry(QRect(20, 60, 161, 61));
-        lcdNumber_x->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        lcdNumber_z = new QLCDNumber(LCDwidget);
-        lcdNumber_z->setObjectName(QStringLiteral("lcdNumber_z"));
-        lcdNumber_z->setGeometry(QRect(20, 300, 161, 61));
-        lcdNumber_z->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        label_text_4 = new QLabel(LCDwidget);
-        label_text_4->setObjectName(QStringLiteral("label_text_4"));
-        label_text_4->setGeometry(QRect(10, 10, 181, 31));
-        label_text_4->setStyleSheet(QLatin1String("\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        label_text_4->setAlignment(Qt::AlignCenter);
+        gridLayout_3 = new QGridLayout(widget_2);
+        gridLayout_3->setSpacing(6);
+        gridLayout_3->setContentsMargins(11, 11, 11, 11);
+        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
         listWidget_alljoint = new QListWidget(widget_2);
         new QListWidgetItem(listWidget_alljoint);
         new QListWidgetItem(listWidget_alljoint);
@@ -185,17 +199,139 @@ public:
         new QListWidgetItem(listWidget_alljoint);
         new QListWidgetItem(listWidget_alljoint);
         listWidget_alljoint->setObjectName(QStringLiteral("listWidget_alljoint"));
-        listWidget_alljoint->setGeometry(QRect(20, 7, 160, 420));
         listWidget_alljoint->setMinimumSize(QSize(160, 420));
+        listWidget_alljoint->setMaximumSize(QSize(160, 16777215));
         QFont font;
         font.setPointSize(12);
         listWidget_alljoint->setFont(font);
         listWidget_alljoint->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
 "border-radius:10px;"));
-        pushButton = new QPushButton(tab);
-        pushButton->setObjectName(QStringLiteral("pushButton"));
-        pushButton->setGeometry(QRect(30, 20, 71, 31));
-        pushButton->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+
+        gridLayout_3->addWidget(listWidget_alljoint, 0, 0, 1, 1);
+
+        colorwindow = new QLabel(widget_2);
+        colorwindow->setObjectName(QStringLiteral("colorwindow"));
+        colorwindow->setMinimumSize(QSize(512, 424));
+        colorwindow->setStyleSheet(QStringLiteral("background-color: rgb(100, 104, 97);"));
+
+        gridLayout_3->addWidget(colorwindow, 0, 1, 1, 1);
+
+        LCDwidget = new QWidget(widget_2);
+        LCDwidget->setObjectName(QStringLiteral("LCDwidget"));
+        LCDwidget->setMinimumSize(QSize(200, 400));
+        LCDwidget->setMaximumSize(QSize(200, 16777215));
+        LCDwidget->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+        lcdNumber_y = new QLCDNumber(LCDwidget);
+        lcdNumber_y->setObjectName(QStringLiteral("lcdNumber_y"));
+        lcdNumber_y->setGeometry(QRect(20, 100, 161, 61));
+        lcdNumber_y->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        lcdNumber_x = new QLCDNumber(LCDwidget);
+        lcdNumber_x->setObjectName(QStringLiteral("lcdNumber_x"));
+        lcdNumber_x->setGeometry(QRect(20, 30, 161, 61));
+        lcdNumber_x->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        lcdNumber_z = new QLCDNumber(LCDwidget);
+        lcdNumber_z->setObjectName(QStringLiteral("lcdNumber_z"));
+        lcdNumber_z->setGeometry(QRect(20, 170, 161, 61));
+        lcdNumber_z->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        label_text_4 = new QLabel(LCDwidget);
+        label_text_4->setObjectName(QStringLiteral("label_text_4"));
+        label_text_4->setGeometry(QRect(10, 0, 181, 31));
+        label_text_4->setStyleSheet(QLatin1String("\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+        label_text_4->setAlignment(Qt::AlignCenter);
+        checkBox_2 = new QCheckBox(LCDwidget);
+        checkBox_2->setObjectName(QStringLiteral("checkBox_2"));
+        checkBox_2->setGeometry(QRect(20, 260, 101, 16));
+        lcdNumber_KneeR = new QLCDNumber(LCDwidget);
+        lcdNumber_KneeR->setObjectName(QStringLiteral("lcdNumber_KneeR"));
+        lcdNumber_KneeR->setGeometry(QRect(20, 280, 161, 40));
+        lcdNumber_KneeR->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        lcdNumber_KneeL = new QLCDNumber(LCDwidget);
+        lcdNumber_KneeL->setObjectName(QStringLiteral("lcdNumber_KneeL"));
+        lcdNumber_KneeL->setGeometry(QRect(20, 330, 161, 40));
+        lcdNumber_KneeL->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        lcdNumber_ElbowL = new QLCDNumber(LCDwidget);
+        lcdNumber_ElbowL->setObjectName(QStringLiteral("lcdNumber_ElbowL"));
+        lcdNumber_ElbowL->setGeometry(QRect(20, 380, 161, 40));
+        lcdNumber_ElbowL->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        lcdNumber_ElbowR = new QLCDNumber(LCDwidget);
+        lcdNumber_ElbowR->setObjectName(QStringLiteral("lcdNumber_ElbowR"));
+        lcdNumber_ElbowR->setGeometry(QRect(20, 430, 161, 40));
+        lcdNumber_ElbowR->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_3->addWidget(LCDwidget, 0, 2, 1, 1);
+
+
+        gridLayout_2->addWidget(widget_2, 1, 0, 1, 10);
+
+        checkBox = new QCheckBox(tab);
+        checkBox->setObjectName(QStringLiteral("checkBox"));
+        checkBox->setMinimumSize(QSize(90, 30));
+        checkBox->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+
+        gridLayout_2->addWidget(checkBox, 2, 0, 1, 1);
+
+        lineEdit_bagX = new QLineEdit(tab);
+        lineEdit_bagX->setObjectName(QStringLiteral("lineEdit_bagX"));
+        lineEdit_bagX->setMinimumSize(QSize(40, 30));
+        lineEdit_bagX->setMaximumSize(QSize(80, 60));
+        lineEdit_bagX->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 10pt \"Arial Black\";"));
+        lineEdit_bagX->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(lineEdit_bagX, 2, 1, 1, 1);
+
+        lineEdit_bagY = new QLineEdit(tab);
+        lineEdit_bagY->setObjectName(QStringLiteral("lineEdit_bagY"));
+        lineEdit_bagY->setMinimumSize(QSize(40, 30));
+        lineEdit_bagY->setMaximumSize(QSize(80, 60));
+        lineEdit_bagY->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 10pt \"Arial Black\";"));
+        lineEdit_bagY->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(lineEdit_bagY, 2, 2, 1, 1);
+
+        lineEdit_bagZ = new QLineEdit(tab);
+        lineEdit_bagZ->setObjectName(QStringLiteral("lineEdit_bagZ"));
+        lineEdit_bagZ->setMinimumSize(QSize(40, 30));
+        lineEdit_bagZ->setMaximumSize(QSize(80, 60));
+        lineEdit_bagZ->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 10pt \"Arial Black\";"));
+        lineEdit_bagZ->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(lineEdit_bagZ, 2, 3, 1, 1);
+
+        horizontalSpacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_2->addItem(horizontalSpacer, 2, 4, 1, 1);
+
+        lineEdit_subjectName = new QLineEdit(tab);
+        lineEdit_subjectName->setObjectName(QStringLiteral("lineEdit_subjectName"));
+        lineEdit_subjectName->setMinimumSize(QSize(121, 31));
+        lineEdit_subjectName->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 10pt \"Arial Black\";"));
+        lineEdit_subjectName->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(lineEdit_subjectName, 2, 5, 1, 2);
+
+        pushButton_ready = new QPushButton(tab);
+        pushButton_ready->setObjectName(QStringLiteral("pushButton_ready"));
+        pushButton_ready->setMinimumSize(QSize(71, 31));
+        pushButton_ready->setMaximumSize(QSize(72, 16777215));
+        pushButton_ready->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
 "\n"
 "QPushButton::!hover{\n"
 "background-color: rgb(105, 165, 90)}\n"
@@ -203,147 +339,142 @@ public:
 "QPushButton::hover{\n"
 "background-color: rgb(76, 120, 65)}\n"
 ""));
-        saveImageButton = new QPushButton(tab);
-        saveImageButton->setObjectName(QStringLiteral("saveImageButton"));
-        saveImageButton->setGeometry(QRect(220, 20, 71, 31));
-        saveImageButton->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-        saveImageButton_2 = new QPushButton(tab);
-        saveImageButton_2->setObjectName(QStringLiteral("saveImageButton_2"));
-        saveImageButton_2->setGeometry(QRect(120, 20, 71, 31));
-        saveImageButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-        pushButton_2 = new QPushButton(tab);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(470, 510, 71, 31));
-        pushButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-        pushButton_3 = new QPushButton(tab);
-        pushButton_3->setObjectName(QStringLiteral("pushButton_3"));
-        pushButton_3->setGeometry(QRect(470, 550, 71, 31));
-        pushButton_3->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-        lineEdit_f = new QLineEdit(tab);
-        lineEdit_f->setObjectName(QStringLiteral("lineEdit_f"));
-        lineEdit_f->setGeometry(QRect(210, 550, 121, 31));
-        lineEdit_f->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
-"border-radius: 10px;\n"
-"font: 87 10pt \"Arial Black\";"));
-        lineEdit_f->setAlignment(Qt::AlignCenter);
-        checkBox = new QCheckBox(tab);
-        checkBox->setObjectName(QStringLiteral("checkBox"));
-        checkBox->setGeometry(QRect(40, 510, 161, 30));
-        checkBox->setMinimumSize(QSize(90, 30));
-        checkBox->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        lineEdit_bagX = new QLineEdit(tab);
-        lineEdit_bagX->setObjectName(QStringLiteral("lineEdit_bagX"));
-        lineEdit_bagX->setGeometry(QRect(210, 510, 40, 30));
-        lineEdit_bagX->setMinimumSize(QSize(40, 30));
-        lineEdit_bagX->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
-"border-radius: 10px;\n"
-"font: 87 10pt \"Arial Black\";"));
-        lineEdit_bagX->setAlignment(Qt::AlignCenter);
-        lineEdit_bagY = new QLineEdit(tab);
-        lineEdit_bagY->setObjectName(QStringLiteral("lineEdit_bagY"));
-        lineEdit_bagY->setGeometry(QRect(250, 510, 40, 31));
-        lineEdit_bagY->setMinimumSize(QSize(40, 30));
-        lineEdit_bagY->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
-"border-radius: 10px;\n"
-"font: 87 10pt \"Arial Black\";"));
-        lineEdit_bagY->setAlignment(Qt::AlignCenter);
-        lineEdit_bagZ = new QLineEdit(tab);
-        lineEdit_bagZ->setObjectName(QStringLiteral("lineEdit_bagZ"));
-        lineEdit_bagZ->setGeometry(QRect(290, 510, 41, 31));
-        lineEdit_bagZ->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
-"border-radius: 10px;\n"
-"font: 87 10pt \"Arial Black\";"));
-        lineEdit_bagZ->setAlignment(Qt::AlignCenter);
-        lineEdit_bodyWeight = new QLineEdit(tab);
-        lineEdit_bodyWeight->setObjectName(QStringLiteral("lineEdit_bodyWeight"));
-        lineEdit_bodyWeight->setGeometry(QRect(210, 590, 121, 31));
-        lineEdit_bodyWeight->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
-"border-radius: 10px;\n"
-"font: 87 10pt \"Arial Black\";"));
-        lineEdit_bodyWeight->setAlignment(Qt::AlignCenter);
-        lcdNumber_force = new QLCDNumber(tab);
-        lcdNumber_force->setObjectName(QStringLiteral("lcdNumber_force"));
-        lcdNumber_force->setGeometry(QRect(410, 590, 131, 31));
-        lcdNumber_force->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        lcdNumber_M = new QLCDNumber(tab);
-        lcdNumber_M->setObjectName(QStringLiteral("lcdNumber_M"));
-        lcdNumber_M->setGeometry(QRect(590, 590, 81, 31));
-        lcdNumber_M->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        label_text_5 = new QLabel(tab);
-        label_text_5->setObjectName(QStringLiteral("label_text_5"));
-        label_text_5->setGeometry(QRect(370, 590, 31, 31));
-        label_text_5->setStyleSheet(QLatin1String("\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        label_text_5->setAlignment(Qt::AlignCenter);
-        label_text_6 = new QLabel(tab);
-        label_text_6->setObjectName(QStringLiteral("label_text_6"));
-        label_text_6->setGeometry(QRect(550, 590, 31, 31));
-        label_text_6->setStyleSheet(QLatin1String("\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        label_text_6->setAlignment(Qt::AlignCenter);
-        lcdNumber_M_2 = new QLCDNumber(tab);
-        lcdNumber_M_2->setObjectName(QStringLiteral("lcdNumber_M_2"));
-        lcdNumber_M_2->setGeometry(QRect(680, 590, 81, 31));
-        lcdNumber_M_2->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        lcdNumber_M_3 = new QLCDNumber(tab);
-        lcdNumber_M_3->setObjectName(QStringLiteral("lcdNumber_M_3"));
-        lcdNumber_M_3->setGeometry(QRect(780, 590, 81, 31));
-        lcdNumber_M_3->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-        lineEdit_subjectName = new QLineEdit(tab);
-        lineEdit_subjectName->setObjectName(QStringLiteral("lineEdit_subjectName"));
-        lineEdit_subjectName->setGeometry(QRect(360, 510, 121, 31));
-        lineEdit_subjectName->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
-"border-radius: 10px;\n"
-"font: 87 10pt \"Arial Black\";"));
-        lineEdit_subjectName->setAlignment(Qt::AlignCenter);
-        label_text_7 = new QLabel(tab);
-        label_text_7->setObjectName(QStringLiteral("label_text_7"));
-        label_text_7->setGeometry(QRect(40, 590, 161, 31));
-        label_text_7->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        label_text_7->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(pushButton_ready, 2, 7, 1, 1);
+
         label_text_2 = new QLabel(tab);
         label_text_2->setObjectName(QStringLiteral("label_text_2"));
-        label_text_2->setGeometry(QRect(40, 550, 161, 31));
+        label_text_2->setMinimumSize(QSize(150, 30));
         label_text_2->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
 "font: 87 10pt \"Arial Black\";\n"
 "border-radius: 10px;"));
         label_text_2->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_text_2, 3, 0, 1, 1);
+
+        lineEdit_f = new QLineEdit(tab);
+        lineEdit_f->setObjectName(QStringLiteral("lineEdit_f"));
+        lineEdit_f->setMinimumSize(QSize(121, 31));
+        lineEdit_f->setMaximumSize(QSize(121, 31));
+        lineEdit_f->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 10pt \"Arial Black\";"));
+        lineEdit_f->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(lineEdit_f, 3, 1, 1, 2);
+
+        pushButton_calibration = new QPushButton(tab);
+        pushButton_calibration->setObjectName(QStringLiteral("pushButton_calibration"));
+        pushButton_calibration->setMinimumSize(QSize(71, 31));
+        pushButton_calibration->setMaximumSize(QSize(72, 16777215));
+        pushButton_calibration->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+
+        gridLayout_2->addWidget(pushButton_calibration, 3, 7, 1, 1);
+
+        label_text_7 = new QLabel(tab);
+        label_text_7->setObjectName(QStringLiteral("label_text_7"));
+        label_text_7->setMinimumSize(QSize(90, 30));
+        label_text_7->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+        label_text_7->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_text_7, 4, 0, 1, 1);
+
+        lineEdit_bodyWeight = new QLineEdit(tab);
+        lineEdit_bodyWeight->setObjectName(QStringLiteral("lineEdit_bodyWeight"));
+        lineEdit_bodyWeight->setMinimumSize(QSize(121, 31));
+        lineEdit_bodyWeight->setMaximumSize(QSize(121, 31));
+        lineEdit_bodyWeight->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 10pt \"Arial Black\";"));
+        lineEdit_bodyWeight->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(lineEdit_bodyWeight, 4, 1, 1, 2);
+
+        label_text_5 = new QLabel(tab);
+        label_text_5->setObjectName(QStringLiteral("label_text_5"));
+        label_text_5->setStyleSheet(QLatin1String("\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+        label_text_5->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_text_5, 4, 5, 1, 1);
+
+        lcdNumber_force = new QLCDNumber(tab);
+        lcdNumber_force->setObjectName(QStringLiteral("lcdNumber_force"));
+        lcdNumber_force->setMinimumSize(QSize(131, 31));
+        lcdNumber_force->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_2->addWidget(lcdNumber_force, 4, 6, 1, 2);
+
+        label_text_6 = new QLabel(tab);
+        label_text_6->setObjectName(QStringLiteral("label_text_6"));
+        label_text_6->setStyleSheet(QLatin1String("\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+        label_text_6->setAlignment(Qt::AlignCenter);
+
+        gridLayout_2->addWidget(label_text_6, 4, 8, 1, 1);
+
+        lcdNumber_M = new QLCDNumber(tab);
+        lcdNumber_M->setObjectName(QStringLiteral("lcdNumber_M"));
+        lcdNumber_M->setMinimumSize(QSize(81, 31));
+        lcdNumber_M->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_2->addWidget(lcdNumber_M, 4, 9, 1, 1);
+
+        lcdNumber_M_2 = new QLCDNumber(tab);
+        lcdNumber_M_2->setObjectName(QStringLiteral("lcdNumber_M_2"));
+        lcdNumber_M_2->setMinimumSize(QSize(81, 31));
+        lcdNumber_M_2->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_2->addWidget(lcdNumber_M_2, 4, 10, 1, 1);
+
+        lcdNumber_M_3 = new QLCDNumber(tab);
+        lcdNumber_M_3->setObjectName(QStringLiteral("lcdNumber_M_3"));
+        lcdNumber_M_3->setMinimumSize(QSize(81, 31));
+        lcdNumber_M_3->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_2->addWidget(lcdNumber_M_3, 4, 11, 1, 1);
+
+        pushButton_StartRec = new QPushButton(tab);
+        pushButton_StartRec->setObjectName(QStringLiteral("pushButton_StartRec"));
+        pushButton_StartRec->setMinimumSize(QSize(71, 31));
+        pushButton_StartRec->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+
+        gridLayout_2->addWidget(pushButton_StartRec, 2, 9, 1, 1);
+
+        pushButton_StopRec = new QPushButton(tab);
+        pushButton_StopRec->setObjectName(QStringLiteral("pushButton_StopRec"));
+        pushButton_StopRec->setMinimumSize(QSize(71, 31));
+        pushButton_StopRec->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{background-color: rgb(189, 0, 0)}\n"
+"\n"
+"\n"
+"QPushButton::hover{\n"
+"	background-color: rgb(148, 0, 0)}"));
+
+        gridLayout_2->addWidget(pushButton_StopRec, 3, 9, 1, 1);
+
         tabWidget->addTab(tab, QString());
         widget_2->raise();
-        pushButton->raise();
         saveImageButton->raise();
         saveImageButton_2->raise();
-        pushButton_3->raise();
         lineEdit_f->raise();
         checkBox->raise();
         lineEdit_bagX->raise();
@@ -357,9 +488,12 @@ public:
         lcdNumber_M_2->raise();
         lcdNumber_M_3->raise();
         lineEdit_subjectName->raise();
-        pushButton_2->raise();
         label_text_7->raise();
         label_text_2->raise();
+        pushButton_StartRec->raise();
+        pushButton_ready->raise();
+        pushButton_StopRec->raise();
+        pushButton_calibration->raise();
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         pushButton_realtimedata = new QPushButton(tab_2);
@@ -415,7 +549,7 @@ public:
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1218, 23));
+        menuBar->setGeometry(QRect(0, 0, 1018, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -426,15 +560,17 @@ public:
 
         retranslateUi(MainWindowClass);
         QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
-        QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindowClass, SLOT(startRec()));
+        QObject::connect(pushButton_StartRec, SIGNAL(clicked()), MainWindowClass, SLOT(startRec()));
         QObject::connect(lineEdit_bodyWeight, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bodyWeight(QString)));
         QObject::connect(lineEdit_bagX, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagX(QString)));
         QObject::connect(lineEdit_bagZ, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagZ(QString)));
-        QObject::connect(pushButton_3, SIGNAL(clicked()), MainWindowClass, SLOT(stopRec()));
+        QObject::connect(pushButton_StopRec, SIGNAL(clicked()), MainWindowClass, SLOT(stopRec()));
         QObject::connect(lineEdit_bagY, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagY(QString)));
         QObject::connect(lineEdit_f, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_f(QString)));
         QObject::connect(checkBox, SIGNAL(clicked(bool)), MainWindowClass, SLOT(bagSelect(bool)));
         QObject::connect(lineEdit_subjectName, SIGNAL(textEdited(QString)), MainWindowClass, SLOT(LineEdit_subjName(QString)));
+        QObject::connect(checkBox_2, SIGNAL(clicked(bool)), MainWindowClass, SLOT(SimpleMode(bool)));
+        QObject::connect(pushButton_ready, SIGNAL(clicked()), MainWindowClass, SLOT(ready4Rec()));
 
         tabWidget->setCurrentIndex(0);
 
@@ -445,8 +581,8 @@ public:
     void retranslateUi(QMainWindow *MainWindowClass)
     {
         MainWindowClass->setWindowTitle(QApplication::translate("MainWindowClass", "MainWindow", nullptr));
-        colorwindow->setText(QString());
-        label_text_4->setText(QApplication::translate("MainWindowClass", "Chosed Joint Angle", nullptr));
+        saveImageButton_2->setText(QApplication::translate("MainWindowClass", "STOP", nullptr));
+        saveImageButton->setText(QApplication::translate("MainWindowClass", "SAVE", nullptr));
 
         const bool __sortingEnabled = listWidget_alljoint->isSortingEnabled();
         listWidget_alljoint->setSortingEnabled(false);
@@ -502,18 +638,20 @@ public:
         ___qlistwidgetitem24->setText(QApplication::translate("MainWindowClass", "ThumbRight", nullptr));
         listWidget_alljoint->setSortingEnabled(__sortingEnabled);
 
-        pushButton->setText(QApplication::translate("MainWindowClass", "START", nullptr));
-        saveImageButton->setText(QApplication::translate("MainWindowClass", "SAVE", nullptr));
-        saveImageButton_2->setText(QApplication::translate("MainWindowClass", "STOP", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindowClass", "StartREC", nullptr));
-        pushButton_3->setText(QApplication::translate("MainWindowClass", "StopREC", nullptr));
-        lineEdit_f->setText(QString());
+        colorwindow->setText(QString());
+        label_text_4->setText(QApplication::translate("MainWindowClass", "Chosed Joint Angle", nullptr));
+        checkBox_2->setText(QApplication::translate("MainWindowClass", "Simple Mode", nullptr));
         checkBox->setText(QApplication::translate("MainWindowClass", "Force Position", nullptr));
+        lineEdit_subjectName->setText(QString());
+        pushButton_ready->setText(QApplication::translate("MainWindowClass", "Comfirm", nullptr));
+        label_text_2->setText(QApplication::translate("MainWindowClass", "Force Magnitude(KG)", nullptr));
+        lineEdit_f->setText(QString());
+        pushButton_calibration->setText(QApplication::translate("MainWindowClass", "Calibration", nullptr));
+        label_text_7->setText(QApplication::translate("MainWindowClass", "Body Weight(KG)", nullptr));
         label_text_5->setText(QApplication::translate("MainWindowClass", "F ->", nullptr));
         label_text_6->setText(QApplication::translate("MainWindowClass", "M ->", nullptr));
-        lineEdit_subjectName->setText(QString());
-        label_text_7->setText(QApplication::translate("MainWindowClass", "Body Weight(KG)", nullptr));
-        label_text_2->setText(QApplication::translate("MainWindowClass", "Force Magnitude(KG)", nullptr));
+        pushButton_StartRec->setText(QApplication::translate("MainWindowClass", "StartREC", nullptr));
+        pushButton_StopRec->setText(QApplication::translate("MainWindowClass", "StopREC", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "View", nullptr));
         pushButton_realtimedata->setText(QApplication::translate("MainWindowClass", "RealTime", nullptr));
         pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "OpenRecord", nullptr));

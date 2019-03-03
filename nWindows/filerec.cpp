@@ -36,20 +36,31 @@ FileREC::FileREC( QObject *parent )
 
 FileREC::FileREC(char* subjName, QObject *parent) : QObject(parent) 
 {
-	m_subName = subjName;
+	////命名文件并打开
+	//m_subName = subjName;
+	//
+	//char  *a = "_Position.csv";
+	//std::string  ac = std::string(subjName) + std::string(a);
+	////拼接positionfilename
+	////strcpy(m_fileName, ac.c_str());
+	//jointsPositionfile.open(ac.c_str(), std::ios::app);
+
+
+	//char  *b = "_Orient.csv";
+	//std::string  bc = std::string(subjName) + std::string(b);
+	////strcpy(m_fileName, bc.c_str());
+	//jointsOrientfile.open(bc.c_str(), std::ios::app);
+
+	//char  *c = "_4Angle.csv";
+	//std::string  cc = std::string(subjName) + std::string(c);
+	////strcpy(m_fileName, bc.c_str());
+	//jointsAnglefile.open(cc.c_str(), std::ios::app);
 	
-	char  *a = "_Position.csv";
-	std::string  ac = std::string(subjName) + std::string(a);
-	//拼接positionfilename
-	//strcpy(m_fileName, ac.c_str());
-	jointsPositionfile.open(ac.c_str(), std::ios::app);
-
-
-	char  *b = "_Orient.csv";
-	std::string  bc = std::string(subjName) + std::string(b);
-	//strcpy(m_fileName, bc.c_str());
-	jointsOrientfile.open(bc.c_str(), std::ios::app);
+	
+	//开始计时
 	fileTimeRec.start();
+
+
 }
 
 FileREC::~FileREC()
@@ -58,6 +69,7 @@ FileREC::~FileREC()
 	{
 		jointsPositionfile.close();
 		jointsOrientfile.close();
+		jointsAnglefile.close();
 	}
 	
 	
@@ -79,6 +91,11 @@ void FileREC::setfilename(char * subjname)
 	std::string  bc = std::string(".\\Record\\") + std::string(subjname) + std::string(b);
 	//strcpy(m_fileName, bc.c_str());
 	jointsOrientfile.open(bc.c_str(), std::ios::app);
+
+	char  *c = "_4Angle.csv";
+	std::string  cc = std::string(".\\Record\\") + std::string(subjname) + std::string(c);
+	//strcpy(m_fileName, bc.c_str());
+	jointsAnglefile.open(cc.c_str(), std::ios::app);
 }
 
 void FileREC::updateJoints(Joint jointdata[JointType_Count])
@@ -110,9 +127,19 @@ std::array<Eigen::Vector3f, 13> FileREC::segCOMs()
 	return segCOM_saved;
 }
 
-void FileREC::updateSegCOM(std::array<Eigen::Vector3f, 13> segCOMdata)
+void FileREC::updateSegCOM(std::array<Eigen::Vector3f, 13>& segCOMdata)
 {
 	segCOM_saved = segCOMdata;
+}
+
+void FileREC::updateJointAngles(std::array<float, 4>& JointAngleData)
+{
+	JointAngle_saved = JointAngleData;
+}
+
+std::array<float, 4> FileREC::JointAngles()
+{
+	return JointAngle_saved;
 }
 
 //设置文本文件的标题
@@ -129,12 +156,19 @@ void FileREC::setfilehead()
 		jointsOrientfile << "# " << "frame " << "," << "time " << "," << "JointType " << "," << "x " << "," << "y" << "," << "z" << "," << "w" << std::endl;
 	
 	}
+	if (jointsAnglefile.is_open())
+	{
+		//标题行
+		jointsAnglefile << "# " << "frame " << "," << "time " << "," << "ElbowR " << "," << "ElbowL " << "," << "KneeR" << "," << "KneeL"  << std::endl;
+
+	}
 }
 
 void FileREC::closefile()
 {
 	jointsPositionfile.close();
 	jointsOrientfile.close();
+	jointsAnglefile.close();
 }
 
 void FileREC::Orient2angelFile()
@@ -179,14 +213,95 @@ void FileREC::Orient2angelFile()
 		jointsAnglefile << blocks[0].toInt() << "," << blocks[1].toFloat()/1000.0 << "," << blocks[2].toInt() << "," << ang.x() << "," << ang.y() << "," << ang.z()  << std::endl;
 	}
 	jointsAnglefile.close();
+	p_file->close();
+}
+
+void FileREC::CalSubcaliAngle()
+{
+	
+	//从Subjname_cali_4Angle.csv读取data
+	char  *b = "_4Angle.csv";
+	std::string  filename = std::string(".\\Record\\") + std::string(m_subName) + std::string(b);
+	QFile * p_file = new QFile(QString::fromStdString(filename));
+	if (!p_file->open(QIODevice::ReadOnly)) {
+		qDebug()<< QString::fromStdString(filename) << "cant read cali_4Angle.csv file" << endl;
+	}
+	QTextStream	*p_stream = new QTextStream(p_file);
+
+	p_stream->seek(0);//seek可以把文件流指针移到想要的位置
+
+	//计算平均值
+	float ElbowR_ave{ 0 };
+	float ElbowL_ave{ 0 };
+	float KneeR_ave{ 0 };
+	float KneeL_ave{ 0 };
+	int num{ 0 };
+	while (!p_stream->atEnd())
+	{
+		QString fetures = p_stream->readLine();
+		QStringList blocks = fetures.split(",", QString::SkipEmptyParts);
+		if (fetures.startsWith("#"))
+		{
+			continue;
+		}
+		if (blocks[2].toFloat() == 0 || blocks[3].toFloat() ==0 || blocks[4].toFloat() == 0 || blocks[5].toFloat() == 0)
+		{
+			continue;
+		}
+		if (blocks[0].toInt()<5)
+		{
+			continue;
+		}
+		ElbowR_ave += blocks[2].toFloat();
+		ElbowL_ave += blocks[3].toFloat();
+		KneeR_ave += blocks[4].toFloat();
+		KneeL_ave += blocks[5].toFloat();
+		num++;
+
+		
+	}
+	ElbowR_ave /= num;
+	ElbowL_ave /= num;
+	KneeR_ave /= num;
+	KneeL_ave /= num;
+	
+	caliAngle.ElbowR = -ElbowR_ave;
+	caliAngle.ElbowL = -ElbowL_ave;
+	caliAngle.KneeL = -KneeL_ave;
+	caliAngle.KneeR = -KneeR_ave;
+	qDebug() << "ave_angle" << caliAngle.ElbowR << caliAngle.ElbowL << caliAngle.KneeR << caliAngle.KneeL << endl;
+	p_file->close();
+}
+
+void FileREC::start()
+{
+	connect(filetimer, SIGNAL(timeout()), this, SLOT(processfile()));
+	filetimer->start(300);
+	
+}
+
+void FileREC::stop()
+{
+	disconnect(filetimer, SIGNAL(timeout()), this, SLOT(processfile()));
+	filetimer->stop();
+	this->closefile();
+	//thread->sleep();
+	//pSender->Orient2angelFile();
+	//thread->terminate();
+	//thread->wait();
+	
+
+
+	
 }
 
 //When filetimer time out, call processfile, 每隔一定时间记录一个frame，间隔时间由filetimer设定
 void FileREC::processfile() {
+	qDebug() << "recording..." << endl;
 	frameNum++;
 	//qDebug() << "process()" << QThread::currentThreadId();
 	if (!jointsPositionfile.is_open()){
-		std::cout << "failed to open data file." << std::endl;
+		std::cout << "failed to open jointsPositionfile." << std::endl;
 		return;
 	}
 	
@@ -218,7 +333,7 @@ void FileREC::processfile() {
 	}
 
 	if (!jointsOrientfile.is_open()) {
-		std::cout << "failed to open data file." << std::endl;
+		std::cout << "failed to open jointsOrientfile." << std::endl;
 		return;
 	}
 	for (auto orient: JointOrientation_saved)
@@ -227,6 +342,17 @@ void FileREC::processfile() {
 			jointsOrientfile << frameNum << "," << fileTimeRec.elapsed() << "," << orient.JointType << ","  << orient.Orientation.x << "," << orient.Orientation.y << "," << orient.Orientation.z << "," << orient.Orientation.w << std::endl;
 		}
 	}
+
+	if (!jointsAnglefile.is_open()) {
+		std::cout << "failed to open jointsAnglefile." << std::endl;
+		return;
+	}
+	if (JointAngle_saved[0]>-180 && JointAngle_saved[1] > -180 && JointAngle_saved[2] > -180 && JointAngle_saved[3] > -180)
+	{
+		jointsAnglefile << frameNum << "," << fileTimeRec.elapsed() << "," << caliAngle.ElbowR - JointAngle_saved[0] << "," << caliAngle.ElbowL - JointAngle_saved[1] << "," << caliAngle.KneeR - JointAngle_saved[2] << "," << caliAngle.KneeL - JointAngle_saved[3] << std::endl;
+	}
+		
+
 }
 
 

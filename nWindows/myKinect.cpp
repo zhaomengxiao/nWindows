@@ -113,42 +113,42 @@ void myKinect::Update()
 											//记录每次操作的成功与否
 	HRESULT hr = S_OK;
 
-	//---------------------------------------获取背景二值图并显示---------------------------------
-	if (SUCCEEDED(hr)) {
-		hr = m_pBodyIndexFrameReader->AcquireLatestFrame(&pBodyIndexFrame);//获得背景二值图信息
-	}
-	if (SUCCEEDED(hr)) {
-		BYTE *bodyIndexArray = new BYTE[cDepthHeight * cDepthWidth];//背景二值图是8为uchar，有人是黑色，没人是白色
-		pBodyIndexFrame->CopyFrameDataToArray(cDepthHeight * cDepthWidth, bodyIndexArray);
+	////---------------------------------------获取背景二值图并显示---------------------------------
+	//if (SUCCEEDED(hr)) {
+	//	hr = m_pBodyIndexFrameReader->AcquireLatestFrame(&pBodyIndexFrame);//获得背景二值图信息
+	//}
+	//if (SUCCEEDED(hr)) {
+	//	BYTE *bodyIndexArray = new BYTE[cDepthHeight * cDepthWidth];//背景二值图是8为uchar，有人是黑色，没人是白色
+	//	pBodyIndexFrame->CopyFrameDataToArray(cDepthHeight * cDepthWidth, bodyIndexArray);
 
-		//把背景二值图画到MAT里
-		uchar* skeletonData = (uchar*)skeletonImg.data;
-		for (int j = 0; j < cDepthHeight * cDepthWidth; ++j) {
-			*skeletonData = bodyIndexArray[j]; ++skeletonData;
-			*skeletonData = bodyIndexArray[j]; ++skeletonData;
-			*skeletonData = bodyIndexArray[j]; ++skeletonData;
-		}
-		delete[] bodyIndexArray;
-	}
-	SafeRelease(pBodyIndexFrame);//必须要释放，否则之后无法获得新的frame数据
+	//	//把背景二值图画到MAT里
+	//	uchar* skeletonData = (uchar*)skeletonImg.data;
+	//	for (int j = 0; j < cDepthHeight * cDepthWidth; ++j) {
+	//		*skeletonData = bodyIndexArray[j]; ++skeletonData;
+	//		*skeletonData = bodyIndexArray[j]; ++skeletonData;
+	//		*skeletonData = bodyIndexArray[j]; ++skeletonData;
+	//	}
+	//	delete[] bodyIndexArray;
+	//}
+	//SafeRelease(pBodyIndexFrame);//必须要释放，否则之后无法获得新的frame数据
 
-								 //-----------------------获取深度数据并显示--------------------------
-	if (SUCCEEDED(hr)) {
-		hr = m_pDepthFrameReader->AcquireLatestFrame(&pDepthFrame);//获得深度数据
-	}
-	if (SUCCEEDED(hr)) {
-		UINT16 *depthArray = new UINT16[cDepthHeight * cDepthWidth];//深度数据是16位unsigned int
-		pDepthFrame->CopyFrameDataToArray(cDepthHeight * cDepthWidth, depthArray);
+	//							 //-----------------------获取深度数据并显示--------------------------
+	//if (SUCCEEDED(hr)) {
+	//	hr = m_pDepthFrameReader->AcquireLatestFrame(&pDepthFrame);//获得深度数据
+	//}
+	//if (SUCCEEDED(hr)) {
+	//	UINT16 *depthArray = new UINT16[cDepthHeight * cDepthWidth];//深度数据是16位unsigned int
+	//	pDepthFrame->CopyFrameDataToArray(cDepthHeight * cDepthWidth, depthArray);
 
-		//把深度数据画到MAT中
-		uchar* depthData = (uchar*)depthImg.data;
-		for (int j = 0; j < cDepthHeight * cDepthWidth; ++j) {
-			*depthData = depthArray[j];
-			++depthData;
-		}
-		delete[] depthArray;
-	}
-	SafeRelease(pDepthFrame);//必须要释放，否则之后无法获得新的frame数据
+	//	//把深度数据画到MAT中
+	//	uchar* depthData = (uchar*)depthImg.data;
+	//	for (int j = 0; j < cDepthHeight * cDepthWidth; ++j) {
+	//		*depthData = depthArray[j];
+	//		++depthData;
+	//	}
+	//	delete[] depthArray;
+	//}
+	//SafeRelease(pDepthFrame);//必须要释放，否则之后无法获得新的frame数据
 	//imshow("depthImg", depthImg);
 	//cv::waitKey(5);
 	//-----------------------------获取骨架并显示----------------------------
@@ -180,23 +180,7 @@ void myKinect::Update()
 
 }
 
-//计算关节角度
-double myKinect::AngleBetweenTowVectors(JointType jointA, JointType jointB, JointType jointC)
-{
 
-	/*double angle = 0.0;
-
-	DirectX::XMVECTOR vBA = DirectX::XMVectorSubtract(vec[jointB], vec[jointA]);
-	DirectX::XMVECTOR vBC = DirectX::XMVectorSubtract(vec[jointB], vec[jointC]);
-
-	DirectX::XMVECTOR vAngle = DirectX::XMVector3AngleBetweenVectors(vBA, vBC);
-
-	angle = DirectX::XMVectorGetX(vAngle) * 180.0 * DirectX::XM_1DIVPI;    // XM_1DIVPI: An optimal representation of 1 / π
-
-	return angle;*/
-	return 0;
-	
-}
 
 //计算segCOM_ /Dampster
 void myKinect::SegCOM(Eigen::Vector3f &segcom,Joint &jointP, Joint &jointD,const int &segNum)
@@ -300,10 +284,12 @@ float myKinect::getAngle_z()
 	return angles.z();
 }
 //------------------------------------
-
+float myKinect::norm(std::vector<float> v) {
+	return sqrt(v[0]*v[0]+ v[1] * v[1]+ v[2] * v[2]);
+}
 double myKinect::RadianToDegree(double angle)
 {
-	return angle * (180.0 / PI) + 180;
+	return angle * (180.0 / PI) ;
 }
 
 bool myKinect::isAvailable()
@@ -328,18 +314,17 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 
 			if (SUCCEEDED(hr) && bTracked)
 			{
-				//Joint joints[JointType_Count];//存储关节点类
-				//JointOrientation JointOrientations[JointType_Count];//存储关节旋转
-				HandState leftHandState = HandState_Unknown;//左手状态
-				HandState rightHandState = HandState_Unknown;//右手状态
 
-															 //获取左右手状态
-				pBody->get_HandLeftState(&leftHandState);
-				pBody->get_HandRightState(&rightHandState);
+				//HandState leftHandState = HandState_Unknown;//左手状态
+				//HandState rightHandState = HandState_Unknown;//右手状态
+
+				////获取左右手状态
+				//pBody->get_HandLeftState(&leftHandState);
+				//pBody->get_HandRightState(&rightHandState);
 
 				//存储深度坐标系中的关节点位置
 				DepthSpacePoint *depthSpacePosition = new DepthSpacePoint[_countof(joints)];
-			
+				
 				//获得关节点类
 				hr = pBody->GetJoints(_countof(joints), joints);
 				
@@ -356,8 +341,8 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					}
 
 					//------------------------hand state left-------------------------------
-					DrawHandState(depthSpacePosition[JointType_HandLeft], leftHandState);
-					DrawHandState(depthSpacePosition[JointType_HandRight], rightHandState);
+					//DrawHandState(depthSpacePosition[JointType_HandLeft], leftHandState);
+					//DrawHandState(depthSpacePosition[JointType_HandRight], rightHandState);
 
 					//---------------------------body-------------------------------
 					DrawBone(joints, depthSpacePosition, JointType_Head, JointType_Neck);
@@ -418,62 +403,35 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					myCOM =
 						BodyCOM(thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R, upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R, Pelvis, ThoraxAbdomen, Headneck);
 					//std::cout << myCOM.x() << "," << myCOM.y() << "," << myCOM.z() << "," << std::endl;
+					//计算关节角度
+					ElbowAgR = CalJangle1(joints, JointType_ShoulderRight, JointType_ElbowRight, JointType_WristRight);
+					ElbowAgL = CalJangle1(joints, JointType_ShoulderLeft, JointType_ElbowLeft, JointType_WristLeft);
+					KneeAgR = CalJangle1(joints, JointType_HipRight, JointType_KneeRight, JointType_AnkleRight);
+					KneeAgL = CalJangle1(joints, JointType_HipLeft, JointType_KneeLeft, JointType_AnkleLeft);
+
+					JointAngles[0] = ElbowAgR;
+					JointAngles[1] = ElbowAgL;
+					JointAngles[2] = KneeAgR;
+					JointAngles[3] = KneeAgL;
 				}
 				delete[] depthSpacePosition;
 				
-				
-				//---------test -------------------
-
-
-
-
-				//-----------------------test
+			
 				//获得关节旋转
 				hr = pBody->GetJointOrientations(_countof(joints), JointOrientations);
 				if (SUCCEEDED(hr))
 				{
-					/*quats.w() = JointOrientations[jointnumber].Orientation.w;
-					quats.x() = JointOrientations[jointnumber].Orientation.x;
-					quats.y() = JointOrientations[jointnumber].Orientation.y;
-					quats.z() = JointOrientations[jointnumber].Orientation.z;
-					Eigen::Matrix3f Rx = quats.toRotationMatrix();
-					Eigen::Vector3f ea1 = Rx.eulerAngles(0, 1, 2);*/
-					//std::cout << quats.w() << "," << quats.x() << "," << quats.y() << quats.z() << std::endl;
+					
 					quatshow[0] = JointOrientations[jointnumber].Orientation.x;
 					quatshow[1] = JointOrientations[jointnumber].Orientation.y;
 					quatshow[2] = JointOrientations[jointnumber].Orientation.z;
 					quatshow[3] = JointOrientations[jointnumber].Orientation.w;
 					angles = QuaternionToEuler(quatshow);
-					//储存quat
-					//for (int i = 0; i < JointType_Count; i++)
-					//{
-					//	quat[0] = JointOrientations[i].Orientation.x;
-					//	quat[1] = JointOrientations[i].Orientation.y;
-					//	quat[2] = JointOrientations[i].Orientation.z;
-					//	quat[3] = JointOrientations[i].Orientation.w;
-
-					//	/*quat << JointOrientations[i].Orientation.x,
-					//			JointOrientations[i].Orientation.y,
-					//			JointOrientations[i].Orientation.z,
-					//			JointOrientations[i].Orientation.w;*/
-					//	quatstream.push_back(quat);
-					//}
-					//Eigen::Vector4f quats = quatstream[jointnumber];
-					//angles = QuaternionToEuler(quats);
-					
-					//angles = ea1;
-					//std::cout << angles.x() << "," << angles.y() << "," << angles.z() << std::endl;
-					//写出CSV文档
-					//std::cout << angles  << std::endl;
-					//csvfile.open("data.csv", std::ios::out);
-					//csvfile << angles.x() <<"," <<angles.y() << "," <<angles.z()<<std::endl;
 					
 				}
 			}
 		}
 	}
-	//cv::imshow("skeletonImg", skeletonImg);
-	//cv::waitKey(5);
 }
 
 //画手的状态
@@ -534,14 +492,49 @@ void myKinect::DrawBone(const Joint* pJoints, const DepthSpacePoint* depthSpaceP
 		line(skeletonImg, p1, p2, cvScalar(0, 0, 255));
 	}
 }
+float dot(std::vector<float> v1, std::vector<float> v2) {
+	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+}
+float myKinect::CalJangle1(const Joint* pJoints, JointType joint0, JointType joint1 ,JointType joint2) {
+	TrackingState joint0State = pJoints[joint0].TrackingState;
+	TrackingState joint1State = pJoints[joint1].TrackingState;
+	TrackingState joint2State = pJoints[joint2].TrackingState;
 
+	
+	// If we can't find either of these joints, exit
+	if ((joint0State == TrackingState_NotTracked) || (joint1State == TrackingState_NotTracked)|| (joint2State == TrackingState_NotTracked))
+	{
+		return 0.0;
+	}
+
+	std::vector<float> vector1
+	{ pJoints[joint0].Position.X - pJoints[joint1].Position.X , pJoints[joint0].Position.Y - pJoints[joint1].Position.Y , pJoints[joint0].Position.Z - pJoints[joint1].Position.Z };
+	std::vector<float> vector2
+	{ pJoints[joint2].Position.X - pJoints[joint1].Position.X , pJoints[joint2].Position.Y - pJoints[joint1].Position.Y , pJoints[joint2].Position.Z - pJoints[joint1].Position.Z };
+	
+	
+
+	float normv1 = norm(vector1);
+	float normv2 = norm(vector2);
+	float costheta = dot(vector1,vector2) / (normv1*normv2);
+	float theta = RadianToDegree(acos(costheta));
+
+	return theta;
+	// Don't draw if both points are inferred
+	/*if ((joint0State == TrackingState_Inferred) && (joint1State == TrackingState_Inferred))
+	{
+		return;
+	}*/
+
+	
+}
 
 /// Constructor
 myKinect::myKinect() :
 	m_pKinectSensor(NULL),
 	m_pCoordinateMapper(NULL),
 	m_pBodyFrameReader(NULL) {
-	csvfile.open("data.csv", std::ios::out);
+	//csvfile.open("data.csv", std::ios::out);
 }
 
 /// Destructor
@@ -555,6 +548,6 @@ myKinect::~myKinect()
 		m_pKinectSensor->Close();
 	}
 	SafeRelease(m_pKinectSensor);
-	csvfile.close();
+	//csvfile.close();
 }
 

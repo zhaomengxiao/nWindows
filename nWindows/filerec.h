@@ -52,7 +52,15 @@
 #include <vector>
 #include <array>
 #include <Qtime>
+#include <qtimer.h>
 #include <Eigen\Dense>
+struct CaliData
+{
+	int KneeR{0};
+	int KneeL{0};
+	int ElbowR{ 0 };
+	int ElbowL{ 0 };
+};
 
 class FileREC : public QObject
 {
@@ -68,27 +76,44 @@ public slots:
 
 public:
 	void setfilename(char* fanme);
+	//Update
 	void updateJoints(Joint jointdate[JointType_Count]);
 	void updateOrientations(JointOrientation Orientdata[JointType_Count]);
-	void updateSegCOM(std::array<Eigen::Vector3f, 13> segCOMdata);
+	void updateSegCOM(std::array<Eigen::Vector3f, 13>& segCOMdata);
+	void updateJointAngles(std::array<float, 4>& JointAngleData);
 	//输出关节位置
 	std::vector<Joint> jointPositions();
 	//输出关节旋转（四元数）
 	std::vector<JointOrientation> JointOrientations();
 	//输出segCOM位置
 	std::array<Eigen::Vector3f,13> segCOMs();
+	//输出4个单自由度关节角度
+	std::array<float, 4> JointAngles();
+	//输出cali角度的资讯
+	CaliData caliAngle;
+
 
 	void setfilehead();
 	void closefile();
 	//把四元数的文档转换成关节角度的文档
 	void Orient2angelFile();
+	void CalSubcaliAngle();
 private:
 	char* m_subName ;
 	std::ofstream jointsPositionfile;
 	std::ofstream jointsOrientfile;
+	std::ofstream jointsAnglefile;
 	std::vector<Joint> jointPosition_saved;
 	std::vector<JointOrientation> JointOrientation_saved;
 	std::array<Eigen::Vector3f,13> segCOM_saved;
+	std::array<float, 4> JointAngle_saved;
 	QTime fileTimeRec;
 	int frameNum{0};
+	//线程管理
+	
+	bool m_runStatus{true};
+public:
+	QTimer *filetimer;
+	void start();
+	void stop();
 };
