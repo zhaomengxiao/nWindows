@@ -17,6 +17,7 @@ extern bool bag;
 
 bool isSimpleMode;
 char* subjName = new char[20];
+QString qsubjname{"null"};
 //================================
 float F_spinebase;
 Eigen::Vector3f M_spinebase;
@@ -308,24 +309,24 @@ void MainWindow::updateSkeletonFrame()
 	//this->showdepthimage_label->setPixmap(QPixmap::fromImage(myCamera->depthImage));
 }
 
-void MainWindow::updateLCDnumber_date()
-{
-	// 获取系统当前时间
-	QDateTime dateTime = QDateTime::currentDateTime();
-	// 设置能显示的位数
-	ui.lcdNumber_date->setDigitCount(25);
-	// 设置显示的模式为十进制
-	ui.lcdNumber_date->setMode(QLCDNumber::Dec);
-	// 设置显示外观
-	ui.lcdNumber_date->setSegmentStyle(QLCDNumber::Flat);
-	// 设置样式
-	ui.lcdNumber_date->setStyleSheet("border: 1px solid green; color: green; background: silver;");
-	// 显示的内容
-	ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
-
-
-
-}
+//void MainWindow::updateLCDnumber_date()
+//{
+//	//// 获取系统当前时间
+//	//QDateTime dateTime = QDateTime::currentDateTime();
+//	//// 设置能显示的位数
+//	//ui.lcdNumber_date->setDigitCount(25);
+//	//// 设置显示的模式为十进制
+//	//ui.lcdNumber_date->setMode(QLCDNumber::Dec);
+//	//// 设置显示外观
+//	//ui.lcdNumber_date->setSegmentStyle(QLCDNumber::Flat);
+//	//// 设置样式
+//	//ui.lcdNumber_date->setStyleSheet("border: 1px solid green; color: green; background: silver;");
+//	//// 显示的内容
+//	//ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
+//
+//
+//
+//}
 //显示角度LCD
 void MainWindow::updateLCDnumber_angle()
 {
@@ -335,19 +336,28 @@ void MainWindow::updateLCDnumber_angle()
 	ui.lcdNumber_M_2->display(int(M_spinebase.y()));
 	ui.lcdNumber_M_3->display(int(M_spinebase.z()));
 	ui.lcdNumber_force->display(int(F_spinebase));
-	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
+//	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
 	if (isSimpleMode)
 	{
+		ui.lcdNumber_ShoulderR->display(int(mykinect->ShoulderAgR));
+		ui.lcdNumber_ShoulderL->display(int(mykinect->ShoulderAgL));
 		ui.lcdNumber_ElbowR->display(int(mykinect->ElbowAgR));
 		ui.lcdNumber_ElbowL->display(int(mykinect->ElbowAgL));
 		ui.lcdNumber_KneeR->display(int(mykinect->KneeAgR));
 		ui.lcdNumber_KneeL->display(int(mykinect->KneeAgL));
+		ui.lcdNumber_Spine->display(int(mykinect->SpineAg));
+		ui.lcdNumber_Neckfb->display(int(mykinect->NeckbfAg));
+		ui.lcdNumber_Necklr->display(int(mykinect->NecklrAg));
 	}
 	else
 	{
-		ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
-		ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
-		ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+		//ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
+		//ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
+		//ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+
+		//ui.lcdNumber_KneeR->display(int(mykinect->angles2.y() * 180 / PI));
+		//ui.lcdNumber_KneeL->display(int(mykinect->angles2.z() * 180 / PI));
+		//ui.lcdNumber_ElbowR->display(int(mykinect->angles2.x() * 180 / PI));
 	}
 	
 	
@@ -597,14 +607,14 @@ void MainWindow::SimpleMode(bool i)
 void MainWindow::LineEdit_subjName(QString str)
 {
 	qDebug() << str << endl;
-	
-	strcpy(subjName, str.toStdString().c_str());
+	qsubjname = str;
+	strcpy(subjName, qsubjname.toStdString().c_str());
 }
 
 
 //存储joint数据 
 void MainWindow::ready4Rec() {
-	if (subjName)
+	if (qsubjname == "null")
 	{
 		QMessageBox::warning(this, "Warning Message", "Key in subj Name first");
 		return;
@@ -620,6 +630,8 @@ void MainWindow::ready4Rec() {
 void MainWindow::on_pushButton_calibration_clicked()
 {
 	qDebug() << "start calibaration" << endl;
+	QMessageBox::information(this, "start calibaration", "processing...");
+	
 	this->startRec();
 	//10s 后自动停止
 	QTimer::singleShot(10000, this, SLOT(stopRec()));
@@ -645,6 +657,8 @@ void MainWindow::calSubcaliAngle()
 {
 	pSender->CalSubcaliAngle();
 	qDebug() << "calibration finished" << endl;
+	
+	QMessageBox::information(this, "calibration", "finished");
 }
 
 

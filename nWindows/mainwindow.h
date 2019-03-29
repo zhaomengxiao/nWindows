@@ -93,7 +93,7 @@ private slots:
 	void showSkeleton_clicked();
 	void updateVideoFrame();
 	void updateSkeletonFrame();
-	void updateLCDnumber_date();
+	//void updateLCDnumber_date();
 	void updateLCDnumber_angle();
 	void stopCamera();
 	void startCamera();

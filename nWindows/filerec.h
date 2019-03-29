@@ -60,6 +60,9 @@ struct CaliData
 	int KneeL{0};
 	int ElbowR{ 0 };
 	int ElbowL{ 0 };
+	float Spine{ 0.0};
+	int ShouderR{ 0 };
+	int ShouderL{ 0 };
 };
 
 class FileREC : public QObject
@@ -80,7 +83,7 @@ public:
 	void updateJoints(Joint jointdate[JointType_Count]);
 	void updateOrientations(JointOrientation Orientdata[JointType_Count]);
 	void updateSegCOM(std::array<Eigen::Vector3f, 13>& segCOMdata);
-	void updateJointAngles(std::array<float, 4>& JointAngleData);
+	void updateJointAngles(std::array<float, 9>& JointAngleData);
 	//输出关节位置
 	std::vector<Joint> jointPositions();
 	//输出关节旋转（四元数）
@@ -88,7 +91,7 @@ public:
 	//输出segCOM位置
 	std::array<Eigen::Vector3f,13> segCOMs();
 	//输出4个单自由度关节角度
-	std::array<float, 4> JointAngles();
+	std::array<float, 9> JointAngles();
 	//输出cali角度的资讯
 	CaliData caliAngle;
 
@@ -106,7 +109,7 @@ private:
 	std::vector<Joint> jointPosition_saved;
 	std::vector<JointOrientation> JointOrientation_saved;
 	std::array<Eigen::Vector3f,13> segCOM_saved;
-	std::array<float, 4> JointAngle_saved;
+	std::array<float, 9> JointAngle_saved;
 	QTime fileTimeRec;
 	int frameNum{0};
 	//线程管理

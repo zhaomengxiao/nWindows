@@ -92,7 +92,7 @@ void FileREC::setfilename(char * subjname)
 	//strcpy(m_fileName, bc.c_str());
 	jointsOrientfile.open(bc.c_str(), std::ios::app);
 
-	char  *c = "_4Angle.csv";
+	char  *c = "_Angle.csv";
 	std::string  cc = std::string(".\\Record\\") + std::string(subjname) + std::string(c);
 	//strcpy(m_fileName, bc.c_str());
 	jointsAnglefile.open(cc.c_str(), std::ios::app);
@@ -132,12 +132,12 @@ void FileREC::updateSegCOM(std::array<Eigen::Vector3f, 13>& segCOMdata)
 	segCOM_saved = segCOMdata;
 }
 
-void FileREC::updateJointAngles(std::array<float, 4>& JointAngleData)
+void FileREC::updateJointAngles(std::array<float, 9>& JointAngleData)
 {
 	JointAngle_saved = JointAngleData;
 }
 
-std::array<float, 4> FileREC::JointAngles()
+std::array<float, 9> FileREC::JointAngles()
 {
 	return JointAngle_saved;
 }
@@ -159,7 +159,7 @@ void FileREC::setfilehead()
 	if (jointsAnglefile.is_open())
 	{
 		//标题行
-		jointsAnglefile << "# " << "frame " << "," << "time " << "," << "ElbowR " << "," << "ElbowL " << "," << "KneeR" << "," << "KneeL"  << std::endl;
+		jointsAnglefile << "# " << "frame " << "," << "time " << "," << "ElbowR " << "," << "ElbowL " << "," << "KneeR" << "," << "KneeL" << "," <<"Spine" << "," <<"ShouderR" << "," <<"ShouderL" << "," <<"Neckfb" << "," <<"Necklr"<<std::endl;
 
 	}
 }
@@ -220,7 +220,7 @@ void FileREC::CalSubcaliAngle()
 {
 	
 	//从Subjname_cali_4Angle.csv读取data
-	char  *b = "_4Angle.csv";
+	char  *b = "_Angle.csv";
 	std::string  filename = std::string(".\\Record\\") + std::string(m_subName) + std::string(b);
 	QFile * p_file = new QFile(QString::fromStdString(filename));
 	if (!p_file->open(QIODevice::ReadOnly)) {
@@ -235,6 +235,10 @@ void FileREC::CalSubcaliAngle()
 	float ElbowL_ave{ 0 };
 	float KneeR_ave{ 0 };
 	float KneeL_ave{ 0 };
+	float Spine_ave{ 0 };
+	float ShoulderR_ave{ 0 };
+	float ShoulderL_ave{ 0 };
+
 	int num{ 0 };
 	while (!p_stream->atEnd())
 	{
@@ -244,7 +248,7 @@ void FileREC::CalSubcaliAngle()
 		{
 			continue;
 		}
-		if (blocks[2].toFloat() == 0 || blocks[3].toFloat() ==0 || blocks[4].toFloat() == 0 || blocks[5].toFloat() == 0)
+		if (blocks[2].toFloat() == 0 || blocks[3].toFloat() ==0 || blocks[4].toFloat() == 0 || blocks[5].toFloat() == 0 || blocks[6].toFloat() == 0 || blocks[7].toFloat() == 0 || blocks[8].toFloat() == 0)
 		{
 			continue;
 		}
@@ -256,6 +260,9 @@ void FileREC::CalSubcaliAngle()
 		ElbowL_ave += blocks[3].toFloat();
 		KneeR_ave += blocks[4].toFloat();
 		KneeL_ave += blocks[5].toFloat();
+		Spine_ave += blocks[6].toFloat();
+		ShoulderR_ave += blocks[7].toFloat();
+		ShoulderL_ave += blocks[8].toFloat();
 		num++;
 
 		
@@ -264,12 +271,18 @@ void FileREC::CalSubcaliAngle()
 	ElbowL_ave /= num;
 	KneeR_ave /= num;
 	KneeL_ave /= num;
-	
+	Spine_ave /= num;
+	ShoulderR_ave /= num;
+	ShoulderL_ave /= num;
+
 	caliAngle.ElbowR = -ElbowR_ave;
 	caliAngle.ElbowL = -ElbowL_ave;
 	caliAngle.KneeL = -KneeL_ave;
 	caliAngle.KneeR = -KneeR_ave;
-	qDebug() << "ave_angle" << caliAngle.ElbowR << caliAngle.ElbowL << caliAngle.KneeR << caliAngle.KneeL << endl;
+	caliAngle.Spine = -Spine_ave;
+	caliAngle.ShouderR = -ShoulderR_ave;
+	caliAngle.ShouderL = -ShoulderL_ave;
+	qDebug() << "ave_angle" << caliAngle.ElbowR << caliAngle.ElbowL << caliAngle.KneeR << caliAngle.KneeL << caliAngle.Spine <<caliAngle.ShouderR<<caliAngle.ShouderL<< endl;
 	p_file->close();
 }
 
@@ -347,9 +360,9 @@ void FileREC::processfile() {
 		std::cout << "failed to open jointsAnglefile." << std::endl;
 		return;
 	}
-	if (JointAngle_saved[0]>-180 && JointAngle_saved[1] > -180 && JointAngle_saved[2] > -180 && JointAngle_saved[3] > -180)
+	if (JointAngle_saved[0]>-180 && JointAngle_saved[1] > -180 && JointAngle_saved[2] > -180 && JointAngle_saved[3] > -180 && JointAngle_saved[4] > -180)
 	{
-		jointsAnglefile << frameNum << "," << fileTimeRec.elapsed() << "," << caliAngle.ElbowR - JointAngle_saved[0] << "," << caliAngle.ElbowL - JointAngle_saved[1] << "," << caliAngle.KneeR - JointAngle_saved[2] << "," << caliAngle.KneeL - JointAngle_saved[3] << std::endl;
+		jointsAnglefile << frameNum << "," << fileTimeRec.elapsed() << "," << caliAngle.ElbowR - JointAngle_saved[0] << "," << caliAngle.ElbowL - JointAngle_saved[1] << "," << caliAngle.KneeR - JointAngle_saved[2] << "," << caliAngle.KneeL - JointAngle_saved[3] << "," << caliAngle.Spine - JointAngle_saved[4] << "," << caliAngle.ShouderR - JointAngle_saved[5] << "," << caliAngle.ShouderL - JointAngle_saved[6] << "," << JointAngle_saved[7] << "," <<JointAngle_saved[8] <<std::endl;
 	}
 		
 
