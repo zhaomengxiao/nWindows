@@ -27,6 +27,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
+#include "QVTKWidget.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -91,6 +92,8 @@ public:
     QPushButton *pushButton_StartRec;
     QPushButton *pushButton_StopRec;
     QSpacerItem *horizontalSpacer;
+    QWidget *tab_3;
+    QVTKWidget *qvtkWidget;
     QWidget *tab_2;
     QPushButton *pushButton_realtimedata;
     QScrollArea *chartscrollArea;
@@ -670,6 +673,12 @@ public:
         saveImageButton->raise();
         LCDwidget_3->raise();
         LCDwidget_4->raise();
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        qvtkWidget = new QVTKWidget(tab_3);
+        qvtkWidget->setObjectName(QStringLiteral("qvtkWidget"));
+        qvtkWidget->setGeometry(QRect(30, 30, 1031, 561));
+        tabWidget->addTab(tab_3, QString());
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         pushButton_realtimedata = new QPushButton(tab_2);
@@ -748,7 +757,7 @@ public:
         QObject::connect(checkBox_2, SIGNAL(clicked(bool)), MainWindowClass, SLOT(SimpleMode(bool)));
         QObject::connect(pushButton_ready, SIGNAL(clicked()), MainWindowClass, SLOT(ready4Rec()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);
@@ -837,6 +846,7 @@ public:
         pushButton_StartRec->setText(QApplication::translate("MainWindowClass", "StartREC", nullptr));
         pushButton_StopRec->setText(QApplication::translate("MainWindowClass", "StopREC", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "View", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "\351\241\265", nullptr));
         pushButton_realtimedata->setText(QApplication::translate("MainWindowClass", "RealTime", nullptr));
         pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "OpenRecord", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Charts", nullptr));

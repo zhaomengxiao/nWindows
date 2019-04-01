@@ -1,6 +1,9 @@
 #include "mainwindow.h"
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
+
+
+
 //a function that turn cvMat file into QImage
 QImage  Mat2QImage(cv::Mat cvImg);
 
@@ -22,6 +25,7 @@ QString qsubjname{"null"};
 float F_spinebase;
 Eigen::Vector3f M_spinebase;
 
+
 //组装区
 MainWindow::MainWindow(QWidget *parent)
 	: QMainWindow(parent)
@@ -30,7 +34,11 @@ MainWindow::MainWindow(QWidget *parent)
 	//顯示中文亂碼解決實例
 	//ui.pushButton->setText(QString::fromLocal8Bit("显示图片"));
 	
-	
+	//vtk场景绘制
+	//drawVTKscene();
+	//std::thread t(&MainWindow::drawVTKscene, this);
+	//t.detach();
+
 	//设置背景色
 	//this->setStyleSheet("background-color:#464652;color:#E8E8E8");
 	//this->setStyleSheet("");
@@ -49,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
 	createAction();
 	createMenu();
 	connectSignalSlot();
+	
 	//显示系统时间
 	lcdtimer->setInterval(1000);
 	lcdtimer->start();
@@ -129,6 +138,106 @@ void MainWindow::connectSignalSlot()
 	connect(lcdtimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_date()));
 	connect(ui.saveImageButton, SIGNAL(clicked()),
 		this, SLOT(on_saveImageButton_clicked()));
+}
+
+int MainWindow::drawVTKscene()
+{
+
+	//com 为红色
+	for (int i = 0; i < 13; i++)
+	{
+		scene->COMSphere[i].Actor()->GetProperty()->SetColor(1, 0, 0);
+	}
+	
+
+
+
+	// Create a renderer, render window, and interactor
+	scene->p_renderer = vtkRenderer::New();
+	scene->p_renderWindow = vtkRenderWindow::New();
+	scene->p_renderWindow->AddRenderer(scene->p_renderer);
+	scene->p_renderWindow->SetSize(900, 600);
+	
+	
+	//相机设置
+	vtkSmartPointer<vtkCamera>myCamera = vtkSmartPointer<vtkCamera>::New();
+	myCamera->SetClippingRange(0.0475, 2.3786); //这些值随便设置的，为了演示用法而已
+	myCamera->SetFocalPoint(0.0573, -0.2134, -0.0523);
+	myCamera->SetPosition(0.3245, -0.1139, -0.2932);
+	myCamera->ComputeViewPlaneNormal();
+	myCamera->SetViewUp(-0.2234, 0.9983, 0.0345);
+	scene->p_renderer->SetActiveCamera(myCamera);
+	
+	scene->p_renderWindowInteractor =
+		vtkSmartPointer<vtkRenderWindowInteractor>::New();
+	scene->p_renderWindowInteractor->SetRenderWindow(scene->p_renderWindow);
+	
+	
+
+	// Add the actor to the scene
+	//++++++
+	//exp:renderer->AddActor(wrist_R.Actor());
+
+	scene->p_renderer->AddActor(scene->arrow.Actor());
+	//renderer->AddActor(rArmCOM.Actor());
+	for (int i = 0; i < 13; i++)
+	{
+		scene->p_renderer->AddActor(scene->COMSphere[i].Actor());
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		scene->p_renderer->AddActor(scene->jointsSphere[i].Actor());
+	}
+
+	//++++++
+	scene->p_renderer->AddActor(scene->camera.Actor());
+
+
+	//画坐标轴
+	vtkSmartPointer<vtkAxesActor> axes =
+		vtkSmartPointer<vtkAxesActor>::New();
+	axes->SetPosition(0, 0, 0);
+	axes->SetTotalLength(500, 500, 500);
+	scene->p_renderer->AddActor(axes);
+	scene->p_renderer->ResetCamera();
+	scene->p_renderer->SetBackground(.1, .2, .3); // Background color white
+
+	// Render and interact
+	scene->p_renderWindow->Render();
+
+	// Initialize must be called prior to creating timer events.
+	//ui.qvtkWidget->SetRenderWindow(scene->p_renderWindow);
+	scene->p_renderWindowInteractor->Initialize();
+
+	// Sign up to receive TimerEvent
+	vtkSmartPointer<vtkTimerCallback> cb =
+		vtkSmartPointer<vtkTimerCallback>::New();
+	//++++++
+	//exp:cb->actor_wrist_R = wrist_R.Actor();
+	//	  cb->actor_wrist_L = wrist_L.Actor();
+	//	  cb->actor_elbow_R = elbow_R.Actor();
+	cb->actor_arrow = scene->arrow.Actor();
+	//cb->actor_rArmCOM = rArmCOM.Actor();
+	for (int i = 0; i < 13; i++)
+	{
+		cb->actor_COMs[i] = scene->COMSphere[i].Actor();
+	}
+	for (int i = 0; i < 25; i++)
+	{
+		cb->actor_joints[i] = scene->jointsSphere[i].Actor();
+	}
+	//++++++
+	scene->p_renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);
+
+	int timerId = scene->p_renderWindowInteractor->CreateRepeatingTimer(33);
+	//std::cout << "timerId: " << timerId << std::endl;
+	
+	
+	// Start the interaction and timer
+	scene->p_renderWindowInteractor->Start();
+
+	return EXIT_SUCCESS;
+
 }
 
 

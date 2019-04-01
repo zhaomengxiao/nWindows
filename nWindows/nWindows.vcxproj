@@ -237,6 +237,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="myKinect.cpp" />
+    <ClCompile Include="vtk.cpp" />
+    <ClCompile Include="vtktimercallback.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h" />
@@ -263,6 +265,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="vtk.h" />
+    <ClInclude Include="vtkshape.h" />
+    <ClInclude Include="vtktimercallback.h" />
     <QtMoc Include="chart.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQuickWidgets;.\Qt5Chartsd.lib;E:\cppLibrary\eigen;C:\Program Files\OpenNI2\Include</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">.\GeneratedFiles;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName)\.;$(QTDIR)\include\QtCore;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtOpenGL;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQuickWidgets;.\Qt5Chartsd.lib;E:\cppLibrary\eigen;C:\Program Files\OpenNI2\Include</IncludePath>

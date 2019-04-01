@@ -54,6 +54,12 @@
     <ClCompile Include="linechart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="vtk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vtktimercallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -96,6 +102,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="linechart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vtk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vtkshape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="vtktimercallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -28,6 +28,8 @@
 #include <math.h>
 #include <fstream>
 
+//vtk
+#include "vtk.h"
 
 
 QT_CHARTS_USE_NAMESPACE
@@ -80,11 +82,17 @@ private://**私有成员变量**
 	//FileREC *recorder = NULL;
 	//QTimer *filetimer;
 	QThread *thread;
+	
+	//vtk scene
+	VTK *scene;
+public:
+	int drawVTKscene();   //绘制3d场景
 private://**私有函数**
 	//界面
 	void createAction();   //创建动作
 	void createMenu();     //创建菜单
 	void connectSignalSlot(); //链接信号和槽
+	
 	//功能
 private slots:
 	void on_pushButton_calibration_clicked();
