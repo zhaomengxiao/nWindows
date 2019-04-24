@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QTimer>
 #include <QLayout>
+#include <QTreeWidget>
 //charts
 #include <QtCharts/qchartview.h>
 #include <QtCharts\qlineseries.h>
@@ -41,6 +42,7 @@ class MainWindow : public QMainWindow
 public:
 	MainWindow(QWidget *parent = Q_NULLPTR);
 	~MainWindow();
+	friend class VTK;
 private://**私有成员变量**
 	Ui::MainWindowClass ui;
 	
@@ -85,6 +87,10 @@ private://**私有成员变量**
 	
 	//vtk scene
 	VTK *scene;
+
+	//文件目录
+	QTreeWidgetItem * root;
+	QString rootPath;
 public:
 	int drawVTKscene();   //绘制3d场景
 private://**私有函数**
@@ -106,7 +112,7 @@ private slots:
 	void stopCamera();
 	void startCamera();
 	void on_saveImageButton_clicked();
-	void on_pushButton_openrecord_clicked();
+	//void on_pushButton_openrecord_clicked();
 	//面板数据输入
 	void ListCurChange(int row);
 	void LineEdit_f(QString str);
@@ -120,7 +126,16 @@ private slots:
 
 	//记录数据流程控制
 	void ready4Rec();
+	void releaseOKbutton();
 	void startRec();
 	void stopRec();
 	void calSubcaliAngle(); 
+	void error_openfile();
+
+	//文件预览界面
+	void Click(QTreeWidgetItem *item);
+	void DoubleClick(QTreeWidgetItem *item);
+	void Expend(QTreeWidgetItem *item);
+	void UpdateDir();
+	QFileInfoList allFile(QTreeWidgetItem *item,QString path);
 };

@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include <QtCore/QFile>
 #include <QtCore/QTextStream>
-
-
+#include <qdesktopservices.h>
+#include <qprocess.h>
 
 //a function that turn cvMat file into QImage
 QImage  Mat2QImage(cv::Mat cvImg);
@@ -33,11 +33,29 @@ MainWindow::MainWindow(QWidget *parent)
 	ui.setupUi(this);
 	//顯示中文亂碼解決實例
 	//ui.pushButton->setText(QString::fromLocal8Bit("显示图片"));
-	
+	ui.label_recording->hide();
 	//vtk场景绘制
 	//drawVTKscene();
-	//std::thread t(&MainWindow::drawVTKscene, this);
-	//t.detach();
+	//ui.qvtkWidget->SetRenderWindow(scene->p_renderWindow);
+	std::thread t(&VTK::rend, VTK());
+	t.detach();
+
+
+	//文件预览界面
+	//清理测试数据
+	ui.treeWidget->clear();
+	rootPath = ".\\Record";
+	//ui.treeWidget->setColumnCount(3);
+	//设置标题，设置四列
+	ui.treeWidget->headerItem()->setText(0, QStringLiteral("File Record"));
+	ui.treeWidget->headerItem()->setText(1, QStringLiteral("Path"));
+	//ui.treeWidget->headerItem()->setText(5, "head4");
+	root = new QTreeWidgetItem({ "Record",rootPath });
+	ui.treeWidget->addTopLevelItem(root);
+	//root->addChild(new QTreeWidgetItem); //加入一个空子节点，以激活展开功能
+	////////////////////////////////////////////////////////////////////////////////////////
+	allFile(root, rootPath);
+
 
 	//设置背景色
 	//this->setStyleSheet("background-color:#464652;color:#E8E8E8");
@@ -136,108 +154,15 @@ void MainWindow::connectSignalSlot()
 	connect(skeletontimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_angle()));
 	lcdtimer = new QTimer;
 	connect(lcdtimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_date()));
-	connect(ui.saveImageButton, SIGNAL(clicked()),
-		this, SLOT(on_saveImageButton_clicked()));
+	//connect(ui.saveImageButton, SIGNAL(clicked()),this, SLOT(on_saveImageButton_clicked()));
+	
+	connect(pSender, SIGNAL(Error_openfile()), this, SLOT(error_openfile()));
 }
 
 int MainWindow::drawVTKscene()
 {
 
-	//com 为红色
-	for (int i = 0; i < 13; i++)
-	{
-		scene->COMSphere[i].Actor()->GetProperty()->SetColor(1, 0, 0);
-	}
-	
-
-
-
-	// Create a renderer, render window, and interactor
-	scene->p_renderer = vtkRenderer::New();
-	scene->p_renderWindow = vtkRenderWindow::New();
-	scene->p_renderWindow->AddRenderer(scene->p_renderer);
-	scene->p_renderWindow->SetSize(900, 600);
-	
-	
-	//相机设置
-	vtkSmartPointer<vtkCamera>myCamera = vtkSmartPointer<vtkCamera>::New();
-	myCamera->SetClippingRange(0.0475, 2.3786); //这些值随便设置的，为了演示用法而已
-	myCamera->SetFocalPoint(0.0573, -0.2134, -0.0523);
-	myCamera->SetPosition(0.3245, -0.1139, -0.2932);
-	myCamera->ComputeViewPlaneNormal();
-	myCamera->SetViewUp(-0.2234, 0.9983, 0.0345);
-	scene->p_renderer->SetActiveCamera(myCamera);
-	
-	scene->p_renderWindowInteractor =
-		vtkSmartPointer<vtkRenderWindowInteractor>::New();
-	scene->p_renderWindowInteractor->SetRenderWindow(scene->p_renderWindow);
-	
-	
-
-	// Add the actor to the scene
-	//++++++
-	//exp:renderer->AddActor(wrist_R.Actor());
-
-	scene->p_renderer->AddActor(scene->arrow.Actor());
-	//renderer->AddActor(rArmCOM.Actor());
-	for (int i = 0; i < 13; i++)
-	{
-		scene->p_renderer->AddActor(scene->COMSphere[i].Actor());
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		scene->p_renderer->AddActor(scene->jointsSphere[i].Actor());
-	}
-
-	//++++++
-	scene->p_renderer->AddActor(scene->camera.Actor());
-
-
-	//画坐标轴
-	vtkSmartPointer<vtkAxesActor> axes =
-		vtkSmartPointer<vtkAxesActor>::New();
-	axes->SetPosition(0, 0, 0);
-	axes->SetTotalLength(500, 500, 500);
-	scene->p_renderer->AddActor(axes);
-	scene->p_renderer->ResetCamera();
-	scene->p_renderer->SetBackground(.1, .2, .3); // Background color white
-
-	// Render and interact
-	scene->p_renderWindow->Render();
-
-	// Initialize must be called prior to creating timer events.
-	//ui.qvtkWidget->SetRenderWindow(scene->p_renderWindow);
-	scene->p_renderWindowInteractor->Initialize();
-
-	// Sign up to receive TimerEvent
-	vtkSmartPointer<vtkTimerCallback> cb =
-		vtkSmartPointer<vtkTimerCallback>::New();
-	//++++++
-	//exp:cb->actor_wrist_R = wrist_R.Actor();
-	//	  cb->actor_wrist_L = wrist_L.Actor();
-	//	  cb->actor_elbow_R = elbow_R.Actor();
-	cb->actor_arrow = scene->arrow.Actor();
-	//cb->actor_rArmCOM = rArmCOM.Actor();
-	for (int i = 0; i < 13; i++)
-	{
-		cb->actor_COMs[i] = scene->COMSphere[i].Actor();
-	}
-	for (int i = 0; i < 25; i++)
-	{
-		cb->actor_joints[i] = scene->jointsSphere[i].Actor();
-	}
-	//++++++
-	scene->p_renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);
-
-	int timerId = scene->p_renderWindowInteractor->CreateRepeatingTimer(33);
-	//std::cout << "timerId: " << timerId << std::endl;
-	
-	
-	// Start the interaction and timer
-	scene->p_renderWindowInteractor->Start();
-
-	return EXIT_SUCCESS;
-
+	return 0;
 }
 
 
@@ -493,173 +418,173 @@ void MainWindow::on_saveImageButton_clicked()
 	cv::imwrite("E:/backremoved.png", backmoveimage);
 }
 //绘制曲线图
-void MainWindow::on_pushButton_openrecord_clicked()
-{
-	//画折线
-	///x
-	/*QGraphicsScene scene_x;
-	QSplineSeries *series_x = new QSplineSeries();
-	
-	series_x->setName("spline");
-	series_x->append(0, 13);
-	series_x->append(2, 18);
-	series_x->append(3, 20);
-	series_x->append(7, 60);
-	series_x->append(10, 50);
-	*series_x << QPointF(11, 10) << QPointF(13, 30) << QPointF(17, 60) << QPointF(18, 30) << QPointF(20, 20);
-	QChart *chart_x = new QChart();
-	chart_x->legend()->hide();
-	chart_x->addSeries(series_x);
-	chart_x->setTitle("x");
-	chart_x->createDefaultAxes();
-	chart_x->axisY()->setRange(10, 80);
-	
-	QChartView *mychartview_x = new QChartView();
-	mychartview_x->setChart(chart_x);
-	mychartview_x->setRenderHint(QPainter::Antialiasing);
-	mychartview_x->chart()->setTheme(QChart::ChartThemeBrownSand);
-	series_x->setPen(QPen(Qt::red, 1, Qt::SolidLine));
-	ui.chartscrollArea->setWidget(mychartview_x);
-	///y
-	QGraphicsScene scene_y;
-	QSplineSeries *series_y = new QSplineSeries();
-	
-	series_y->setName("spline");
-	series_y->append(0, 6);
-	series_y->append(2, 4);
-	series_y->append(3, 8);
-	series_y->append(7, 4);
-	series_y->append(10, 5);
-	*series_y << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
-	QChart *chart_y = new QChart();
-	chart_y->legend()->hide();
-	chart_y->addSeries(series_y);
-	chart_y->setTitle("y");
-	chart_y->createDefaultAxes();
-	chart_y->axisY()->setRange(0, 10);
-
-	QChartView *mychartview_y = new QChartView();
-	mychartview_y->setChart(chart_y);
-	mychartview_y->setRenderHint(QPainter::Antialiasing);
-	mychartview_y->chart()->setTheme(QChart::ChartThemeBrownSand);
-	series_y->setPen(QPen(Qt::green, 1, Qt::SolidLine));
-	ui.chartscrollArea_2->setWidget(mychartview_y);
-	///z
-	QGraphicsScene scene_z;
-	QSplineSeries *series_z = new QSplineSeries();
-	
-	series_z->setName("z");
-	series_z->append(0, 140);
-	series_z->append(2, 145);
-	series_z->append(3, 180);
-	series_z->append(7, 150);
-	series_z->append(10, 160);
-	*series_z << QPointF(11, 160) << QPointF(13, 130) << QPointF(17, 120) << QPointF(18, 100) << QPointF(20, 80);
-	QChart *chart_z = new QChart();
-	chart_z->legend()->hide();
-	chart_z->addSeries(series_z);
-	chart_z->setTitle("z");
-	chart_z->createDefaultAxes();
-	chart_z->axisY()->setRange(70, 180);
-
-	QChartView *mychartview_z = new QChartView();
-	mychartview_z->setChart(chart_z);
-	mychartview_z->setRenderHint(QPainter::Antialiasing);
-	mychartview_z->chart()->setTheme(QChart::ChartThemeBrownSand);
-	series_z->setPen(QPen(Qt::blue, 1, Qt::SolidLine));
-	ui.chartscrollArea_3->setWidget(mychartview_z);*/
-
-	//选择要打开的文件
-		//定义文件对话框类
-	QFileDialog *fileDialog = new QFileDialog(this);
-
-	//定义文件对话框标题
-	fileDialog->setWindowTitle("Select the file");
-
-	//设置默认文件路径
-	//fileDialog->setDirectory(".");
-
-	//设置文件过滤器
-	fileDialog->setNameFilter(tr("file(*.csv *.txt )"));
-
-	//设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
-	fileDialog->setFileMode(QFileDialog::ExistingFiles);
-
-	//设置视图模式
-	fileDialog->setViewMode(QFileDialog::Detail);
-
-	//打印所有选择的文件的路径
-	
-	QStringList fileNames;
-
-	if (fileDialog->exec())
-	{
-		fileNames = fileDialog->selectedFiles();
-	}
-	//qDebug() << fileNames[0] << endl;
-	/*for (auto tmp : fileNames) {
-		qDebug() << tmp << endl;
-
-	}*/
-	//=====read file=====
-	std::vector<double> frames;
-	std::vector<double> X,Y,Z;
-	QFile jointPosition("./jointsPosition.csv");
-	if (!jointPosition.open(QIODevice::ReadOnly )) {
-		qDebug() << "cant read joint file" << endl;
-	}
-
-	QTextStream stream(&jointPosition);
-	while (!stream.atEnd())
-	{
-		QString line = stream.readLine();
-		if (line.startsWith("#"))
-		{
-			continue;
-		}
-		
-		QStringList values = line.split(",", QString::SkipEmptyParts);
-		if (values[2].toInt() == 4)/*选择要画图的节点*/
-		{
-			frames.push_back(values[0].toDouble());
-			X.push_back(values[4].toDouble());
-			Y.push_back(values[5].toDouble());
-			Z.push_back(values[6].toDouble());
-		}
-		
-	}
-	/*std::vector<double> X{ 0,1,2,3,4 };
-	std::vector<double> Y{ 0,1,2,3,4 };*/
-	LineChart *chart_x = new LineChart();
-	chart_x->SetXY(frames, X);
-	chart_x->setTitle("Position_X");
-	chart_x->legend()->hide();
-	chart_x->setAnimationOptions(QChart::AllAnimations);
-	QChartView *mychartview = new QChartView();
-	mychartview->setChart(chart_x);
-	mychartview->setRenderHint(QPainter::Antialiasing);
-	ui.chartscrollArea->setWidget(mychartview);
-
-	LineChart *chart_y = new LineChart();
-	chart_y->SetXY(frames, Y);
-	chart_y->setTitle("Position_Y");
-	chart_y->legend()->hide();
-	chart_y->setAnimationOptions(QChart::AllAnimations);
-	QChartView *mychartview_y = new QChartView();
-	mychartview_y->setChart(chart_y);
-	mychartview_y->setRenderHint(QPainter::Antialiasing);
-	ui.chartscrollArea_2->setWidget(mychartview_y);
-
-	LineChart *chart_z = new LineChart();
-	chart_z->SetXY(frames, Z);
-	chart_z->setTitle("Position_Z");
-	chart_z->legend()->hide();
-	chart_z->setAnimationOptions(QChart::AllAnimations);
-	QChartView *mychartview_z = new QChartView();
-	mychartview_z->setChart(chart_z);
-	mychartview_z->setRenderHint(QPainter::Antialiasing);
-	ui.chartscrollArea_3->setWidget(mychartview_z);
-}
+//void MainWindow::on_pushButton_openrecord_clicked()
+//{
+//	//画折线
+//	///x
+//	/*QGraphicsScene scene_x;
+//	QSplineSeries *series_x = new QSplineSeries();
+//	
+//	series_x->setName("spline");
+//	series_x->append(0, 13);
+//	series_x->append(2, 18);
+//	series_x->append(3, 20);
+//	series_x->append(7, 60);
+//	series_x->append(10, 50);
+//	*series_x << QPointF(11, 10) << QPointF(13, 30) << QPointF(17, 60) << QPointF(18, 30) << QPointF(20, 20);
+//	QChart *chart_x = new QChart();
+//	chart_x->legend()->hide();
+//	chart_x->addSeries(series_x);
+//	chart_x->setTitle("x");
+//	chart_x->createDefaultAxes();
+//	chart_x->axisY()->setRange(10, 80);
+//	
+//	QChartView *mychartview_x = new QChartView();
+//	mychartview_x->setChart(chart_x);
+//	mychartview_x->setRenderHint(QPainter::Antialiasing);
+//	mychartview_x->chart()->setTheme(QChart::ChartThemeBrownSand);
+//	series_x->setPen(QPen(Qt::red, 1, Qt::SolidLine));
+//	ui.chartscrollArea->setWidget(mychartview_x);
+//	///y
+//	QGraphicsScene scene_y;
+//	QSplineSeries *series_y = new QSplineSeries();
+//	
+//	series_y->setName("spline");
+//	series_y->append(0, 6);
+//	series_y->append(2, 4);
+//	series_y->append(3, 8);
+//	series_y->append(7, 4);
+//	series_y->append(10, 5);
+//	*series_y << QPointF(11, 1) << QPointF(13, 3) << QPointF(17, 6) << QPointF(18, 3) << QPointF(20, 2);
+//	QChart *chart_y = new QChart();
+//	chart_y->legend()->hide();
+//	chart_y->addSeries(series_y);
+//	chart_y->setTitle("y");
+//	chart_y->createDefaultAxes();
+//	chart_y->axisY()->setRange(0, 10);
+//
+//	QChartView *mychartview_y = new QChartView();
+//	mychartview_y->setChart(chart_y);
+//	mychartview_y->setRenderHint(QPainter::Antialiasing);
+//	mychartview_y->chart()->setTheme(QChart::ChartThemeBrownSand);
+//	series_y->setPen(QPen(Qt::green, 1, Qt::SolidLine));
+//	ui.chartscrollArea_2->setWidget(mychartview_y);
+//	///z
+//	QGraphicsScene scene_z;
+//	QSplineSeries *series_z = new QSplineSeries();
+//	
+//	series_z->setName("z");
+//	series_z->append(0, 140);
+//	series_z->append(2, 145);
+//	series_z->append(3, 180);
+//	series_z->append(7, 150);
+//	series_z->append(10, 160);
+//	*series_z << QPointF(11, 160) << QPointF(13, 130) << QPointF(17, 120) << QPointF(18, 100) << QPointF(20, 80);
+//	QChart *chart_z = new QChart();
+//	chart_z->legend()->hide();
+//	chart_z->addSeries(series_z);
+//	chart_z->setTitle("z");
+//	chart_z->createDefaultAxes();
+//	chart_z->axisY()->setRange(70, 180);
+//
+//	QChartView *mychartview_z = new QChartView();
+//	mychartview_z->setChart(chart_z);
+//	mychartview_z->setRenderHint(QPainter::Antialiasing);
+//	mychartview_z->chart()->setTheme(QChart::ChartThemeBrownSand);
+//	series_z->setPen(QPen(Qt::blue, 1, Qt::SolidLine));
+//	ui.chartscrollArea_3->setWidget(mychartview_z);*/
+//
+//	//选择要打开的文件
+//		//定义文件对话框类
+//	QFileDialog *fileDialog = new QFileDialog(this);
+//
+//	//定义文件对话框标题
+//	fileDialog->setWindowTitle("Select the file");
+//
+//	//设置默认文件路径
+//	//fileDialog->setDirectory(".");
+//
+//	//设置文件过滤器
+//	fileDialog->setNameFilter(tr("file(*.csv *.txt )"));
+//
+//	//设置可以选择多个文件,默认为只能选择一个文件QFileDialog::ExistingFiles
+//	fileDialog->setFileMode(QFileDialog::ExistingFiles);
+//
+//	//设置视图模式
+//	fileDialog->setViewMode(QFileDialog::Detail);
+//
+//	//打印所有选择的文件的路径
+//	
+//	QStringList fileNames;
+//
+//	if (fileDialog->exec())
+//	{
+//		fileNames = fileDialog->selectedFiles();
+//	}
+//	//qDebug() << fileNames[0] << endl;
+//	/*for (auto tmp : fileNames) {
+//		qDebug() << tmp << endl;
+//
+//	}*/
+//	//=====read file=====
+//	std::vector<double> frames;
+//	std::vector<double> X,Y,Z;
+//	QFile jointPosition("./jointsPosition.csv");
+//	if (!jointPosition.open(QIODevice::ReadOnly )) {
+//		qDebug() << "cant read joint file" << endl;
+//	}
+//
+//	QTextStream stream(&jointPosition);
+//	while (!stream.atEnd())
+//	{
+//		QString line = stream.readLine();
+//		if (line.startsWith("#"))
+//		{
+//			continue;
+//		}
+//		
+//		QStringList values = line.split(",", QString::SkipEmptyParts);
+//		if (values[2].toInt() == 4)/*选择要画图的节点*/
+//		{
+//			frames.push_back(values[0].toDouble());
+//			X.push_back(values[4].toDouble());
+//			Y.push_back(values[5].toDouble());
+//			Z.push_back(values[6].toDouble());
+//		}
+//		
+//	}
+//	/*std::vector<double> X{ 0,1,2,3,4 };
+//	std::vector<double> Y{ 0,1,2,3,4 };*/
+//	LineChart *chart_x = new LineChart();
+//	chart_x->SetXY(frames, X);
+//	chart_x->setTitle("Position_X");
+//	chart_x->legend()->hide();
+//	chart_x->setAnimationOptions(QChart::AllAnimations);
+//	QChartView *mychartview = new QChartView();
+//	mychartview->setChart(chart_x);
+//	mychartview->setRenderHint(QPainter::Antialiasing);
+//	ui.chartscrollArea->setWidget(mychartview);
+//
+//	LineChart *chart_y = new LineChart();
+//	chart_y->SetXY(frames, Y);
+//	chart_y->setTitle("Position_Y");
+//	chart_y->legend()->hide();
+//	chart_y->setAnimationOptions(QChart::AllAnimations);
+//	QChartView *mychartview_y = new QChartView();
+//	mychartview_y->setChart(chart_y);
+//	mychartview_y->setRenderHint(QPainter::Antialiasing);
+//	ui.chartscrollArea_2->setWidget(mychartview_y);
+//
+//	LineChart *chart_z = new LineChart();
+//	chart_z->SetXY(frames, Z);
+//	chart_z->setTitle("Position_Z");
+//	chart_z->legend()->hide();
+//	chart_z->setAnimationOptions(QChart::AllAnimations);
+//	QChartView *mychartview_z = new QChartView();
+//	mychartview_z->setChart(chart_z);
+//	mychartview_z->setRenderHint(QPainter::Antialiasing);
+//	ui.chartscrollArea_3->setWidget(mychartview_z);
+//}
 //从列表选择想要查看的关节
 void MainWindow::ListCurChange(int row)
 {
@@ -728,50 +653,179 @@ void MainWindow::ready4Rec() {
 		QMessageBox::warning(this, "Warning Message", "Key in subj Name first");
 		return;
 	}
+	//记录subjinfo
+	SubjInfo Paneldata;
+	Paneldata.subjname = ui.lineEdit_subjectName->text();
+	Paneldata.gender = ui.lineEdit_gender->text();
+	Paneldata.age = ui.spinBox_age->text().toInt();
+	Paneldata.height = ui.lineEdit_height->text().toFloat();
+	Paneldata.weight = ui.lineEdit_bodyWeight->text().toFloat();
+	Paneldata.preside = ui.lineEdit_preside->text();
+	Paneldata.bagPosi[0] = ui.lineEdit_bagX->text().toFloat();
+	Paneldata.bagPosi[1] = ui.lineEdit_bagY->text().toFloat();
+	Paneldata.bagPosi[2] = ui.lineEdit_bagZ->text().toFloat();
+	Paneldata.bagWeight = ui.lineEdit_f->text().toFloat();
+	Paneldata.bag = ui.checkBox->isChecked();
 
-	pSender->setfilename(subjName);
-	pSender->setfilehead();
+	Paneldata.print();
+
+	pSender->setSubjInfo(Paneldata);
+	pSender->creatDir();
+	//pSender->setfilename(subjName);
+	//pSender->setfilehead();
 	qDebug() << "ready " << endl;
 
+	//按键不能按，直到更改username
+	ui.pushButton_ready->setDisabled(true);
+	ui.pushButton_ready->setStyleSheet("background-color: rgb(170, 0, 255);");
 }
+
+void MainWindow::releaseOKbutton()
+{
+	ui.pushButton_ready->setDisabled(false);
+	ui.pushButton_ready->setStyleSheet("background-color: rgb(105, 165, 90);");
+	ui.pushButton_calibration->setDisabled(false);
+	ui.pushButton_calibration->setStyleSheet("background-color: rgb(105, 165, 90);");
+
+}
+
 
 //calibration
 void MainWindow::on_pushButton_calibration_clicked()
 {
+	pSender->creatFiles("cali", pSender->m_subjpath);
+	pSender->setfilehead();
 	qDebug() << "start calibaration" << endl;
+	ui.statusBar->showMessage("start calibaration", 2000);
 	QMessageBox::information(this, "start calibaration", "processing...");
-	
-	this->startRec();
+	ui.statusBar->showMessage("processing...");
+	pSender->start();
 	//10s 后自动停止
 	QTimer::singleShot(10000, this, SLOT(stopRec()));
 
 	//计算平均角度
 	QTimer::singleShot(15000, this, SLOT(calSubcaliAngle()));
+	//按键不能按，直到更改username
+	ui.pushButton_calibration ->setDisabled(true);
+	ui.pushButton_calibration ->setStyleSheet("background-color: rgb(170, 0, 255);");
 }
 
 
 void MainWindow::startRec()
 {
+	pSender->m_trailName = ui.lineEdit_trailname->text();
+	pSender->creatFiles(pSender->m_trailName, pSender->m_subjpath);
+	pSender->setfilehead();
+
 	pSender->start();
-	qDebug() << "start Rec  at " << 30 << " fps" << endl;
+	qDebug() << "start Rec  at " << 20 << " fps" << endl;
+	ui.statusBar->showMessage("Start Rec, at 20 fps", 2000);
 }
 
 void MainWindow::stopRec()
 {
 	pSender->stop();
 	qDebug() << "stop Rec succeed" << endl;
+	ui.statusBar->showMessage("Stop Rec Succeed", 2000);
 }
 
 void MainWindow::calSubcaliAngle()
 {
 	pSender->CalSubcaliAngle();
 	qDebug() << "calibration finished" << endl;
-	
-	QMessageBox::information(this, "calibration", "finished");
+	ui.statusBar->showMessage("Calibration Finished", 2000);
+	QMessageBox::information(this, "Calibration", "Finished");
 }
 
+void MainWindow::error_openfile()
+{
+	ui.statusBar->showMessage("error_openfile!!!", 2000);
+	QMessageBox::information(this, "Calibration", "Can't Open file!!!");
+	ui.pushButton_StartRec->setDisabled(true);
+	ui.pushButton_StopRec->click();
+}
+
+void MainWindow::Click(QTreeWidgetItem * item)
+{
+	qDebug() << "click" << item->text(1) << endl;
+}
+
+void MainWindow::DoubleClick(QTreeWidgetItem * item)
+{
+	qDebug() << "double click" <<item->text(0)<< endl;
+
+	//QString path = QDir::currentPath();//获取程序当前目录
+	//path.replace("/", "\\");//将地址中的"/"替换为"\"，因为在Windows下使用的是"\"。
+	//
+	//if (item->text(0) == QString(".\\Record"))
+	//{
+		QProcess::startDetached("explorer " + item->text(1));//打开上面获取的目录
+	//}
+	
+	//QProcess::execute("notepad.exe");
+}
+
+void MainWindow::Expend(QTreeWidgetItem * item)
+{
+	qDebug() << "expended" << item->text(0) << endl;
+
+}
+
+void MainWindow::UpdateDir()
+{
+	while (root->childCount() > 0)
+	{
+		root->removeChild(root->child(0));
+	}
+	allFile(root, rootPath);
+}
+
+QFileInfoList MainWindow::allFile(QTreeWidgetItem * item,QString path)
+{
+	/*添加path路径文件*/
+	QDir dir(path);          //遍历各级子目录
+
+	QDir dir_file(path);    //遍历子目录中所有文件
+
+	dir_file.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);        //获取当前所有文件
+	dir_file.setSorting(QDir::Size | QDir::Reversed);
+
+	QFileInfoList list_file = dir_file.entryInfoList();
+
+	for (int i = 0; i < list_file.size(); ++i) {       //将当前目录中所有文件添加到treewidget中
+		QFileInfo fileInfo = list_file.at(i);
+		QString name2 = fileInfo.fileName();
+		QTreeWidgetItem* child = new QTreeWidgetItem(QStringList() << name2);
+		//child->setIcon(0, QIcon(":/file/image/link.ico"));
+		child->setCheckState(1, Qt::Checked);
+		item->addChild(child);
+	}
 
 
+	QFileInfoList file_list = dir.entryInfoList(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+	QFileInfoList folder_list = dir.entryInfoList(QDir::Dirs | QDir::NoDotAndDotDot);   //获取当前所有目录
+
+	for (int i = 0; i != folder_list.size(); i++)         //自动递归添加各目录到上一级目录
+	{
+		QString namepath = folder_list.at(i).absoluteFilePath();    //获取路径
+		QFileInfo folderinfo = folder_list.at(i);
+		QString name = folderinfo.fileName();      //获取目录名
+		QTreeWidgetItem* childroot = new QTreeWidgetItem(QStringList() << name);
+		//childroot->setIcon(0, QIcon(":/file/image/link.ico"));
+		childroot->setCheckState(1, Qt::Checked);
+		item->addChild(childroot);              //将当前目录添加成path的子项
+
+		QFileInfoList child_file_list = allFile(childroot, namepath);          //进行递归
+
+		file_list.append(child_file_list);
+
+		file_list.append(name);
+
+	}
+
+	return file_list;
+
+}
 
 
 //关闭时清理内存使用

@@ -65,6 +65,31 @@ struct CaliData
 	int ShouderL{ 0 };
 };
 
+struct SubjInfo {
+	QString subjname{"null"};
+	QString gender{"null"};
+	QString preside{ "null" };
+	int age{ 0 };
+	float height{ 0.0 };
+	float weight{ 0.0 };
+	float bagWeight{ 0.0 };
+	std::vector<float> bagPosi{ 0.0,0.0,0.0 };
+	bool bag{ false };
+
+	
+
+	void print() {
+		qDebug() << "subjname: " << subjname << endl;
+		qDebug() << "gender: " << gender << endl;
+		qDebug() << "age: " << age << endl;
+		qDebug() << "height: " << height << endl;
+		qDebug() << "weight: " << weight << endl;
+		qDebug() << "bagPosi: " << bagPosi << endl;
+		qDebug() << "bagWeight: " << bagWeight << endl;
+		qDebug() << "isbag: " << bag << endl;
+	}
+};
+
 class FileREC : public QObject
 {
 	Q_OBJECT
@@ -73,12 +98,19 @@ public:
 	FileREC(QObject *parent =0);
 	FileREC(char* subjName , QObject *parent = 0);
 	~FileREC();
-
+signals:
+	void Recording();
+	void Error_openfile();
 public slots:
 	void processfile();
 
 public:
-	void setfilename(char* fanme);
+	void setSubjInfo(SubjInfo &subj);
+	void creatDir();
+	QString m_subjpath;
+	QString m_trailName;
+
+	void creatFiles(QString trailName, QString path);
 	//Update
 	void updateJoints(Joint jointdate[JointType_Count]);
 	void updateOrientations(JointOrientation Orientdata[JointType_Count]);
@@ -102,7 +134,9 @@ public:
 	void Orient2angelFile();
 	void CalSubcaliAngle();
 private:
+	SubjInfo m_subjinfo;
 	char* m_subName ;
+	std::ofstream subjinfofile;
 	std::ofstream jointsPositionfile;
 	std::ofstream jointsOrientfile;
 	std::ofstream jointsAnglefile;

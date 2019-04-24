@@ -98,6 +98,18 @@ void vtkTimerCallback::Execute(vtkObject * caller, unsigned long eventId, void *
 
 void vtkTimerCallback::updateXYZ(int jointNumber)
 {
+	if (pSender->jointPositions()[jointNumber].TrackingState == 2)
+	{
+		m_X[jointNumber] = pSender->jointPositions()[jointNumber].Position.X * 1000;
+		m_Y[jointNumber] = pSender->jointPositions()[jointNumber].Position.Y * 1000;
+		m_Z[jointNumber] = pSender->jointPositions()[jointNumber].Position.Z * 1000;
+	}
+	else
+	{
+		m_X[jointNumber] = 0;
+		m_Y[jointNumber] = 0;
+		m_Z[jointNumber] = 0;
+	}
 }
 
 void vtkTimerCallback::updateCOMXYZ(int segNumber)

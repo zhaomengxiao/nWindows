@@ -85,8 +85,17 @@ int VTK::setCallback()
 	p_renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);
 	int timerId = p_renderWindowInteractor->CreateRepeatingTimer(33);
 
-	//p_renderWindowInteractor->Start();
+	p_renderWindowInteractor->Start();
 	return EXIT_SUCCESS;
+}
+
+void VTK::rend()
+{	
+	setPipline();
+	setCamera();
+	addActor();
+	initialize();
+	setCallback();	
 }
 vtkSmartPointer<vtkRenderWindow> VTK::RenderWindow()
 {

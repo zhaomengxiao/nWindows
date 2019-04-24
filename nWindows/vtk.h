@@ -36,5 +36,6 @@ public:
 	void addActor();
 	void initialize();
 	int setCallback();
+	void rend();
 };
 

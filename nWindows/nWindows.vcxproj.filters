@@ -90,6 +90,9 @@
     <QtRcc Include="myicon.qrc">
       <Filter>Resource Files</Filter>
     </QtRcc>
+    <QtRcc Include="treewidget.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h">
@@ -116,5 +119,22 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="nWindows.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resources\branch-closed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\branch-end.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\branch-more.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\branch-open.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\vline.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
