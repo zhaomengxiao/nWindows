@@ -130,6 +130,7 @@ void vtkTimerCallback::updateCOMPosition(int segNumber)
 	actor_COMs[segNumber]->SetPosition(m_COM_x[segNumber], m_COM_y[segNumber], m_COM_z[segNumber]);
 }
 
+//计算脊椎关节受力和力矩
 void vtkTimerCallback::calcSpinebaseFMwithBag()
 {
 	F_spinebase = bodyWeight * (0.081 + 0.142 + 0.355 + 0.028 * 2 + 0.022 * 2)*9.8 + force * 9.8;

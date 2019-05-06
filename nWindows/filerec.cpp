@@ -80,6 +80,8 @@ FileREC::~FileREC()
 void FileREC::setSubjInfo(SubjInfo & subj)
 {
 	m_subjinfo = subj;
+	
+	
 }
 
 void FileREC::creatDir()
@@ -92,15 +94,13 @@ void FileREC::creatDir()
 	
 	m_subjpath = dir + "\\";
 	createDirectory(dir.toStdString());
-}
 
-void FileREC::creatFiles(QString trailName, QString path)
-{
-	m_trailName = trailName;
-	QString s = "_SubjInfo.csv";
-	std::string sc = (path + trailName + s).toStdString();
+
+	//储存subjinfo
+	QString s = "SubjInfo.csv";
+	std::string sc = (m_subjpath + s).toStdString();
 	subjinfofile.open(sc.c_str(), std::ios::app);
-
+	
 	if (subjinfofile.is_open())
 	{
 		//标题行
@@ -108,11 +108,19 @@ void FileREC::creatFiles(QString trailName, QString path)
 			<< "," << "age " << "," << "Height" << "," << "Weight" << "," << "Bag Weight" << "," << "Bag Position" << std::endl;
 		subjinfofile << m_subjinfo.subjname.toStdString() << "," << m_subjinfo.gender.toStdString() << "," << m_subjinfo.preside.toStdString()
 			<< "," << m_subjinfo.age << "," << m_subjinfo.height << "," << m_subjinfo.weight << "," << m_subjinfo.bagWeight << "," << m_subjinfo.bagPosi[0] << "," << m_subjinfo.bagPosi[1] << "," << m_subjinfo.bagPosi[2] << std::endl;
+		qDebug() << "subjInfo saved" << endl;
 	}
 	else
 	{
 		qDebug() << "can't open subjinfofile" << endl;
 	}
+	subjinfofile.close();
+}
+
+void FileREC::creatFiles(QString trailName, QString path)
+{
+	m_trailName = trailName;
+	
 
 	QString p = "_Position.csv";
 	std::string  pc = (path + trailName + p).toStdString();
@@ -199,7 +207,6 @@ void FileREC::closefile()
 	jointsPositionfile.close();
 	jointsOrientfile.close();
 	jointsAnglefile.close();
-	subjinfofile.close();
 }
 
 void FileREC::Orient2angelFile()
@@ -319,8 +326,9 @@ void FileREC::CalSubcaliAngle()
 
 void FileREC::start()
 {
+	//设置幁率frame rate here
 	connect(filetimer, SIGNAL(timeout()), this, SLOT(processfile()));
-	filetimer->start(50);
+	filetimer->start(1000.0/framerate);
 	
 }
 
@@ -328,7 +336,6 @@ void FileREC::stop()
 {
 	disconnect(filetimer, SIGNAL(timeout()), this, SLOT(processfile()));
 	filetimer->stop();
-	this->closefile();
 }
 
 //When filetimer time out, call processfile, 每隔一定时间记录一个frame，间隔时间由filetimer设定

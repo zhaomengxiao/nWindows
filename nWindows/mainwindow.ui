@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1305</width>
-    <height>859</height>
+    <width>1294</width>
+    <height>887</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -54,7 +54,7 @@ background-color: rgb(0, 39, 0);
 </string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="iconSize">
        <size>
@@ -71,7 +71,7 @@ background-color: rgb(0, 39, 0);
          <normaloff>:/myimages/Resources/user.png</normaloff>:/myimages/Resources/user.png</iconset>
        </attribute>
        <attribute name="title">
-        <string>Userinfo </string>
+        <string>SubjInfo</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_10">
         <item row="0" column="1" rowspan="3">
@@ -493,7 +493,7 @@ font: 20pt &quot;Arial&quot;;
 border-radius: 10px;</string>
              </property>
              <property name="text">
-              <string>User Name</string>
+              <string>Subject Name</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -967,551 +967,265 @@ font: 87 10pt &quot;Arial Black&quot;;</string>
         <string>Control Panel </string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="3" column="4">
-         <widget class="QWidget" name="LCDwidget_2" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+        <item row="0" column="1" colspan="2">
+         <widget class="QScrollArea" name="scrollArea">
+          <property name="verticalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
           </property>
-          <property name="minimumSize">
-           <size>
-            <width>300</width>
-            <height>100</height>
-           </size>
+          <property name="horizontalScrollBarPolicy">
+           <enum>Qt::ScrollBarAlwaysOn</enum>
           </property>
-          <property name="baseSize">
-           <size>
-            <width>400</width>
-            <height>400</height>
-           </size>
+          <property name="widgetResizable">
+           <bool>true</bool>
           </property>
-          <property name="styleSheet">
-           <string notr="true">QWidget{border-radius: 10px}
-
-QWidget::!hover{
-background-color: rgb(59, 65, 72);
-}
-
-
-QWidget::hover{
-background-color: rgb(59, 65, 72)}</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_12">
-           <item row="1" column="1">
-            <widget class="QFrame" name="frame">
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>80</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>80</height>
-              </size>
-             </property>
-             <property name="frameShape">
-              <enum>QFrame::Panel</enum>
-             </property>
-             <property name="frameShadow">
-              <enum>QFrame::Plain</enum>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_11">
-              <item row="0" column="1">
-               <widget class="QPushButton" name="pushButton_StartRec">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>70</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>70</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton{border-radius: 35px
-
-}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="myicon.qrc">
-                  <normaloff>:/myimages/Resources/luzhi.png</normaloff>:/myimages/Resources/luzhi.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>64</width>
-                  <height>64</height>
-                 </size>
-                </property>
-                <property name="autoExclusive">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="2">
-               <widget class="QPushButton" name="pushButton_StopRec">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>70</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>70</width>
-                  <height>70</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">QPushButton{border-radius: 35px}
-
-QPushButton::!hover{background-color: rgb(189, 0, 0)}
-
-
-QPushButton::hover{
-	background-color: rgb(148, 0, 0)}</string>
-                </property>
-                <property name="text">
-                 <string/>
-                </property>
-                <property name="icon">
-                 <iconset resource="myicon.qrc">
-                  <normaloff>:/myimages/Resources/tingzhiluzhi.png</normaloff>:/myimages/Resources/tingzhiluzhi.png</iconset>
-                </property>
-                <property name="iconSize">
-                 <size>
-                  <width>74</width>
-                  <height>74</height>
-                 </size>
-                </property>
-                <property name="autoExclusive">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QPushButton" name="pushButton_calibration">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>16</pointsize>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QPushButton{border-radius: 10px}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}
-</string>
-             </property>
-             <property name="text">
-              <string>Calibration</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="3" column="2">
-         <widget class="QWidget" name="LCDwidget_4" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="baseSize">
-           <size>
-            <width>400</width>
-            <height>400</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QWidget{border-radius: 10px}
-
-QWidget::!hover{
-background-color: rgb(59, 65, 72);
-}
-
-
-QWidget::hover{
-background-color: rgb(59, 65, 72)}</string>
-          </property>
-          <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="3">
-            <widget class="QLCDNumber" name="lcdNumber_M">
-             <property name="minimumSize">
-              <size>
-               <width>81</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 0, 0);</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QLabel" name="label_text_5">
-             <property name="styleSheet">
-              <string notr="true">
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-             </property>
-             <property name="text">
-              <string>F -&gt;</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_text_6">
-             <property name="styleSheet">
-              <string notr="true">
-font: 87 10pt &quot;Arial Black&quot;;
-border-radius: 10px;</string>
-             </property>
-             <property name="text">
-              <string>M -&gt;</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLCDNumber" name="lcdNumber_force">
-             <property name="minimumSize">
-              <size>
-               <width>131</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 0, 0);</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="4">
-            <widget class="QLCDNumber" name="lcdNumber_M_2">
-             <property name="minimumSize">
-              <size>
-               <width>81</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 0, 0);</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="5">
-            <widget class="QLCDNumber" name="lcdNumber_M_3">
-             <property name="minimumSize">
-              <size>
-               <width>81</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(0, 0, 0);</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="5">
-         <widget class="QWidget" name="widget_2" native="true">
-          <property name="minimumSize">
-           <size>
-            <width>1100</width>
-            <height>435</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">background-color: rgb(59, 65, 72);
+          <widget class="QWidget" name="scrollAreaWidgetContents">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>1233</width>
+             <height>678</height>
+            </rect>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_26">
+            <item row="0" column="0" colspan="3">
+             <widget class="QWidget" name="widget_2" native="true">
+              <property name="minimumSize">
+               <size>
+                <width>1100</width>
+                <height>435</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background-color: rgb(59, 65, 72);
 border-radius: 20px</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout">
-           <item>
-            <widget class="QListWidget" name="listWidget_alljoint">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>160</width>
-               <height>420</height>
-              </size>
-             </property>
-             <property name="font">
-              <font>
-               <family>Arial</family>
-               <pointsize>14</pointsize>
-               <weight>50</weight>
-               <italic>false</italic>
-               <bold>false</bold>
-              </font>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(76, 120, 65);
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout">
+               <item>
+                <widget class="QListWidget" name="listWidget_alljoint">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>160</width>
+                   <height>420</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Arial</family>
+                   <pointsize>14</pointsize>
+                   <weight>50</weight>
+                   <italic>false</italic>
+                   <bold>false</bold>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(76, 120, 65);
 font: 14pt &quot;Arial&quot;;
 border-radius:10px;</string>
-             </property>
-             <item>
-              <property name="text">
-               <string>SpinBase</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>SpinMid</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Neck</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>Head</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ShoulderLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ElbowLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>WristLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>HandLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ShoulderRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ElbowRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>WristRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>HandRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>HipLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>KneeLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>AnkeLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>FootLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>HipRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>KneeRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>AnkleRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>FootRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>SpineShouder</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>HandTipLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ThumbLeft</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>HandTipRight</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>ThumbRight</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_12">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QLabel" name="colorwindow">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>512</width>
-               <height>424</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(100, 104, 97);</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer_13">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QWidget" name="LCDwidget" native="true">
-             <property name="minimumSize">
-              <size>
-               <width>400</width>
-               <height>400</height>
-              </size>
-             </property>
-             <property name="maximumSize">
-              <size>
-               <width>200</width>
-               <height>16777215</height>
-              </size>
-             </property>
-             <property name="baseSize">
-              <size>
-               <width>400</width>
-               <height>400</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">QWidget{border-radius: 10px}
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>SpinBase</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SpinMid</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Neck</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>Head</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ShoulderLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ElbowLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>WristLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HandLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ShoulderRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ElbowRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>WristRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HandRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HipLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>KneeLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>AnkeLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>FootLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HipRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>KneeRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>AnkleRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>FootRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>SpineShouder</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HandTipLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ThumbLeft</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>HandTipRight</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>ThumbRight</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_12">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="colorwindow">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>512</width>
+                   <height>424</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(100, 104, 97);</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_13">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QWidget" name="LCDwidget" native="true">
+                 <property name="minimumSize">
+                  <size>
+                   <width>400</width>
+                   <height>400</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>16777215</height>
+                  </size>
+                 </property>
+                 <property name="baseSize">
+                  <size>
+                   <width>400</width>
+                   <height>400</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QWidget{border-radius: 10px}
 
 QWidget::!hover{
 background-color: rgb(76, 120, 65)}
@@ -1520,310 +1234,340 @@ QWidget::hover{
 background-color: rgb(76, 120, 65)}
 QWidget{font: 14pt &quot;Arial&quot;;}
 </string>
-             </property>
-             <layout class="QGridLayout" name="gridLayout_3">
-              <item row="1" column="0">
-               <widget class="QLabel" name="label_6">
-                <property name="text">
-                 <string>Neck F/b tilt</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="label">
-                <property name="text">
-                 <string>Right Elbow</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLCDNumber" name="lcdNumber_Neckfb">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_ElbowR">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="label_7">
-                <property name="text">
-                 <string>Neck l/r tilt</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="label_2">
-                <property name="text">
-                 <string>Left Elbow</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLCDNumber" name="lcdNumber_Necklr">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_ElbowL">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QLabel" name="label_9">
-                <property name="styleSheet">
-                 <string notr="true"/>
-                </property>
-                <property name="text">
-                 <string>Right Shoulder</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QLabel" name="label_4">
-                <property name="text">
-                 <string>Right Knee</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="0">
-               <widget class="QLCDNumber" name="lcdNumber_ShoulderR">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="6" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_KneeR">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="0">
-               <widget class="QLabel" name="label_8">
-                <property name="text">
-                 <string>Left Shoulder</string>
-                </property>
-               </widget>
-              </item>
-              <item row="7" column="1">
-               <widget class="QLabel" name="label_3">
-                <property name="text">
-                 <string>Left Knee</string>
-                </property>
-               </widget>
-              </item>
-              <item row="8" column="0">
-               <widget class="QLCDNumber" name="lcdNumber_ShoulderL">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="8" column="1">
-               <widget class="QLCDNumber" name="lcdNumber_KneeL">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="9" column="0">
-               <widget class="QLabel" name="label_5">
-                <property name="text">
-                 <string>Uper/Lower Trunk Angle</string>
-                </property>
-               </widget>
-              </item>
-              <item row="10" column="0">
-               <widget class="QLCDNumber" name="lcdNumber_Spine">
-                <property name="minimumSize">
-                 <size>
-                  <width>161</width>
-                  <height>40</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">background-color: rgb(0, 0, 0);</string>
-                </property>
-               </widget>
-              </item>
-              <item row="0" column="0" colspan="2">
-               <widget class="QCheckBox" name="checkBox_2">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>141</width>
-                  <height>16</height>
-                 </size>
-                </property>
-                <property name="styleSheet">
-                 <string notr="true">font: 20pt &quot;Arial&quot;;</string>
-                </property>
-                <property name="text">
-                 <string>Show joint angles</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="3" column="3">
-         <spacer name="horizontalSpacer_10">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="4" column="2">
-         <spacer name="verticalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="2" column="2">
-         <spacer name="verticalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="1" colspan="4">
-         <spacer name="horizontalSpacer_14">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_recording">
-          <property name="minimumSize">
-           <size>
-            <width>50</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>50</width>
-            <height>50</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">border-image: url(:/myimages/Resources/recording.png);</string>
-          </property>
-          <property name="text">
-           <string/>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="3" colspan="2">
-         <widget class="QWidget" name="widget_4" native="true">
-          <property name="styleSheet">
-           <string notr="true">QWidget{border-radius: 10px}
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_3">
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="label_6">
+                    <property name="text">
+                     <string>Neck F/b tilt</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="1">
+                   <widget class="QLabel" name="label">
+                    <property name="text">
+                     <string>Right Elbow</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="0">
+                   <widget class="QLCDNumber" name="lcdNumber_Neckfb">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="2" column="1">
+                   <widget class="QLCDNumber" name="lcdNumber_ElbowR">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="0">
+                   <widget class="QLabel" name="label_7">
+                    <property name="text">
+                     <string>Neck l/r tilt</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="3" column="1">
+                   <widget class="QLabel" name="label_2">
+                    <property name="text">
+                     <string>Left Elbow</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="0">
+                   <widget class="QLCDNumber" name="lcdNumber_Necklr">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="4" column="1">
+                   <widget class="QLCDNumber" name="lcdNumber_ElbowL">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="0">
+                   <widget class="QLabel" name="label_9">
+                    <property name="styleSheet">
+                     <string notr="true"/>
+                    </property>
+                    <property name="text">
+                     <string>Right Shoulder</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="5" column="1">
+                   <widget class="QLabel" name="label_4">
+                    <property name="text">
+                     <string>Right Knee</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="0">
+                   <widget class="QLCDNumber" name="lcdNumber_ShoulderR">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="6" column="1">
+                   <widget class="QLCDNumber" name="lcdNumber_KneeR">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="0">
+                   <widget class="QLabel" name="label_8">
+                    <property name="text">
+                     <string>Left Shoulder</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="7" column="1">
+                   <widget class="QLabel" name="label_3">
+                    <property name="text">
+                     <string>Left Knee</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="0">
+                   <widget class="QLCDNumber" name="lcdNumber_ShoulderL">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="8" column="1">
+                   <widget class="QLCDNumber" name="lcdNumber_KneeL">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="9" column="0">
+                   <widget class="QLabel" name="label_5">
+                    <property name="text">
+                     <string>Uper/Lower Trunk Angle</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="10" column="0">
+                   <widget class="QLCDNumber" name="lcdNumber_Spine">
+                    <property name="minimumSize">
+                     <size>
+                      <width>161</width>
+                      <height>40</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">background-color: rgb(0, 0, 0);</string>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0" colspan="2">
+                   <widget class="QCheckBox" name="checkBox_2">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>141</width>
+                      <height>16</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">font: 20pt &quot;Arial&quot;;</string>
+                    </property>
+                    <property name="text">
+                     <string>Show joint angles</string>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QWidget" name="LCDwidget_4" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>0</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>400</width>
+                <height>400</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(59, 65, 72);
+}
+
+
+QWidget::hover{
+background-color: rgb(59, 65, 72)}</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_6">
+               <item row="0" column="3">
+                <widget class="QLCDNumber" name="lcdNumber_M">
+                 <property name="minimumSize">
+                  <size>
+                   <width>81</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 0, 0);</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_text_5">
+                 <property name="styleSheet">
+                  <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+                 </property>
+                 <property name="text">
+                  <string>F -&gt;</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="2">
+                <widget class="QLabel" name="label_text_6">
+                 <property name="styleSheet">
+                  <string notr="true">
+font: 87 10pt &quot;Arial Black&quot;;
+border-radius: 10px;</string>
+                 </property>
+                 <property name="text">
+                  <string>M -&gt;</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLCDNumber" name="lcdNumber_force">
+                 <property name="minimumSize">
+                  <size>
+                   <width>131</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 0, 0);</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="4">
+                <widget class="QLCDNumber" name="lcdNumber_M_2">
+                 <property name="minimumSize">
+                  <size>
+                   <width>81</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 0, 0);</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="5">
+                <widget class="QLCDNumber" name="lcdNumber_M_3">
+                 <property name="minimumSize">
+                  <size>
+                   <width>81</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 0, 0);</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QWidget" name="widget_trailname" native="true">
+              <property name="styleSheet">
+               <string notr="true">QWidget{border-radius: 10px}
 
 QWidget::!hover{
 background-color: rgb(76, 120, 65)}
@@ -1831,56 +1575,505 @@ background-color: rgb(76, 120, 65)}
 QWidget::hover{
 background-color: rgb(76, 120, 65)}
 QWidget{font: 14pt &quot;Arial&quot;;}</string>
-          </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_2">
-           <item>
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Trail Name</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="lineEdit_trailname">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>200</width>
-               <height>31</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">background-color: rgb(100, 104, 97);
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_2">
+               <item>
+                <widget class="QLabel" name="label_11">
+                 <property name="text">
+                  <string>Trail Name</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLineEdit" name="lineEdit_trailname">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>200</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(100, 104, 97);
 border-radius: 10px;
 font: 87 18pt &quot;Arial Black&quot;;</string>
-             </property>
-             <property name="text">
-              <string/>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="pushButton_newTrail">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(85, 170, 127)
+}</string>
+                 </property>
+                 <property name="text">
+                  <string>+NEW</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QWidget" name="widget_Timer" native="true">
+              <property name="styleSheet">
+               <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(59, 65, 72);
+}
+
+
+QWidget::hover{
+background-color: rgb(59, 65, 72)}
+
+QWidget{font: 14pt &quot;Arial&quot;;}</string>
+              </property>
+              <layout class="QGridLayout" name="gridLayout_14">
+               <item row="0" column="3">
+                <widget class="QPushButton" name="pushButton_resetCD">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+                 </property>
+                 <property name="text">
+                  <string>restet</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QSpinBox" name="spinBox">
+                 <property name="minimumSize">
+                  <size>
+                   <width>0</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: rgb(0, 0, 0);</string>
+                 </property>
+                 <property name="alignment">
+                  <set>Qt::AlignCenter</set>
+                 </property>
+                 <property name="maximum">
+                  <number>60</number>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QLabel" name="label_timer">
+                 <property name="text">
+                  <string>Timer (Sec)</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="3">
+                <widget class="QDial" name="dial">
+                 <property name="minimumSize">
+                  <size>
+                   <width>70</width>
+                   <height>70</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>70</width>
+                   <height>70</height>
+                  </size>
+                 </property>
+                 <property name="baseSize">
+                  <size>
+                   <width>70</width>
+                   <height>70</height>
+                  </size>
+                 </property>
+                 <property name="maximum">
+                  <number>60</number>
+                 </property>
+                 <property name="pageStep">
+                  <number>1</number>
+                 </property>
+                 <property name="notchesVisible">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QWidget" name="widget_Timer_2" native="true">
+              <property name="styleSheet">
+               <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(59, 65, 72);
+}
+
+
+QWidget::hover{
+background-color: rgb(59, 65, 72)}
+
+QWidget{font: 14pt &quot;Arial&quot;;}</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <widget class="QLabel" name="label_recording">
+                 <property name="minimumSize">
+                  <size>
+                   <width>50</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>50</width>
+                   <height>50</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">border-image: url(:/myimages/Resources/recording.png);</string>
+                 </property>
+                 <property name="text">
+                  <string/>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLCDNumber" name="lcdNumber_RecTime">
+                 <property name="minimumSize">
+                  <size>
+                   <width>60</width>
+                   <height>40</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>90</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">background-color: silver;
+color: black;
+font: 14pt &quot;Arial&quot;;</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QWidget" name="LCDwidget_2" native="true">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="minimumSize">
+               <size>
+                <width>300</width>
+                <height>100</height>
+               </size>
+              </property>
+              <property name="baseSize">
+               <size>
+                <width>400</width>
+                <height>400</height>
+               </size>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(59, 65, 72);
+}
+
+
+QWidget::hover{
+background-color: rgb(59, 65, 72)}</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <widget class="QPushButton" name="pushButton_calibration">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="minimumSize">
+                  <size>
+                   <width>120</width>
+                   <height>31</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>160</width>
+                   <height>60</height>
+                  </size>
+                 </property>
+                 <property name="font">
+                  <font>
+                   <family>Arial</family>
+                   <pointsize>16</pointsize>
+                  </font>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+                 </property>
+                 <property name="text">
+                  <string>Calibration</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QFrame" name="frame">
+                 <property name="minimumSize">
+                  <size>
+                   <width>200</width>
+                   <height>80</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>200</width>
+                   <height>80</height>
+                  </size>
+                 </property>
+                 <property name="frameShape">
+                  <enum>QFrame::Panel</enum>
+                 </property>
+                 <property name="frameShadow">
+                  <enum>QFrame::Plain</enum>
+                 </property>
+                 <layout class="QGridLayout" name="gridLayout_11">
+                  <item row="0" column="0">
+                   <widget class="QPushButton" name="pushButton_StartRec">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>70</width>
+                      <height>70</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>70</width>
+                      <height>70</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton{border-radius: 35px
+
+}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="myicon.qrc">
+                      <normaloff>:/myimages/Resources/luzhi.png</normaloff>:/myimages/Resources/luzhi.png</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>64</width>
+                      <height>64</height>
+                     </size>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="1">
+                   <widget class="QPushButton" name="pushButton_StopRec">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="minimumSize">
+                     <size>
+                      <width>70</width>
+                      <height>70</height>
+                     </size>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>70</width>
+                      <height>70</height>
+                     </size>
+                    </property>
+                    <property name="styleSheet">
+                     <string notr="true">QPushButton{border-radius: 35px}
+
+QPushButton::!hover{background-color: rgb(189, 0, 0)}
+
+
+QPushButton::hover{
+	background-color: rgb(148, 0, 0)}</string>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="icon">
+                     <iconset resource="myicon.qrc">
+                      <normaloff>:/myimages/Resources/tingzhiluzhi.png</normaloff>:/myimages/Resources/tingzhiluzhi.png</iconset>
+                    </property>
+                    <property name="iconSize">
+                     <size>
+                      <width>74</width>
+                      <height>74</height>
+                     </size>
+                    </property>
+                    <property name="autoExclusive">
+                     <bool>true</bool>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QWidget" name="widget_TimeLapse" native="true">
+              <property name="styleSheet">
+               <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(76, 120, 65)}
+
+QWidget::hover{
+background-color: rgb(76, 120, 65)}
+QWidget{font: 14pt &quot;Arial&quot;;}</string>
+              </property>
+              <layout class="QHBoxLayout" name="horizontalLayout_3">
+               <item>
+                <widget class="QPushButton" name="pushButton">
+                 <property name="styleSheet">
+                  <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(85, 170, 127)
+}
+</string>
+                 </property>
+                 <property name="text">
+                  <string>TimeLapse</string>
+                 </property>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QComboBox" name="comboBox">
+                 <property name="minimumSize">
+                  <size>
+                   <width>50</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="styleSheet">
+                  <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(76, 120, 65)}
+
+QWidget::hover{
+background-color: rgb(76, 120, 65)}
+QWidget{font: 14pt &quot;Arial&quot;;}</string>
+                 </property>
+                 <item>
+                  <property name="text">
+                   <string>0</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>10</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>20</string>
+                  </property>
+                 </item>
+                 <item>
+                  <property name="text">
+                   <string>30</string>
+                  </property>
+                 </item>
+                </widget>
+               </item>
+               <item alignment="Qt::AlignHCenter">
+                <widget class="QLabel" name="label_13">
+                 <property name="text">
+                  <string>min</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+            </item>
+           </layout>
+           <zorder>widget_Timer</zorder>
+           <zorder>LCDwidget_4</zorder>
+           <zorder>widget_trailname</zorder>
+           <zorder>widget_2</zorder>
+           <zorder>LCDwidget_2</zorder>
+           <zorder>widget_Timer_2</zorder>
+           <zorder>widget_TimeLapse</zorder>
+          </widget>
          </widget>
         </item>
        </layout>
-       <zorder>LCDwidget_2</zorder>
-       <zorder>widget_2</zorder>
-       <zorder>LCDwidget_4</zorder>
-       <zorder>horizontalSpacer_9</zorder>
-       <zorder>horizontalSpacer_10</zorder>
-       <zorder>label_recording</zorder>
-       <zorder>verticalSpacer_5</zorder>
-       <zorder>verticalSpacer_6</zorder>
-       <zorder>horizontalSpacer_14</zorder>
-       <zorder>widget_4</zorder>
       </widget>
       <widget class="QWidget" name="tab_2">
        <attribute name="icon">
@@ -2010,6 +2203,38 @@ QHeaderView::section{
       </widget>
      </widget>
     </item>
+    <item row="3" column="0" alignment="Qt::AlignRight">
+     <widget class="QLCDNumber" name="lcdNumber_date">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QProgressBar" name="progressBar_tl">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -2017,7 +2242,7 @@ QHeaderView::section{
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1305</width>
+     <width>1294</width>
      <height>23</height>
     </rect>
    </property>
@@ -2040,30 +2265,14 @@ QHeaderView::section{
  </resources>
  <connections>
   <connection>
-   <sender>checkBox_2</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>MainWindowClass</receiver>
-   <slot>SimpleMode(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1264</x>
-     <y>198</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>1017</x>
-     <y>193</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_StartRec</sender>
    <signal>clicked()</signal>
    <receiver>MainWindowClass</receiver>
    <slot>startRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1197</x>
-     <y>791</y>
+     <x>1102</x>
+     <y>719</y>
     </hint>
     <hint type="destinationlabel">
      <x>1017</x>
@@ -2078,8 +2287,8 @@ QHeaderView::section{
    <slot>stopRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1273</x>
-     <y>791</y>
+     <x>1190</x>
+     <y>719</y>
     </hint>
     <hint type="destinationlabel">
      <x>1017</x>
@@ -2142,8 +2351,8 @@ QHeaderView::section{
    <slot>ready4Rec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>701</x>
-     <y>791</y>
+     <x>695</x>
+     <y>798</y>
     </hint>
     <hint type="destinationlabel">
      <x>582</x>
@@ -2184,38 +2393,6 @@ QHeaderView::section{
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_StartRec</sender>
-   <signal>clicked()</signal>
-   <receiver>label_recording</receiver>
-   <slot>show()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1163</x>
-     <y>755</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>54</x>
-     <y>115</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_StopRec</sender>
-   <signal>clicked()</signal>
-   <receiver>label_recording</receiver>
-   <slot>hide()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>1235</x>
-     <y>744</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>40</x>
-     <y>104</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>pushButton_openrecord</sender>
    <signal>clicked()</signal>
    <receiver>MainWindowClass</receiver>
@@ -2226,24 +2403,120 @@ QHeaderView::section{
      <y>112</y>
     </hint>
     <hint type="destinationlabel">
-     <x>-310</x>
+     <x>0</x>
      <y>117</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>listWidget_alljoint</sender>
-   <signal>currentRowChanged(int)</signal>
+   <sender>pushButton_newTrail</sender>
+   <signal>clicked()</signal>
    <receiver>MainWindowClass</receiver>
-   <slot>ListCurChange(int)</slot>
+   <slot>newTrail()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>151</x>
-     <y>539</y>
+     <x>1233</x>
+     <y>590</y>
     </hint>
     <hint type="destinationlabel">
-     <x>166</x>
-     <y>744</y>
+     <x>1119</x>
+     <y>626</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dial</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>SetCD(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>729</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>231</x>
+     <y>858</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>dial</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>spinBox</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>729</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>45</x>
+     <y>679</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>dial</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>114</x>
+     <y>678</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>395</x>
+     <y>729</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_resetCD</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>ResetCD()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>395</x>
+     <y>653</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>79</x>
+     <y>858</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>comboBox</sender>
+   <signal>currentTextChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>SetLT(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>332</x>
+     <y>777</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>962</x>
+     <y>886</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>timeLapse()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>155</x>
+     <y>768</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>156</x>
+     <y>940</y>
     </hint>
    </hints>
   </connection>
@@ -2268,5 +2541,10 @@ QHeaderView::section{
   <slot>DoubleClick(QTreeWidgetItem*)</slot>
   <slot>Expend(QTreeWidgetItem*)</slot>
   <slot>UpdateDir()</slot>
+  <slot>newTrail()</slot>
+  <slot>SetCD(int)</slot>
+  <slot>ResetCD()</slot>
+  <slot>SetLT(QString)</slot>
+  <slot>timeLapse()</slot>
  </slots>
 </ui>

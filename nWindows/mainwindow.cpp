@@ -18,7 +18,8 @@ extern float bagY;
 extern float bagZ;
 extern bool bag;
 
-bool isSimpleMode;
+bool isSimpleMode{ false };
+//bool isTimeLapseMode{ false };
 char* subjName = new char[20];
 QString qsubjname{"null"};
 //================================
@@ -34,6 +35,7 @@ MainWindow::MainWindow(QWidget *parent)
 	//顯示中文亂碼解決實例
 	//ui.pushButton->setText(QString::fromLocal8Bit("显示图片"));
 	ui.label_recording->hide();
+	ui.progressBar_tl->hide();
 	//vtk场景绘制
 	//drawVTKscene();
 	//ui.qvtkWidget->SetRenderWindow(scene->p_renderWindow);
@@ -79,6 +81,9 @@ MainWindow::MainWindow(QWidget *parent)
 	//显示系统时间
 	lcdtimer->setInterval(1000);
 	lcdtimer->start();
+	rectimer->setInterval(1000);
+	//延时摄影时间
+	lapsetimer->setInterval(20000);
 	
 	//初始化pSender 放入thread
 	pSender->filetimer = new QTimer(this);
@@ -155,7 +160,10 @@ void MainWindow::connectSignalSlot()
 	lcdtimer = new QTimer;
 	connect(lcdtimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_date()));
 	//connect(ui.saveImageButton, SIGNAL(clicked()),this, SLOT(on_saveImageButton_clicked()));
-	
+	rectimer = new QTimer;
+	connect(rectimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_RecTime()));
+	lapsetimer = new QTimer;
+	connect(lapsetimer, SIGNAL(timeout()), this, SLOT(oneLapse()));
 	connect(pSender, SIGNAL(Error_openfile()), this, SLOT(error_openfile()));
 }
 
@@ -291,7 +299,7 @@ void MainWindow::showSkeleton_clicked()
 	HRESULT hr = mykinect->InitializeDefaultSensor();
 	if (SUCCEEDED(hr)) {
 		skeletontimer->start(120);// 开始计时，超时则发出timeout()信号
-		dataTime.start();
+	
 	}
 	else {
 		std::cout << "kinect initialization failed!" << std::endl;
@@ -334,33 +342,28 @@ void MainWindow::updateSkeletonFrame()
 		pSender->updateSegCOM(mykinect->segCOMs);
 		pSender->updateJointAngles(mykinect->JointAngles);
 	}
-	
-
-	//}
-	
-	//ui.depthwindow->setPixmap(QPixmap::fromImage(qdepthImage));
-	//this->showcolorimage_label->setPixmap(QPixmap::fromImage(myCamera->colorImage));
-	//this->showdepthimage_label->setPixmap(QPixmap::fromImage(myCamera->depthImage));
 }
 
-//void MainWindow::updateLCDnumber_date()
-//{
-//	//// 获取系统当前时间
-//	//QDateTime dateTime = QDateTime::currentDateTime();
-//	//// 设置能显示的位数
-//	//ui.lcdNumber_date->setDigitCount(25);
-//	//// 设置显示的模式为十进制
-//	//ui.lcdNumber_date->setMode(QLCDNumber::Dec);
-//	//// 设置显示外观
-//	//ui.lcdNumber_date->setSegmentStyle(QLCDNumber::Flat);
-//	//// 设置样式
-//	//ui.lcdNumber_date->setStyleSheet("border: 1px solid green; color: green; background: silver;");
-//	//// 显示的内容
-//	//ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss.zzz"));
-//
-//
-//
-//}
+void MainWindow::updateLCDnumber_date()
+{
+	// 获取系统当前时间
+	QDateTime dateTime = QDateTime::currentDateTime();
+	// 设置能显示的位数
+	ui.lcdNumber_date->setDigitCount(25);
+	// 设置显示的模式为十进制
+	ui.lcdNumber_date->setMode(QLCDNumber::Dec);
+	// 设置显示外观
+	ui.lcdNumber_date->setSegmentStyle(QLCDNumber::Flat);
+	// 设置样式
+	ui.lcdNumber_date->setStyleSheet("border: 1px solid green; color: black; background: silver;");
+	// 显示的内容
+	ui.lcdNumber_date->display(dateTime.toString("yyyy-MM-dd HH:mm:ss"));
+}
+void MainWindow::updateLCDnumber_RecTime()
+{
+	recTime++;
+	ui.lcdNumber_RecTime->display(recTime);
+}
 //显示角度LCD
 void MainWindow::updateLCDnumber_angle()
 {
@@ -637,6 +640,25 @@ void MainWindow::bagSelect(bool i)
 void MainWindow::SimpleMode(bool i)
 {
 	isSimpleMode = i;
+	qDebug() << "SimpleMode: " << isSimpleMode << endl;
+}
+
+void MainWindow::SetCD(int t)
+{
+	countDown = t;
+	ui.statusBar->showMessage("CountDown Seted ", 2000);
+	qDebug() <<"CountDown Seted: " << countDown << endl;
+}
+void MainWindow::ResetCD()
+{
+	ui.spinBox->setValue(0);
+	ui.statusBar->showMessage("CD Reseted ", 2000);
+	qDebug() << "CD Reseted: " << endl;
+}
+void MainWindow::SetLT(QString str)
+{
+	tLapse = str.toInt();
+	qDebug() << "Set TimeLapes " << tLapse << " min" << endl;
 }
 void MainWindow::LineEdit_subjName(QString str)
 {
@@ -671,10 +693,10 @@ void MainWindow::ready4Rec() {
 
 	pSender->setSubjInfo(Paneldata);
 	pSender->creatDir();
-	//pSender->setfilename(subjName);
-	//pSender->setfilehead();
+	
+	
 	qDebug() << "ready " << endl;
-
+	ui.statusBar->showMessage("New Subject Created!", 2000);
 	//按键不能按，直到更改username
 	ui.pushButton_ready->setDisabled(true);
 	ui.pushButton_ready->setStyleSheet("background-color: rgb(170, 0, 255);");
@@ -689,6 +711,20 @@ void MainWindow::releaseOKbutton()
 
 }
 
+void MainWindow::newTrail()
+{
+	//先关闭之前的file
+	pSender->closefile();
+
+
+	//新建file
+	pSender->m_trailName = ui.lineEdit_trailname->text();
+	pSender->creatFiles(pSender->m_trailName, pSender->m_subjpath);
+	pSender->setfilehead();
+	qDebug() << "New Trail Created" << endl;
+	ui.statusBar->showMessage("New Trail Created", 2000);
+}
+
 
 //calibration
 void MainWindow::on_pushButton_calibration_clicked()
@@ -699,12 +735,12 @@ void MainWindow::on_pushButton_calibration_clicked()
 	ui.statusBar->showMessage("start calibaration", 2000);
 	QMessageBox::information(this, "start calibaration", "processing...");
 	ui.statusBar->showMessage("processing...");
-	pSender->start();
+	startRec();
 	//10s 后自动停止
 	QTimer::singleShot(10000, this, SLOT(stopRec()));
 
 	//计算平均角度
-	QTimer::singleShot(15000, this, SLOT(calSubcaliAngle()));
+	QTimer::singleShot(13000, this, SLOT(calSubcaliAngle()));
 	//按键不能按，直到更改username
 	ui.pushButton_calibration ->setDisabled(true);
 	ui.pushButton_calibration ->setStyleSheet("background-color: rgb(170, 0, 255);");
@@ -713,21 +749,104 @@ void MainWindow::on_pushButton_calibration_clicked()
 
 void MainWindow::startRec()
 {
-	pSender->m_trailName = ui.lineEdit_trailname->text();
-	pSender->creatFiles(pSender->m_trailName, pSender->m_subjpath);
-	pSender->setfilehead();
-
+	rectimer->start();
 	pSender->start();
-	qDebug() << "start Rec  at " << 20 << " fps" << endl;
-	ui.statusBar->showMessage("Start Rec, at 20 fps", 2000);
+	if (pSender->m_trailName == "0" )
+	{
+		qDebug() << "no_trailname_found" << endl;
+		ui.statusBar->showMessage("Key in TrailName First", 2000);
+		QMessageBox::information(this, "Error", "Key in TrailName First");
+		return;
+	}
+	if (countDown == 0)
+	{
+		ui.label_recording->setVisible(true);
+		qDebug() << "start Rec  at " << pSender->framerate << " fps" << endl;
+		ui.statusBar->showMessage("Start Rec, at 25 fps", 2000);
+		
+	}
+	else
+	{
+		ui.label_recording->setVisible(true);
+		qDebug() << "start Rec  at " << pSender->framerate << " fps"<<"/CD: " <<countDown <<"sec"<< endl;
+		ui.statusBar->showMessage("Start Rec, at 25 fps ,with CountDown", 2000);
+		//倒计时结束 后自动停止
+		QTimer::singleShot(countDown*1000, this, SLOT(stopRec()));
+	}
+	//除非按下stopRec不然不能再次按下StartRec
+	ui.pushButton_StartRec->setDisabled(true);
+	ui.pushButton_StartRec->setStyleSheet("background-color: rgb(170, 0, 255);");
+	
 }
 
 void MainWindow::stopRec()
 {
+	//停止并重置录制时间
+	rectimer->stop();
+	recTime = 0;
+	ui.lcdNumber_RecTime->display(recTime);
+
+	//停止文件记录
 	pSender->stop();
 	qDebug() << "stop Rec succeed" << endl;
 	ui.statusBar->showMessage("Stop Rec Succeed", 2000);
+
+	//使StartREC按钮再次可用
+	ui.pushButton_StartRec->setDisabled(false);
+	ui.pushButton_StartRec->setStyleSheet("QPushButton{ border-radius: 35px; }"
+                                           "QPushButton:hover{background-color: rgb(76, 120, 65) ;}"
+                                          "QPushButton:!hover{background-color: rgb(105, 165, 90); }"
+										);
+
+	//隐藏recording图标
+	ui.label_recording->setVisible(false);
 }
+
+void MainWindow::timeLapse()
+{
+	if (countDown == 0)
+	{
+		qDebug() << "set CD first" << endl;
+		ui.statusBar->showMessage("Set CountDown first", 2000);
+		QMessageBox::information(this, "Error", "Set CountDown first");
+	}
+	else
+	{
+		//2分钟 拍一次
+		lapsetimer->setInterval(120 * 1000);
+		ui.progressBar_tl->show();
+
+		lapsed.start();
+
+		//拍2分钟
+		ui.progressBar_tl->setRange(0, tLapse * 60);
+
+		lapsetimer->start();
+
+	}
+	
+
+		
+	
+}
+
+void MainWindow::oneLapse()
+{
+	if (lapsed.elapsed()/1000 > tLapse*60)
+	{
+		lapsetimer->stop();
+		ui.progressBar_tl->setValue(tLapse * 60);
+		ui.progressBar_tl->hide();
+	}
+	else
+	{
+		startRec();
+		ui.progressBar_tl->setValue(lapsed.elapsed() / 1000);
+	}
+}
+
+
+
 
 void MainWindow::calSubcaliAngle()
 {

@@ -108,7 +108,7 @@ public:
 	void setSubjInfo(SubjInfo &subj);
 	void creatDir();
 	QString m_subjpath;
-	QString m_trailName;
+	QString m_trailName{"0"};
 
 	void creatFiles(QString trailName, QString path);
 	//Update
@@ -126,8 +126,9 @@ public:
 	std::array<float, 9> JointAngles();
 	//输出cali角度的资讯
 	CaliData caliAngle;
-
-
+	//设定幁率
+	int framerate{25};
+	//设定文件头
 	void setfilehead();
 	void closefile();
 	//把四元数的文档转换成关节角度的文档

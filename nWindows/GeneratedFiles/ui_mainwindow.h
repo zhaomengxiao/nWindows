@@ -13,6 +13,8 @@
 #include <QtGui/QIcon>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
+#include <QtWidgets/QDial>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
@@ -23,7 +25,9 @@
 #include <QtWidgets/QListWidget>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenuBar>
+#include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QScrollArea>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
@@ -84,21 +88,9 @@ public:
     QSpacerItem *verticalSpacer_4;
     QWidget *tab;
     QGridLayout *gridLayout_2;
-    QWidget *LCDwidget_2;
-    QGridLayout *gridLayout_12;
-    QFrame *frame;
-    QGridLayout *gridLayout_11;
-    QPushButton *pushButton_StartRec;
-    QPushButton *pushButton_StopRec;
-    QPushButton *pushButton_calibration;
-    QWidget *LCDwidget_4;
-    QGridLayout *gridLayout_6;
-    QLCDNumber *lcdNumber_M;
-    QLabel *label_text_5;
-    QLabel *label_text_6;
-    QLCDNumber *lcdNumber_force;
-    QLCDNumber *lcdNumber_M_2;
-    QLCDNumber *lcdNumber_M_3;
+    QScrollArea *scrollArea;
+    QWidget *scrollAreaWidgetContents;
+    QGridLayout *gridLayout_26;
     QWidget *widget_2;
     QHBoxLayout *horizontalLayout;
     QListWidget *listWidget_alljoint;
@@ -126,21 +118,48 @@ public:
     QLabel *label_5;
     QLCDNumber *lcdNumber_Spine;
     QCheckBox *checkBox_2;
-    QSpacerItem *horizontalSpacer_9;
-    QSpacerItem *horizontalSpacer_10;
-    QSpacerItem *verticalSpacer_6;
-    QSpacerItem *verticalSpacer_5;
-    QSpacerItem *horizontalSpacer_14;
-    QLabel *label_recording;
-    QWidget *widget_4;
+    QWidget *LCDwidget_4;
+    QGridLayout *gridLayout_6;
+    QLCDNumber *lcdNumber_M;
+    QLabel *label_text_5;
+    QLabel *label_text_6;
+    QLCDNumber *lcdNumber_force;
+    QLCDNumber *lcdNumber_M_2;
+    QLCDNumber *lcdNumber_M_3;
+    QWidget *widget_trailname;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_11;
     QLineEdit *lineEdit_trailname;
+    QPushButton *pushButton_newTrail;
+    QWidget *widget_Timer;
+    QGridLayout *gridLayout_14;
+    QPushButton *pushButton_resetCD;
+    QSpinBox *spinBox;
+    QLabel *label_timer;
+    QDial *dial;
+    QWidget *widget_Timer_2;
+    QHBoxLayout *horizontalLayout_7;
+    QLabel *label_recording;
+    QLCDNumber *lcdNumber_RecTime;
+    QWidget *LCDwidget_2;
+    QHBoxLayout *horizontalLayout_8;
+    QPushButton *pushButton_calibration;
+    QFrame *frame;
+    QGridLayout *gridLayout_11;
+    QPushButton *pushButton_StartRec;
+    QPushButton *pushButton_StopRec;
+    QWidget *widget_TimeLapse;
+    QHBoxLayout *horizontalLayout_3;
+    QPushButton *pushButton;
+    QComboBox *comboBox;
+    QLabel *label_13;
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
     QPushButton *pushButton_openrecord;
     QSpacerItem *horizontalSpacer_11;
     QTreeWidget *treeWidget;
+    QLCDNumber *lcdNumber_date;
+    QProgressBar *progressBar_tl;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -149,7 +168,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1305, 859);
+        MainWindowClass->resize(1294, 887);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral("background-color:#464652;color:#E8E8E8"));
@@ -614,174 +633,19 @@ public:
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
-        LCDwidget_2 = new QWidget(tab);
-        LCDwidget_2->setObjectName(QStringLiteral("LCDwidget_2"));
-        sizePolicy2.setHeightForWidth(LCDwidget_2->sizePolicy().hasHeightForWidth());
-        LCDwidget_2->setSizePolicy(sizePolicy2);
-        LCDwidget_2->setMinimumSize(QSize(300, 100));
-        LCDwidget_2->setBaseSize(QSize(400, 400));
-        LCDwidget_2->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
-"\n"
-"QWidget::!hover{\n"
-"background-color: rgb(59, 65, 72);\n"
-"}\n"
-"\n"
-"\n"
-"QWidget::hover{\n"
-"background-color: rgb(59, 65, 72)}"));
-        gridLayout_12 = new QGridLayout(LCDwidget_2);
-        gridLayout_12->setSpacing(6);
-        gridLayout_12->setContentsMargins(11, 11, 11, 11);
-        gridLayout_12->setObjectName(QStringLiteral("gridLayout_12"));
-        frame = new QFrame(LCDwidget_2);
-        frame->setObjectName(QStringLiteral("frame"));
-        frame->setMinimumSize(QSize(200, 80));
-        frame->setMaximumSize(QSize(200, 80));
-        frame->setFrameShape(QFrame::Panel);
-        frame->setFrameShadow(QFrame::Plain);
-        gridLayout_11 = new QGridLayout(frame);
-        gridLayout_11->setSpacing(6);
-        gridLayout_11->setContentsMargins(11, 11, 11, 11);
-        gridLayout_11->setObjectName(QStringLiteral("gridLayout_11"));
-        pushButton_StartRec = new QPushButton(frame);
-        pushButton_StartRec->setObjectName(QStringLiteral("pushButton_StartRec"));
-        sizePolicy3.setHeightForWidth(pushButton_StartRec->sizePolicy().hasHeightForWidth());
-        pushButton_StartRec->setSizePolicy(sizePolicy3);
-        pushButton_StartRec->setMinimumSize(QSize(70, 70));
-        pushButton_StartRec->setMaximumSize(QSize(70, 70));
-        pushButton_StartRec->setStyleSheet(QLatin1String("QPushButton{border-radius: 35px\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-        QIcon icon1;
-        icon1.addFile(QStringLiteral(":/myimages/Resources/luzhi.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_StartRec->setIcon(icon1);
-        pushButton_StartRec->setIconSize(QSize(64, 64));
-        pushButton_StartRec->setAutoExclusive(true);
-
-        gridLayout_11->addWidget(pushButton_StartRec, 0, 1, 1, 1);
-
-        pushButton_StopRec = new QPushButton(frame);
-        pushButton_StopRec->setObjectName(QStringLiteral("pushButton_StopRec"));
-        sizePolicy3.setHeightForWidth(pushButton_StopRec->sizePolicy().hasHeightForWidth());
-        pushButton_StopRec->setSizePolicy(sizePolicy3);
-        pushButton_StopRec->setMinimumSize(QSize(70, 70));
-        pushButton_StopRec->setMaximumSize(QSize(70, 70));
-        pushButton_StopRec->setStyleSheet(QLatin1String("QPushButton{border-radius: 35px}\n"
-"\n"
-"QPushButton::!hover{background-color: rgb(189, 0, 0)}\n"
-"\n"
-"\n"
-"QPushButton::hover{\n"
-"	background-color: rgb(148, 0, 0)}"));
-        QIcon icon2;
-        icon2.addFile(QStringLiteral(":/myimages/Resources/tingzhiluzhi.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_StopRec->setIcon(icon2);
-        pushButton_StopRec->setIconSize(QSize(74, 74));
-        pushButton_StopRec->setAutoExclusive(true);
-
-        gridLayout_11->addWidget(pushButton_StopRec, 0, 2, 1, 1);
-
-
-        gridLayout_12->addWidget(frame, 1, 1, 1, 1);
-
-        pushButton_calibration = new QPushButton(LCDwidget_2);
-        pushButton_calibration->setObjectName(QStringLiteral("pushButton_calibration"));
-        sizePolicy3.setHeightForWidth(pushButton_calibration->sizePolicy().hasHeightForWidth());
-        pushButton_calibration->setSizePolicy(sizePolicy3);
-        pushButton_calibration->setMinimumSize(QSize(120, 31));
-        QFont font4;
-        font4.setFamily(QStringLiteral("Arial"));
-        font4.setPointSize(16);
-        pushButton_calibration->setFont(font4);
-        pushButton_calibration->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-""));
-
-        gridLayout_12->addWidget(pushButton_calibration, 1, 0, 1, 1);
-
-
-        gridLayout_2->addWidget(LCDwidget_2, 3, 4, 1, 1);
-
-        LCDwidget_4 = new QWidget(tab);
-        LCDwidget_4->setObjectName(QStringLiteral("LCDwidget_4"));
-        sizePolicy2.setHeightForWidth(LCDwidget_4->sizePolicy().hasHeightForWidth());
-        LCDwidget_4->setSizePolicy(sizePolicy2);
-        LCDwidget_4->setMinimumSize(QSize(0, 0));
-        LCDwidget_4->setBaseSize(QSize(400, 400));
-        LCDwidget_4->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
-"\n"
-"QWidget::!hover{\n"
-"background-color: rgb(59, 65, 72);\n"
-"}\n"
-"\n"
-"\n"
-"QWidget::hover{\n"
-"background-color: rgb(59, 65, 72)}"));
-        gridLayout_6 = new QGridLayout(LCDwidget_4);
-        gridLayout_6->setSpacing(6);
-        gridLayout_6->setContentsMargins(11, 11, 11, 11);
-        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
-        lcdNumber_M = new QLCDNumber(LCDwidget_4);
-        lcdNumber_M->setObjectName(QStringLiteral("lcdNumber_M"));
-        lcdNumber_M->setMinimumSize(QSize(81, 31));
-        lcdNumber_M->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-
-        gridLayout_6->addWidget(lcdNumber_M, 0, 3, 1, 1);
-
-        label_text_5 = new QLabel(LCDwidget_4);
-        label_text_5->setObjectName(QStringLiteral("label_text_5"));
-        label_text_5->setStyleSheet(QLatin1String("\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        label_text_5->setAlignment(Qt::AlignCenter);
-
-        gridLayout_6->addWidget(label_text_5, 0, 0, 1, 1);
-
-        label_text_6 = new QLabel(LCDwidget_4);
-        label_text_6->setObjectName(QStringLiteral("label_text_6"));
-        label_text_6->setStyleSheet(QLatin1String("\n"
-"font: 87 10pt \"Arial Black\";\n"
-"border-radius: 10px;"));
-        label_text_6->setAlignment(Qt::AlignCenter);
-
-        gridLayout_6->addWidget(label_text_6, 0, 2, 1, 1);
-
-        lcdNumber_force = new QLCDNumber(LCDwidget_4);
-        lcdNumber_force->setObjectName(QStringLiteral("lcdNumber_force"));
-        lcdNumber_force->setMinimumSize(QSize(131, 31));
-        lcdNumber_force->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-
-        gridLayout_6->addWidget(lcdNumber_force, 0, 1, 1, 1);
-
-        lcdNumber_M_2 = new QLCDNumber(LCDwidget_4);
-        lcdNumber_M_2->setObjectName(QStringLiteral("lcdNumber_M_2"));
-        lcdNumber_M_2->setMinimumSize(QSize(81, 31));
-        lcdNumber_M_2->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-
-        gridLayout_6->addWidget(lcdNumber_M_2, 0, 4, 1, 1);
-
-        lcdNumber_M_3 = new QLCDNumber(LCDwidget_4);
-        lcdNumber_M_3->setObjectName(QStringLiteral("lcdNumber_M_3"));
-        lcdNumber_M_3->setMinimumSize(QSize(81, 31));
-        lcdNumber_M_3->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
-
-        gridLayout_6->addWidget(lcdNumber_M_3, 0, 5, 1, 1);
-
-
-        gridLayout_2->addWidget(LCDwidget_4, 3, 2, 1, 1);
-
-        widget_2 = new QWidget(tab);
+        scrollArea = new QScrollArea(tab);
+        scrollArea->setObjectName(QStringLiteral("scrollArea"));
+        scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+        scrollArea->setWidgetResizable(true);
+        scrollAreaWidgetContents = new QWidget();
+        scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1233, 678));
+        gridLayout_26 = new QGridLayout(scrollAreaWidgetContents);
+        gridLayout_26->setSpacing(6);
+        gridLayout_26->setContentsMargins(11, 11, 11, 11);
+        gridLayout_26->setObjectName(QStringLiteral("gridLayout_26"));
+        widget_2 = new QWidget(scrollAreaWidgetContents);
         widget_2->setObjectName(QStringLiteral("widget_2"));
         widget_2->setMinimumSize(QSize(1100, 435));
         widget_2->setStyleSheet(QLatin1String("background-color: rgb(59, 65, 72);\n"
@@ -820,13 +684,13 @@ public:
         sizePolicy2.setHeightForWidth(listWidget_alljoint->sizePolicy().hasHeightForWidth());
         listWidget_alljoint->setSizePolicy(sizePolicy2);
         listWidget_alljoint->setMinimumSize(QSize(160, 420));
-        QFont font5;
-        font5.setFamily(QStringLiteral("Arial"));
-        font5.setPointSize(14);
-        font5.setBold(false);
-        font5.setItalic(false);
-        font5.setWeight(50);
-        listWidget_alljoint->setFont(font5);
+        QFont font4;
+        font4.setFamily(QStringLiteral("Arial"));
+        font4.setPointSize(14);
+        font4.setBold(false);
+        font4.setItalic(false);
+        font4.setWeight(50);
+        listWidget_alljoint->setFont(font4);
         listWidget_alljoint->setStyleSheet(QLatin1String("background-color: rgb(76, 120, 65);\n"
 "font: 14pt \"Arial\";\n"
 "border-radius:10px;"));
@@ -990,39 +854,79 @@ public:
         horizontalLayout->addWidget(LCDwidget);
 
 
-        gridLayout_2->addWidget(widget_2, 1, 0, 1, 5);
+        gridLayout_26->addWidget(widget_2, 0, 0, 1, 3);
 
-        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        LCDwidget_4 = new QWidget(scrollAreaWidgetContents);
+        LCDwidget_4->setObjectName(QStringLiteral("LCDwidget_4"));
+        sizePolicy2.setHeightForWidth(LCDwidget_4->sizePolicy().hasHeightForWidth());
+        LCDwidget_4->setSizePolicy(sizePolicy2);
+        LCDwidget_4->setMinimumSize(QSize(0, 0));
+        LCDwidget_4->setBaseSize(QSize(400, 400));
+        LCDwidget_4->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(59, 65, 72);\n"
+"}\n"
+"\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(59, 65, 72)}"));
+        gridLayout_6 = new QGridLayout(LCDwidget_4);
+        gridLayout_6->setSpacing(6);
+        gridLayout_6->setContentsMargins(11, 11, 11, 11);
+        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
+        lcdNumber_M = new QLCDNumber(LCDwidget_4);
+        lcdNumber_M->setObjectName(QStringLiteral("lcdNumber_M"));
+        lcdNumber_M->setMinimumSize(QSize(81, 31));
+        lcdNumber_M->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
 
-        gridLayout_2->addItem(horizontalSpacer_9, 3, 0, 1, 1);
+        gridLayout_6->addWidget(lcdNumber_M, 0, 3, 1, 1);
 
-        horizontalSpacer_10 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        label_text_5 = new QLabel(LCDwidget_4);
+        label_text_5->setObjectName(QStringLiteral("label_text_5"));
+        label_text_5->setStyleSheet(QLatin1String("\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+        label_text_5->setAlignment(Qt::AlignCenter);
 
-        gridLayout_2->addItem(horizontalSpacer_10, 3, 3, 1, 1);
+        gridLayout_6->addWidget(label_text_5, 0, 0, 1, 1);
 
-        verticalSpacer_6 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        label_text_6 = new QLabel(LCDwidget_4);
+        label_text_6->setObjectName(QStringLiteral("label_text_6"));
+        label_text_6->setStyleSheet(QLatin1String("\n"
+"font: 87 10pt \"Arial Black\";\n"
+"border-radius: 10px;"));
+        label_text_6->setAlignment(Qt::AlignCenter);
 
-        gridLayout_2->addItem(verticalSpacer_6, 4, 2, 1, 1);
+        gridLayout_6->addWidget(label_text_6, 0, 2, 1, 1);
 
-        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        lcdNumber_force = new QLCDNumber(LCDwidget_4);
+        lcdNumber_force->setObjectName(QStringLiteral("lcdNumber_force"));
+        lcdNumber_force->setMinimumSize(QSize(131, 31));
+        lcdNumber_force->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
 
-        gridLayout_2->addItem(verticalSpacer_5, 2, 2, 1, 1);
+        gridLayout_6->addWidget(lcdNumber_force, 0, 1, 1, 1);
 
-        horizontalSpacer_14 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        lcdNumber_M_2 = new QLCDNumber(LCDwidget_4);
+        lcdNumber_M_2->setObjectName(QStringLiteral("lcdNumber_M_2"));
+        lcdNumber_M_2->setMinimumSize(QSize(81, 31));
+        lcdNumber_M_2->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
 
-        gridLayout_2->addItem(horizontalSpacer_14, 0, 1, 1, 4);
+        gridLayout_6->addWidget(lcdNumber_M_2, 0, 4, 1, 1);
 
-        label_recording = new QLabel(tab);
-        label_recording->setObjectName(QStringLiteral("label_recording"));
-        label_recording->setMinimumSize(QSize(50, 50));
-        label_recording->setMaximumSize(QSize(50, 50));
-        label_recording->setStyleSheet(QStringLiteral("border-image: url(:/myimages/Resources/recording.png);"));
+        lcdNumber_M_3 = new QLCDNumber(LCDwidget_4);
+        lcdNumber_M_3->setObjectName(QStringLiteral("lcdNumber_M_3"));
+        lcdNumber_M_3->setMinimumSize(QSize(81, 31));
+        lcdNumber_M_3->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
 
-        gridLayout_2->addWidget(label_recording, 0, 0, 1, 1);
+        gridLayout_6->addWidget(lcdNumber_M_3, 0, 5, 1, 1);
 
-        widget_4 = new QWidget(tab);
-        widget_4->setObjectName(QStringLiteral("widget_4"));
-        widget_4->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+
+        gridLayout_26->addWidget(LCDwidget_4, 1, 0, 1, 2);
+
+        widget_trailname = new QWidget(scrollAreaWidgetContents);
+        widget_trailname->setObjectName(QStringLiteral("widget_trailname"));
+        widget_trailname->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
 "\n"
 "QWidget::!hover{\n"
 "background-color: rgb(76, 120, 65)}\n"
@@ -1030,16 +934,16 @@ public:
 "QWidget::hover{\n"
 "background-color: rgb(76, 120, 65)}\n"
 "QWidget{font: 14pt \"Arial\";}"));
-        horizontalLayout_2 = new QHBoxLayout(widget_4);
+        horizontalLayout_2 = new QHBoxLayout(widget_trailname);
         horizontalLayout_2->setSpacing(6);
         horizontalLayout_2->setContentsMargins(11, 11, 11, 11);
         horizontalLayout_2->setObjectName(QStringLiteral("horizontalLayout_2"));
-        label_11 = new QLabel(widget_4);
+        label_11 = new QLabel(widget_trailname);
         label_11->setObjectName(QStringLiteral("label_11"));
 
         horizontalLayout_2->addWidget(label_11);
 
-        lineEdit_trailname = new QLineEdit(widget_4);
+        lineEdit_trailname = new QLineEdit(widget_trailname);
         lineEdit_trailname->setObjectName(QStringLiteral("lineEdit_trailname"));
         sizePolicy3.setHeightForWidth(lineEdit_trailname->sizePolicy().hasHeightForWidth());
         lineEdit_trailname->setSizePolicy(sizePolicy3);
@@ -1051,17 +955,285 @@ public:
 
         horizontalLayout_2->addWidget(lineEdit_trailname);
 
+        pushButton_newTrail = new QPushButton(widget_trailname);
+        pushButton_newTrail->setObjectName(QStringLiteral("pushButton_newTrail"));
+        pushButton_newTrail->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(85, 170, 127)\n"
+"}"));
 
-        gridLayout_2->addWidget(widget_4, 2, 3, 1, 2);
+        horizontalLayout_2->addWidget(pushButton_newTrail);
+
+
+        gridLayout_26->addWidget(widget_trailname, 1, 2, 1, 1);
+
+        widget_Timer = new QWidget(scrollAreaWidgetContents);
+        widget_Timer->setObjectName(QStringLiteral("widget_Timer"));
+        widget_Timer->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(59, 65, 72);\n"
+"}\n"
+"\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(59, 65, 72)}\n"
+"\n"
+"QWidget{font: 14pt \"Arial\";}"));
+        gridLayout_14 = new QGridLayout(widget_Timer);
+        gridLayout_14->setSpacing(6);
+        gridLayout_14->setContentsMargins(11, 11, 11, 11);
+        gridLayout_14->setObjectName(QStringLiteral("gridLayout_14"));
+        pushButton_resetCD = new QPushButton(widget_Timer);
+        pushButton_resetCD->setObjectName(QStringLiteral("pushButton_resetCD"));
+        pushButton_resetCD->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+
+        gridLayout_14->addWidget(pushButton_resetCD, 0, 3, 1, 1);
+
+        spinBox = new QSpinBox(widget_Timer);
+        spinBox->setObjectName(QStringLiteral("spinBox"));
+        spinBox->setMinimumSize(QSize(0, 40));
+        spinBox->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        spinBox->setAlignment(Qt::AlignCenter);
+        spinBox->setMaximum(60);
+
+        gridLayout_14->addWidget(spinBox, 1, 0, 1, 1);
+
+        label_timer = new QLabel(widget_Timer);
+        label_timer->setObjectName(QStringLiteral("label_timer"));
+
+        gridLayout_14->addWidget(label_timer, 0, 0, 1, 1);
+
+        dial = new QDial(widget_Timer);
+        dial->setObjectName(QStringLiteral("dial"));
+        dial->setMinimumSize(QSize(70, 70));
+        dial->setMaximumSize(QSize(70, 70));
+        dial->setBaseSize(QSize(70, 70));
+        dial->setMaximum(60);
+        dial->setPageStep(1);
+        dial->setNotchesVisible(true);
+
+        gridLayout_14->addWidget(dial, 1, 3, 1, 1);
+
+
+        gridLayout_26->addWidget(widget_Timer, 2, 0, 1, 1);
+
+        widget_Timer_2 = new QWidget(scrollAreaWidgetContents);
+        widget_Timer_2->setObjectName(QStringLiteral("widget_Timer_2"));
+        widget_Timer_2->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(59, 65, 72);\n"
+"}\n"
+"\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(59, 65, 72)}\n"
+"\n"
+"QWidget{font: 14pt \"Arial\";}"));
+        horizontalLayout_7 = new QHBoxLayout(widget_Timer_2);
+        horizontalLayout_7->setSpacing(6);
+        horizontalLayout_7->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_7->setObjectName(QStringLiteral("horizontalLayout_7"));
+        label_recording = new QLabel(widget_Timer_2);
+        label_recording->setObjectName(QStringLiteral("label_recording"));
+        label_recording->setMinimumSize(QSize(50, 50));
+        label_recording->setMaximumSize(QSize(50, 50));
+        label_recording->setStyleSheet(QStringLiteral("border-image: url(:/myimages/Resources/recording.png);"));
+
+        horizontalLayout_7->addWidget(label_recording);
+
+        lcdNumber_RecTime = new QLCDNumber(widget_Timer_2);
+        lcdNumber_RecTime->setObjectName(QStringLiteral("lcdNumber_RecTime"));
+        lcdNumber_RecTime->setMinimumSize(QSize(60, 40));
+        lcdNumber_RecTime->setMaximumSize(QSize(90, 60));
+        lcdNumber_RecTime->setStyleSheet(QLatin1String("background-color: silver;\n"
+"color: black;\n"
+"font: 14pt \"Arial\";"));
+
+        horizontalLayout_7->addWidget(lcdNumber_RecTime);
+
+
+        gridLayout_26->addWidget(widget_Timer_2, 2, 1, 1, 1);
+
+        LCDwidget_2 = new QWidget(scrollAreaWidgetContents);
+        LCDwidget_2->setObjectName(QStringLiteral("LCDwidget_2"));
+        sizePolicy2.setHeightForWidth(LCDwidget_2->sizePolicy().hasHeightForWidth());
+        LCDwidget_2->setSizePolicy(sizePolicy2);
+        LCDwidget_2->setMinimumSize(QSize(300, 100));
+        LCDwidget_2->setBaseSize(QSize(400, 400));
+        LCDwidget_2->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(59, 65, 72);\n"
+"}\n"
+"\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(59, 65, 72)}"));
+        horizontalLayout_8 = new QHBoxLayout(LCDwidget_2);
+        horizontalLayout_8->setSpacing(6);
+        horizontalLayout_8->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_8->setObjectName(QStringLiteral("horizontalLayout_8"));
+        pushButton_calibration = new QPushButton(LCDwidget_2);
+        pushButton_calibration->setObjectName(QStringLiteral("pushButton_calibration"));
+        sizePolicy3.setHeightForWidth(pushButton_calibration->sizePolicy().hasHeightForWidth());
+        pushButton_calibration->setSizePolicy(sizePolicy3);
+        pushButton_calibration->setMinimumSize(QSize(120, 31));
+        pushButton_calibration->setMaximumSize(QSize(160, 60));
+        QFont font5;
+        font5.setFamily(QStringLiteral("Arial"));
+        font5.setPointSize(16);
+        pushButton_calibration->setFont(font5);
+        pushButton_calibration->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+
+        horizontalLayout_8->addWidget(pushButton_calibration);
+
+        frame = new QFrame(LCDwidget_2);
+        frame->setObjectName(QStringLiteral("frame"));
+        frame->setMinimumSize(QSize(200, 80));
+        frame->setMaximumSize(QSize(200, 80));
+        frame->setFrameShape(QFrame::Panel);
+        frame->setFrameShadow(QFrame::Plain);
+        gridLayout_11 = new QGridLayout(frame);
+        gridLayout_11->setSpacing(6);
+        gridLayout_11->setContentsMargins(11, 11, 11, 11);
+        gridLayout_11->setObjectName(QStringLiteral("gridLayout_11"));
+        pushButton_StartRec = new QPushButton(frame);
+        pushButton_StartRec->setObjectName(QStringLiteral("pushButton_StartRec"));
+        sizePolicy3.setHeightForWidth(pushButton_StartRec->sizePolicy().hasHeightForWidth());
+        pushButton_StartRec->setSizePolicy(sizePolicy3);
+        pushButton_StartRec->setMinimumSize(QSize(70, 70));
+        pushButton_StartRec->setMaximumSize(QSize(70, 70));
+        pushButton_StartRec->setStyleSheet(QLatin1String("QPushButton{border-radius: 35px\n"
+"\n"
+"}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+        QIcon icon1;
+        icon1.addFile(QStringLiteral(":/myimages/Resources/luzhi.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_StartRec->setIcon(icon1);
+        pushButton_StartRec->setIconSize(QSize(64, 64));
+        pushButton_StartRec->setAutoExclusive(true);
+
+        gridLayout_11->addWidget(pushButton_StartRec, 0, 0, 1, 1);
+
+        pushButton_StopRec = new QPushButton(frame);
+        pushButton_StopRec->setObjectName(QStringLiteral("pushButton_StopRec"));
+        sizePolicy3.setHeightForWidth(pushButton_StopRec->sizePolicy().hasHeightForWidth());
+        pushButton_StopRec->setSizePolicy(sizePolicy3);
+        pushButton_StopRec->setMinimumSize(QSize(70, 70));
+        pushButton_StopRec->setMaximumSize(QSize(70, 70));
+        pushButton_StopRec->setStyleSheet(QLatin1String("QPushButton{border-radius: 35px}\n"
+"\n"
+"QPushButton::!hover{background-color: rgb(189, 0, 0)}\n"
+"\n"
+"\n"
+"QPushButton::hover{\n"
+"	background-color: rgb(148, 0, 0)}"));
+        QIcon icon2;
+        icon2.addFile(QStringLiteral(":/myimages/Resources/tingzhiluzhi.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_StopRec->setIcon(icon2);
+        pushButton_StopRec->setIconSize(QSize(74, 74));
+        pushButton_StopRec->setAutoExclusive(true);
+
+        gridLayout_11->addWidget(pushButton_StopRec, 0, 1, 1, 1);
+
+
+        horizontalLayout_8->addWidget(frame);
+
+
+        gridLayout_26->addWidget(LCDwidget_2, 2, 2, 1, 1);
+
+        widget_TimeLapse = new QWidget(scrollAreaWidgetContents);
+        widget_TimeLapse->setObjectName(QStringLiteral("widget_TimeLapse"));
+        widget_TimeLapse->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"QWidget{font: 14pt \"Arial\";}"));
+        horizontalLayout_3 = new QHBoxLayout(widget_TimeLapse);
+        horizontalLayout_3->setSpacing(6);
+        horizontalLayout_3->setContentsMargins(11, 11, 11, 11);
+        horizontalLayout_3->setObjectName(QStringLiteral("horizontalLayout_3"));
+        pushButton = new QPushButton(widget_TimeLapse);
+        pushButton->setObjectName(QStringLiteral("pushButton"));
+        pushButton->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(85, 170, 127)\n"
+"}\n"
+""));
+
+        horizontalLayout_3->addWidget(pushButton);
+
+        comboBox = new QComboBox(widget_TimeLapse);
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->addItem(QString());
+        comboBox->setObjectName(QStringLiteral("comboBox"));
+        comboBox->setMinimumSize(QSize(50, 0));
+        comboBox->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"QWidget{font: 14pt \"Arial\";}"));
+
+        horizontalLayout_3->addWidget(comboBox, 0, Qt::AlignHCenter);
+
+        label_13 = new QLabel(widget_TimeLapse);
+        label_13->setObjectName(QStringLiteral("label_13"));
+
+        horizontalLayout_3->addWidget(label_13, 0, Qt::AlignHCenter);
+
+
+        gridLayout_26->addWidget(widget_TimeLapse, 3, 0, 1, 1);
+
+        scrollArea->setWidget(scrollAreaWidgetContents);
+        widget_Timer->raise();
+        LCDwidget_4->raise();
+        widget_trailname->raise();
+        widget_2->raise();
+        LCDwidget_2->raise();
+        widget_Timer_2->raise();
+        widget_TimeLapse->raise();
+
+        gridLayout_2->addWidget(scrollArea, 0, 1, 1, 2);
 
         QIcon icon3;
         icon3.addFile(QStringLiteral(":/myimages/Resources/sheyinji.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tab, icon3, QString());
-        LCDwidget_2->raise();
-        widget_2->raise();
-        LCDwidget_4->raise();
-        label_recording->raise();
-        widget_4->raise();
         tab_2 = new QWidget();
         tab_2->setObjectName(QStringLiteral("tab_2"));
         gridLayout_4 = new QGridLayout(tab_2);
@@ -1157,10 +1329,26 @@ public:
 
         gridLayout->addWidget(tabWidget, 1, 0, 1, 1);
 
+        lcdNumber_date = new QLCDNumber(centralWidget);
+        lcdNumber_date->setObjectName(QStringLiteral("lcdNumber_date"));
+        lcdNumber_date->setMinimumSize(QSize(250, 20));
+        lcdNumber_date->setMaximumSize(QSize(250, 40));
+        lcdNumber_date->setLayoutDirection(Qt::LeftToRight);
+
+        gridLayout->addWidget(lcdNumber_date, 3, 0, 1, 1, Qt::AlignRight);
+
+        progressBar_tl = new QProgressBar(centralWidget);
+        progressBar_tl->setObjectName(QStringLiteral("progressBar_tl"));
+        progressBar_tl->setEnabled(true);
+        progressBar_tl->setValue(0);
+        progressBar_tl->setInvertedAppearance(false);
+
+        gridLayout->addWidget(progressBar_tl, 2, 0, 1, 1);
+
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1305, 23));
+        menuBar->setGeometry(QRect(0, 0, 1294, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -1170,7 +1358,6 @@ public:
         MainWindowClass->setStatusBar(statusBar);
 
         retranslateUi(MainWindowClass);
-        QObject::connect(checkBox_2, SIGNAL(clicked(bool)), MainWindowClass, SLOT(SimpleMode(bool)));
         QObject::connect(pushButton_StartRec, SIGNAL(clicked()), MainWindowClass, SLOT(startRec()));
         QObject::connect(pushButton_StopRec, SIGNAL(clicked()), MainWindowClass, SLOT(stopRec()));
         QObject::connect(treeWidget, SIGNAL(itemClicked(QTreeWidgetItem*,int)), MainWindowClass, SLOT(Click(QTreeWidgetItem*)));
@@ -1179,12 +1366,16 @@ public:
         QObject::connect(pushButton_ready, SIGNAL(clicked()), MainWindowClass, SLOT(ready4Rec()));
         QObject::connect(lineEdit_subjectName, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_subjName(QString)));
         QObject::connect(lineEdit_subjectName, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(releaseOKbutton()));
-        QObject::connect(pushButton_StartRec, SIGNAL(clicked()), label_recording, SLOT(show()));
-        QObject::connect(pushButton_StopRec, SIGNAL(clicked()), label_recording, SLOT(hide()));
         QObject::connect(pushButton_openrecord, SIGNAL(clicked()), MainWindowClass, SLOT(UpdateDir()));
-        QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
+        QObject::connect(pushButton_newTrail, SIGNAL(clicked()), MainWindowClass, SLOT(newTrail()));
+        QObject::connect(dial, SIGNAL(valueChanged(int)), MainWindowClass, SLOT(SetCD(int)));
+        QObject::connect(dial, SIGNAL(valueChanged(int)), spinBox, SLOT(setValue(int)));
+        QObject::connect(spinBox, SIGNAL(valueChanged(int)), dial, SLOT(setValue(int)));
+        QObject::connect(pushButton_resetCD, SIGNAL(clicked()), MainWindowClass, SLOT(ResetCD()));
+        QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), MainWindowClass, SLOT(SetLT(QString)));
+        QObject::connect(pushButton, SIGNAL(clicked()), MainWindowClass, SLOT(timeLapse()));
 
-        tabWidget->setCurrentIndex(0);
+        tabWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);
@@ -1200,7 +1391,7 @@ public:
         label_text_11->setText(QApplication::translate("MainWindowClass", "Gender", nullptr));
         label_text_12->setText(QApplication::translate("MainWindowClass", "Height (cm)", nullptr));
         label_text_13->setText(QApplication::translate("MainWindowClass", "Age", nullptr));
-        label_text_9->setText(QApplication::translate("MainWindowClass", "User Name", nullptr));
+        label_text_9->setText(QApplication::translate("MainWindowClass", "Subject Name", nullptr));
         lineEdit_height->setText(QString());
         lineEdit_subjectName->setText(QString());
         label_12->setText(QApplication::translate("MainWindowClass", "Preference Side", nullptr));
@@ -1210,12 +1401,7 @@ public:
         label_text_2->setText(QApplication::translate("MainWindowClass", "Bag Weight (kg)", nullptr));
         lineEdit_bagX->setText(QApplication::translate("MainWindowClass", "x", nullptr));
         lineEdit_f->setText(QString());
-        tabWidget->setTabText(tabWidget->indexOf(tab_userinput), QApplication::translate("MainWindowClass", "Userinfo ", nullptr));
-        pushButton_StartRec->setText(QString());
-        pushButton_StopRec->setText(QString());
-        pushButton_calibration->setText(QApplication::translate("MainWindowClass", "Calibration", nullptr));
-        label_text_5->setText(QApplication::translate("MainWindowClass", "F ->", nullptr));
-        label_text_6->setText(QApplication::translate("MainWindowClass", "M ->", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_userinput), QApplication::translate("MainWindowClass", "SubjInfo", nullptr));
 
         const bool __sortingEnabled = listWidget_alljoint->isSortingEnabled();
         listWidget_alljoint->setSortingEnabled(false);
@@ -1282,9 +1468,24 @@ public:
         label_3->setText(QApplication::translate("MainWindowClass", "Left Knee", nullptr));
         label_5->setText(QApplication::translate("MainWindowClass", "Uper/Lower Trunk Angle", nullptr));
         checkBox_2->setText(QApplication::translate("MainWindowClass", "Show joint angles", nullptr));
-        label_recording->setText(QString());
+        label_text_5->setText(QApplication::translate("MainWindowClass", "F ->", nullptr));
+        label_text_6->setText(QApplication::translate("MainWindowClass", "M ->", nullptr));
         label_11->setText(QApplication::translate("MainWindowClass", "Trail Name", nullptr));
         lineEdit_trailname->setText(QString());
+        pushButton_newTrail->setText(QApplication::translate("MainWindowClass", "+NEW", nullptr));
+        pushButton_resetCD->setText(QApplication::translate("MainWindowClass", "restet", nullptr));
+        label_timer->setText(QApplication::translate("MainWindowClass", "Timer (Sec)", nullptr));
+        label_recording->setText(QString());
+        pushButton_calibration->setText(QApplication::translate("MainWindowClass", "Calibration", nullptr));
+        pushButton_StartRec->setText(QString());
+        pushButton_StopRec->setText(QString());
+        pushButton->setText(QApplication::translate("MainWindowClass", "TimeLapse", nullptr));
+        comboBox->setItemText(0, QApplication::translate("MainWindowClass", "0", nullptr));
+        comboBox->setItemText(1, QApplication::translate("MainWindowClass", "10", nullptr));
+        comboBox->setItemText(2, QApplication::translate("MainWindowClass", "20", nullptr));
+        comboBox->setItemText(3, QApplication::translate("MainWindowClass", "30", nullptr));
+
+        label_13->setText(QApplication::translate("MainWindowClass", "min", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Control Panel ", nullptr));
         pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "Refresh", nullptr));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();

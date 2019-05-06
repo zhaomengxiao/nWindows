@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QLayout>
 #include <QTreeWidget>
+#include <QProgressBar>  
 //charts
 #include <QtCharts/qchartview.h>
 #include <QtCharts\qlineseries.h>
@@ -74,10 +75,16 @@ private://**私有成员变量**
 	//Kinect skeleton
 	//显示图表
 	/*Chart *chart = NULL;*/
-	QTime dataTime;
+	int recTime{0};
 	//others
 	QTimer *lcdtimer;
-
+	QTimer *rectimer;
+	QTimer *lapsetimer;
+	QTime lapsed;
+	//countDown time
+	int countDown{0};
+	//timelapse time
+	int tLapse;
 	//std::ofstream jointsData{ "TEST.txt", std::ios::app };
 
 	//保存数据到文件
@@ -107,7 +114,8 @@ private slots:
 	void showSkeleton_clicked();
 	void updateVideoFrame();
 	void updateSkeletonFrame();
-	//void updateLCDnumber_date();
+	void updateLCDnumber_date();
+	void updateLCDnumber_RecTime();
 	void updateLCDnumber_angle();
 	void stopCamera();
 	void startCamera();
@@ -123,12 +131,17 @@ private slots:
 	void LineEdit_subjName(QString str);
 	void bagSelect(bool);
 	void SimpleMode(bool);
-
+	void SetCD(int t);
+	void ResetCD();
+	void SetLT(QString str);
 	//记录数据流程控制
 	void ready4Rec();
 	void releaseOKbutton();
+	void newTrail();
 	void startRec();
 	void stopRec();
+	void timeLapse();
+	void oneLapse();
 	void calSubcaliAngle(); 
 	void error_openfile();
 
