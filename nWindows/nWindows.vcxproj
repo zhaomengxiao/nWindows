@@ -178,7 +178,7 @@
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>qtmain.lib;Qt5Core.lib;Qt5Gui.lib;Qt5Widgets.lib;Qt5OpenGL.lib;opengl32.lib;glu32.lib;Qt5Quick.lib;Qt5QuickWidgets.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <QtMoc>
@@ -237,6 +237,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="myKinect.cpp" />
+    <ClCompile Include="segment.cpp" />
     <ClCompile Include="vtk.cpp" />
     <ClCompile Include="vtktimercallback.cpp" />
   </ItemGroup>
@@ -266,6 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="segment.h" />
     <ClInclude Include="vtk.h" />
     <ClInclude Include="vtkshape.h" />
     <ClInclude Include="vtktimercallback.h" />

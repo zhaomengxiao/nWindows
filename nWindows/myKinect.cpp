@@ -217,7 +217,7 @@ void myKinect::SegCOM(Eigen::Vector3f &segcom,Joint &jointP, Joint &jointD,const
 		break;
 	}
 	//forearm and hand
-	segcom = coordP + (coordD - coordP) * 0.433;
+	//segcom = coordP + (coordD - coordP) * 0.433;
 }
 //º∆À„bodyCOM
 Eigen::Vector3f myKinect::BodyCOM(Eigen::Vector3f &thighcom_L, Eigen::Vector3f &thighcom_R, Eigen::Vector3f &shankcom_L,

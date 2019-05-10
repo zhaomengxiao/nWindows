@@ -60,6 +60,9 @@
     <ClCompile Include="vtktimercallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="segment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -114,6 +117,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="vtktimercallback.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="segment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
