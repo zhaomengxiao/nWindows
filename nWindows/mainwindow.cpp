@@ -1,8 +1,5 @@
 #include "mainwindow.h"
-#include <QtCore/QFile>
-#include <QtCore/QTextStream>
-#include <qdesktopservices.h>
-#include <qprocess.h>
+
 
 //a function that turn cvMat file into QImage
 QImage  Mat2QImage(cv::Mat cvImg);
@@ -156,7 +153,7 @@ void MainWindow::connectSignalSlot()
 	connect(videotimer, SIGNAL(timeout()),this,SLOT(updateVideoFrame()));
 	skeletontimer = new QTimer;
 	connect(skeletontimer, SIGNAL(timeout()), this, SLOT(updateSkeletonFrame()));
-	connect(skeletontimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_angle()));
+	//517//connect(skeletontimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_angle()));
 	lcdtimer = new QTimer;
 	connect(lcdtimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_date()));
 	//connect(ui.saveImageButton, SIGNAL(clicked()),this, SLOT(on_saveImageButton_clicked()));
@@ -364,42 +361,44 @@ void MainWindow::updateLCDnumber_RecTime()
 	recTime++;
 	ui.lcdNumber_RecTime->display(recTime);
 }
-//显示角度LCD
-void MainWindow::updateLCDnumber_angle()
-{
 
-
-	ui.lcdNumber_M->display(int(M_spinebase.x()));
-	ui.lcdNumber_M_2->display(int(M_spinebase.y()));
-	ui.lcdNumber_M_3->display(int(M_spinebase.z()));
-	ui.lcdNumber_force->display(int(F_spinebase));
-//	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
-	if (isSimpleMode)
-	{
-		ui.lcdNumber_ShoulderR->display(int(mykinect->ShoulderAgR));
-		ui.lcdNumber_ShoulderL->display(int(mykinect->ShoulderAgL));
-		ui.lcdNumber_ElbowR->display(int(mykinect->ElbowAgR));
-		ui.lcdNumber_ElbowL->display(int(mykinect->ElbowAgL));
-		ui.lcdNumber_KneeR->display(int(mykinect->KneeAgR));
-		ui.lcdNumber_KneeL->display(int(mykinect->KneeAgL));
-		ui.lcdNumber_Spine->display(int(mykinect->SpineAg));
-		ui.lcdNumber_Neckfb->display(int(mykinect->NeckbfAg));
-		ui.lcdNumber_Necklr->display(int(mykinect->NecklrAg));
-	}
-	else
-	{
-		//ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
-		//ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
-		//ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
-
-		//ui.lcdNumber_KneeR->display(int(mykinect->angles2.y() * 180 / PI));
-		//ui.lcdNumber_KneeL->display(int(mykinect->angles2.z() * 180 / PI));
-		//ui.lcdNumber_ElbowR->display(int(mykinect->angles2.x() * 180 / PI));
-	}
-	
-	
-
-}
+//517
+////显示角度LCD
+//void MainWindow::updateLCDnumber_angle()
+//{
+//
+//
+//	ui.lcdNumber_M->display(int(M_spinebase.x()));
+//	ui.lcdNumber_M_2->display(int(M_spinebase.y()));
+//	ui.lcdNumber_M_3->display(int(M_spinebase.z()));
+//	ui.lcdNumber_force->display(int(F_spinebase));
+////	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
+//	if (isSimpleMode)
+//	{
+//		ui.lcdNumber_ShoulderR->display(int(mykinect->ShoulderAgR));
+//		ui.lcdNumber_ShoulderL->display(int(mykinect->ShoulderAgL));
+//		ui.lcdNumber_ElbowR->display(int(mykinect->ElbowAgR));
+//		ui.lcdNumber_ElbowL->display(int(mykinect->ElbowAgL));
+//		ui.lcdNumber_KneeR->display(int(mykinect->KneeAgR));
+//		ui.lcdNumber_KneeL->display(int(mykinect->KneeAgL));
+//		ui.lcdNumber_Spine->display(int(mykinect->SpineAg));
+//		ui.lcdNumber_Neckfb->display(int(mykinect->NeckbfAg));
+//		ui.lcdNumber_Necklr->display(int(mykinect->NecklrAg));
+//	}
+//	else
+//	{
+//		//ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
+//		//ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
+//		//ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
+//
+//		//ui.lcdNumber_KneeR->display(int(mykinect->angles2.y() * 180 / PI));
+//		//ui.lcdNumber_KneeL->display(int(mykinect->angles2.z() * 180 / PI));
+//		//ui.lcdNumber_ElbowR->display(int(mykinect->angles2.x() * 180 / PI));
+//	}
+//	
+//	
+//
+//}
 
 void MainWindow::stopCamera()
 {
@@ -944,6 +943,18 @@ QFileInfoList MainWindow::allFile(QTreeWidgetItem * item,QString path)
 
 	return file_list;
 
+}
+
+void MainWindow::readRec()
+{ 
+	OBJ::Obj obj;
+	obj.setFilePath(".\\Record\\2019-04-26\\ivan\\cali_SubjInfo.csv", ".\\Record\\2019-04-26\\ivan\\cali_Position.csv");
+	obj.addtrail(".\\Record\\2019-04-26\\ivan\\Oval_30RPM_Position.csv");
+	
+	pSender->readSubjInfo(obj);
+	pSender->readCali(obj);
+	pSender->readTrail(obj);
+	obj;
 }
 
 

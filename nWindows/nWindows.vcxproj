@@ -237,7 +237,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="myKinect.cpp" />
-    <ClCompile Include="segment.cpp" />
+    <ClCompile Include="obj.cpp" />
     <ClCompile Include="vtk.cpp" />
     <ClCompile Include="vtktimercallback.cpp" />
   </ItemGroup>
@@ -267,7 +267,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
-    <ClInclude Include="segment.h" />
+    <ClInclude Include="obj.h" />
     <ClInclude Include="vtk.h" />
     <ClInclude Include="vtkshape.h" />
     <ClInclude Include="vtktimercallback.h" />

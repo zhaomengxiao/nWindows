@@ -60,7 +60,7 @@
     <ClCompile Include="vtktimercallback.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="segment.cpp">
+    <ClCompile Include="obj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,7 +119,7 @@
     <ClInclude Include="vtktimercallback.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="segment.h">
+    <ClInclude Include="obj.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

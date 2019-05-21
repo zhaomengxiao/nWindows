@@ -37,5 +37,6 @@ public:
 	void initialize();
 	int setCallback();
 	void rend();
+	void rendcali();
 };
 

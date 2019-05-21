@@ -1,8 +1,10 @@
 #pragma once
+#include "filerec.h"
 #include <vtkCommand.h>
 #include <vtkshape.h>
 #include <array>
 #include <Eigen\Dense>
+
 //#include "mainwindow.h"
 class vtkTimerCallback :
 	public vtkCommand

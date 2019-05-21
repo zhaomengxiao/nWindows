@@ -158,6 +158,8 @@ public:
     QPushButton *pushButton_openrecord;
     QSpacerItem *horizontalSpacer_11;
     QTreeWidget *treeWidget;
+    QWidget *tab_3;
+    QPushButton *pushButton_2;
     QLCDNumber *lcdNumber_date;
     QProgressBar *progressBar_tl;
     QMenuBar *menuBar;
@@ -1326,6 +1328,19 @@ public:
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/myimages/Resources/jilu.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tab_2, icon5, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        pushButton_2 = new QPushButton(tab_3);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setGeometry(QRect(90, 70, 131, 71));
+        pushButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+        tabWidget->addTab(tab_3, QString());
 
         gridLayout->addWidget(tabWidget, 1, 0, 1, 1);
 
@@ -1374,6 +1389,7 @@ public:
         QObject::connect(pushButton_resetCD, SIGNAL(clicked()), MainWindowClass, SLOT(ResetCD()));
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), MainWindowClass, SLOT(SetLT(QString)));
         QObject::connect(pushButton, SIGNAL(clicked()), MainWindowClass, SLOT(timeLapse()));
+        QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindowClass, SLOT(readRec()));
 
         tabWidget->setCurrentIndex(1);
 
@@ -1491,6 +1507,8 @@ public:
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindowClass", "Data Base", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Files", nullptr));
+        pushButton_2->setText(QApplication::translate("MainWindowClass", "Read Cali", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "Data Process", nullptr));
     } // retranslateUi
 
 };

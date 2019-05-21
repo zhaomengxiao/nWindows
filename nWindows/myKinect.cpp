@@ -238,35 +238,35 @@ Eigen::Vector3f myKinect::BodyCOM(Eigen::Vector3f &thighcom_L, Eigen::Vector3f &
 	return BodyCOM;
 }
 
-
-Eigen::Vector3f myKinect::QuaternionToEuler(Eigen::Vector4f &quat)
-{
-	Eigen::Vector3f v(0.0, 0.0, 0.0);
-	v.x() = atan2(2 * quat.x() * quat.w() - 2 * quat.x() * quat.z(),
-		1 - 2 * pow(quat.y(), 2) - 2 * pow(quat.z(), 2));
-
-	v.z() = asin(2 * quat.x() * quat.y() + 2 * quat.z() * quat.w());
-
-	v.y() = atan2(2 * quat.x() * quat.w() - 2 * quat.y() * quat.z(),
-		1 - 2 * pow(quat.x(), 2) - 2 * pow(quat.z(), 2));
-
-	if (quat.x() * quat.y() + quat.z() * quat.w() == 0.5) {
-		v.x() = (2 * atan2(quat.x(), quat.w()));
-		v.y() = 0.;
-	}
-	else if (quat.x() * quat.y() + quat.z() * quat.w() == -0.5)
-	{
-		v.x() = (-2 * atan2(quat.x(), quat.w()));
-		v.y() = 0.;
-	}
-
-
-	v.x() = RadianToDegree(v.x());
-	v.y() = RadianToDegree(v.y());
-	v.z() = RadianToDegree(v.z());
-
-	return v;
-}
+//517
+//Eigen::Vector3f myKinect::QuaternionToEuler(Eigen::Vector4f &quat)
+//{
+//	Eigen::Vector3f v(0.0, 0.0, 0.0);
+//	v.x() = atan2(2 * quat.x() * quat.w() - 2 * quat.x() * quat.z(),
+//		1 - 2 * pow(quat.y(), 2) - 2 * pow(quat.z(), 2));
+//
+//	v.z() = asin(2 * quat.x() * quat.y() + 2 * quat.z() * quat.w());
+//
+//	v.y() = atan2(2 * quat.x() * quat.w() - 2 * quat.y() * quat.z(),
+//		1 - 2 * pow(quat.x(), 2) - 2 * pow(quat.z(), 2));
+//
+//	if (quat.x() * quat.y() + quat.z() * quat.w() == 0.5) {
+//		v.x() = (2 * atan2(quat.x(), quat.w()));
+//		v.y() = 0.;
+//	}
+//	else if (quat.x() * quat.y() + quat.z() * quat.w() == -0.5)
+//	{
+//		v.x() = (-2 * atan2(quat.x(), quat.w()));
+//		v.y() = 0.;
+//	}
+//
+//
+//	v.x() = RadianToDegree(v.x());
+//	v.y() = RadianToDegree(v.y());
+//	v.z() = RadianToDegree(v.z());
+//
+//	return v;
+//}
 
 //传出XYZ的旋转角-----------------------
 float myKinect::getAngle_x()
@@ -284,13 +284,14 @@ float myKinect::getAngle_z()
 	return angles.z();
 }
 //------------------------------------
-float myKinect::norm(std::vector<float> v) {
-	return sqrt(v[0]*v[0]+ v[1] * v[1]+ v[2] * v[2]);
-}
-double myKinect::RadianToDegree(double angle)
-{
-	return angle * (180.0 / PI) ;
-}
+//517
+//float myKinect::norm(std::vector<float> v) {
+//	return sqrt(v[0]*v[0]+ v[1] * v[1]+ v[2] * v[2]);
+//}
+//double myKinect::RadianToDegree(double angle)
+//{
+//	return angle * (180.0 / PI) ;
+//}
 
 bool myKinect::isAvailable()
 {
@@ -403,31 +404,33 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					myCOM =
 						BodyCOM(thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R, upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R, Pelvis, ThoraxAbdomen, Headneck);
 					//std::cout << myCOM.x() << "," << myCOM.y() << "," << myCOM.z() << "," << std::endl;
-					//计算关节角度
-					CalcoordupTunkR();
 					
-					ElbowAgR = CalJangle3j(joints, JointType_ShoulderRight, JointType_ElbowRight, JointType_WristRight);
-					ElbowAgL = CalJangle3j(joints, JointType_ShoulderLeft, JointType_ElbowLeft, JointType_WristLeft);
-					KneeAgR = CalJangle3j(joints, JointType_HipRight, JointType_KneeRight, JointType_AnkleRight);
-					KneeAgL = CalJangle3j(joints, JointType_HipLeft, JointType_KneeLeft, JointType_AnkleLeft);
+					//517
+					////计算关节角度
+					//CalcoordupTunkR();
+					//
+					//ElbowAgR = CalJangle3j(joints, JointType_ShoulderRight, JointType_ElbowRight, JointType_WristRight);
+					//ElbowAgL = CalJangle3j(joints, JointType_ShoulderLeft, JointType_ElbowLeft, JointType_WristLeft);
+					//KneeAgR = CalJangle3j(joints, JointType_HipRight, JointType_KneeRight, JointType_AnkleRight);
+					//KneeAgL = CalJangle3j(joints, JointType_HipLeft, JointType_KneeLeft, JointType_AnkleLeft);
 
-					SpineAg = CalJangle3j(joints, JointType_SpineShoulder, JointType_SpineMid, JointType_SpineBase);
-					
-					ShoulderAgR = CalJangle3j(joints, JointType_SpineShoulder, JointType_ShoulderRight, JointType_ElbowRight);
-					ShoulderAgL = CalJangle3j(joints, JointType_SpineShoulder, JointType_ShoulderLeft, JointType_ElbowLeft);
-					ShoulderABD_R = CalShodAbd_R();
-					ShoulderFE_R = CalShodFE_R();
-					JointAngles[0] = ElbowAgR;
-					JointAngles[1] = ElbowAgL;
-					JointAngles[2] = KneeAgR;
-					JointAngles[3] = KneeAgL;
-					JointAngles[4] = SpineAg;
-					//JointAngles[5] = CalShodAbd_R();
-					//JointAngles[6] = CalShodFE_R();
-					JointAngles[5] = ShoulderAgR;
-					JointAngles[6] = ShoulderAgL;
-					//JointAngles[7] = NeckbfAg;
-					//JointAngles[8] = NecklrAg;
+					//SpineAg = CalJangle3j(joints, JointType_SpineShoulder, JointType_SpineMid, JointType_SpineBase);
+					//
+					//ShoulderAgR = CalJangle3j(joints, JointType_SpineShoulder, JointType_ShoulderRight, JointType_ElbowRight);
+					//ShoulderAgL = CalJangle3j(joints, JointType_SpineShoulder, JointType_ShoulderLeft, JointType_ElbowLeft);
+					//ShoulderABD_R = CalShodAbd_R();
+					//ShoulderFE_R = CalShodFE_R();
+					//JointAngles[0] = ElbowAgR;
+					//JointAngles[1] = ElbowAgL;
+					//JointAngles[2] = KneeAgR;
+					//JointAngles[3] = KneeAgL;
+					//JointAngles[4] = SpineAg;
+					////JointAngles[5] = CalShodAbd_R();
+					////JointAngles[6] = CalShodFE_R();
+					//JointAngles[5] = ShoulderAgR;
+					//JointAngles[6] = ShoulderAgL;
+					////JointAngles[7] = NeckbfAg;
+					////JointAngles[8] = NecklrAg;
 
 				}
 				delete[] depthSpacePosition;
@@ -443,13 +446,16 @@ void myKinect::ProcessBody(int nBodyCount, IBody** ppBodies)
 					quatshow[2] = JointOrientations[2].Orientation.z;
 					quatshow[3] = JointOrientations[2].Orientation.w;
 					//Eigen::Quaternionf q(JointOrientations[jointnumber].Orientation.w, JointOrientations[jointnumber].Orientation.x, JointOrientations[jointnumber].Orientation.y, JointOrientations[jointnumber].Orientation.z);
-					angles = QuaternionToEuler(quatshow);
+
+					//517/*angles = QuaternionToEuler(quatshow);*/
 					//Eigen::Vector3f eulerAngle = q.matrix().eulerAngles(2, 0, 1); //zxy
 					//angles2 = eulerAngle;
-					NeckbfAg = angles.y();
+					
+					//517
+					/*NeckbfAg = angles.y();
 					NecklrAg = angles.z();
 					JointAngles[7] = NeckbfAg;
-					JointAngles[8] = NecklrAg;
+					JointAngles[8] = NecklrAg;*/
 				}
 			}
 		}
@@ -514,170 +520,174 @@ void myKinect::DrawBone(const Joint* pJoints, const DepthSpacePoint* depthSpaceP
 		line(skeletonImg, p1, p2, cvScalar(0, 0, 255));
 	}
 }
-float dot(std::vector<float> v1, std::vector<float> v2) {
-	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
-}
-float myKinect::CalJangle3j(const Joint* pJoints, JointType joint0, JointType joint1 ,JointType joint2) {
-	TrackingState joint0State = pJoints[joint0].TrackingState;
-	TrackingState joint1State = pJoints[joint1].TrackingState;
-	TrackingState joint2State = pJoints[joint2].TrackingState;
+//517
+//float dot(std::vector<float> v1, std::vector<float> v2) {
+//	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
+//}
 
-	
-	// If we can't find either of these joints, exit
-	if ((joint0State == TrackingState_NotTracked) || (joint1State == TrackingState_NotTracked)|| (joint2State == TrackingState_NotTracked))
-	{
-		return 0.0;
-	}
+//517
+//float myKinect::CalJangle3j(const Joint* pJoints, JointType joint0, JointType joint1 ,JointType joint2) {
+//	TrackingState joint0State = pJoints[joint0].TrackingState;
+//	TrackingState joint1State = pJoints[joint1].TrackingState;
+//	TrackingState joint2State = pJoints[joint2].TrackingState;
+//
+//	
+//	// If we can't find either of these joints, exit
+//	if ((joint0State == TrackingState_NotTracked) || (joint1State == TrackingState_NotTracked)|| (joint2State == TrackingState_NotTracked))
+//	{
+//		return 0.0;
+//	}
+//
+//	std::vector<float> vector1
+//	{ pJoints[joint0].Position.X - pJoints[joint1].Position.X , pJoints[joint0].Position.Y - pJoints[joint1].Position.Y , pJoints[joint0].Position.Z - pJoints[joint1].Position.Z };
+//	std::vector<float> vector2
+//	{ pJoints[joint2].Position.X - pJoints[joint1].Position.X , pJoints[joint2].Position.Y - pJoints[joint1].Position.Y , pJoints[joint2].Position.Z - pJoints[joint1].Position.Z };
+//	
+//	
+//
+//	float normv1 = norm(vector1);
+//	float normv2 = norm(vector2);
+//	float costheta = dot(vector1,vector2) / (normv1*normv2);
+//	float theta = RadianToDegree(acos(costheta));
+//
+//	return theta;
+//	// Don't draw if both points are inferred
+//	/*if ((joint0State == TrackingState_Inferred) && (joint1State == TrackingState_Inferred))
+//	{
+//		return;
+//	}*/
+//
+//	
+//}
 
-	std::vector<float> vector1
-	{ pJoints[joint0].Position.X - pJoints[joint1].Position.X , pJoints[joint0].Position.Y - pJoints[joint1].Position.Y , pJoints[joint0].Position.Z - pJoints[joint1].Position.Z };
-	std::vector<float> vector2
-	{ pJoints[joint2].Position.X - pJoints[joint1].Position.X , pJoints[joint2].Position.Y - pJoints[joint1].Position.Y , pJoints[joint2].Position.Z - pJoints[joint1].Position.Z };
-	
-	
-
-	float normv1 = norm(vector1);
-	float normv2 = norm(vector2);
-	float costheta = dot(vector1,vector2) / (normv1*normv2);
-	float theta = RadianToDegree(acos(costheta));
-
-	return theta;
-	// Don't draw if both points are inferred
-	/*if ((joint0State == TrackingState_Inferred) && (joint1State == TrackingState_Inferred))
-	{
-		return;
-	}*/
-
-	
-}
-
-float myKinect::CalShodAbd_R()
-{
-	/*Eigen::Vector3f pEelbowR{ joints[9].Position.X,joints[9].Position.Y,joints[9].Position.Z };
-	Eigen::Vector3f pShoulderR{ joints[8].Position.X,joints[8].Position.Y,joints[8].Position.Z };
-	Eigen::Vector3f vecUpArm = pEelbowR - pShoulderR;
-	
-	float costheta = UpTkcoord.axis_x.dot(vecUpArm)/ (UpTkcoord.axis_x.norm()*vecUpArm.norm());
-	float theta = RadianToDegree(acos(costheta));
-	if (joints[9].Position.Z > joints[8].Position.Z)
-	{
-		return  theta;
-	}
-	else
-	{
-		return  theta;
-	}*/
-	float theta{ 0 };
-
-	Eigen::Vector3f ElbowR = Pg2l(joints[JointType_ElbowRight], UpTkcoord);
-
-	float X{ ElbowR.x() };
-	float Y{ ElbowR.y() };
-
-	/*if (X > 0 && Y > 0)
-	{
-		theta = atan(Y / X);
-	}
-	if (X == 0 && Y > 0)
-	{
-		theta = PI/2;
-	}
-	if (X == 0 && Y < 0)
-	{
-		theta = -PI/2;
-	}
-	if (X<0&&Y>0)
-	{
-		theta = PI + atan(Y / X);
-	}
-	if (X < 0 && Y < 0)
-	{
-		theta = -PI + atan(Y / X);
-	}
-	if (X > 0 && Y < 0)
-	{
-		theta = atan(Y / X);
-	}*/
-	theta = atan2(Y, X);
-	return theta * 180.0 / PI;
-
-}
-
-float myKinect::CalShodFE_R()
-{
-	/*Eigen::Vector3f pEelbowR{ joints[9].Position.X,joints[9].Position.Y,joints[9].Position.Z };
-	Eigen::Vector3f pShoulderR{ joints[8].Position.X,joints[8].Position.Y,joints[8].Position.Z };
-	Eigen::Vector3f vecUpArm = pEelbowR - pShoulderR;
-
-	float costheta = UpTkcoord.axis_y.dot(vecUpArm) / (UpTkcoord.axis_y.norm()*vecUpArm.norm());
-	float theta = RadianToDegree(acos(costheta));
-	
-	if (joints[9].Position.Y > joints[8].Position.Y)
-	{
-		return 90+theta;
-	}
-	else
-	{
-		return 90-theta;
-	}*/
-	float theta{ 0 };
-	
-	Eigen::Vector3f ElbowR = Pg2l(joints[JointType_ElbowRight], UpTkcoord);
-
-	float X{ ElbowR.y() };
-	float Y{ ElbowR.z() };
-
-	/*if (X > 0 && Y > 0)
-	{
-		theta = atan(Y / X);
-	}
-	if (X == 0 && Y > 0)
-	{
-		theta = PI/2;
-	}
-	if (X == 0 && Y < 0)
-	{
-		theta = -PI/2;
-	}
-	if (X<0&&Y>0)
-	{
-		theta = PI + atan(Y / X);
-	}
-	if (X < 0 && Y < 0)
-	{
-		theta = -PI + atan(Y / X);
-	}
-	if (X > 0 && Y < 0)
-	{
-		theta = atan(Y / X);
-	}*/
-	theta = atan2(Y, X);
-	return theta * 180.0 / PI;
-}
-
-
-
-float myKinect::CalShodAbd_L()
-{
-	return 0.0f;
-}
-
-void myKinect::CalcoordupTunkR()
-{
-	Eigen::Vector3f pShoulderR{ joints[8].Position.X,joints[8].Position.Y,joints[8].Position.Z };
-	Eigen::Vector3f pShoulderL{ joints[4].Position.X,joints[4].Position.Y,joints[4].Position.Z };
-	Eigen::Vector3f pSpineMid{ joints[20].Position.X,joints[20].Position.Y,joints[20].Position.Z };
-
-	UpTkcoord.axis_x = (pShoulderR - pShoulderL) / (pShoulderR - pShoulderL).norm();
-	UpTkcoord.axis_y = UpTkcoord.axis_x.cross(pShoulderR - pSpineMid) / UpTkcoord.axis_x.cross(pShoulderR - pSpineMid).norm();
-	UpTkcoord.axis_z = UpTkcoord.axis_x.cross(UpTkcoord.axis_y);
-	Eigen::Matrix3f rot;
-	Eigen::Vector3f vec;
-	rot << UpTkcoord.axis_x, UpTkcoord.axis_y, UpTkcoord.axis_z;
-	vec << pShoulderR;
-	UpTkcoord.R = rot;
-	UpTkcoord.V = vec;
-}
+//517
+//float myKinect::CalShodAbd_R()
+//{
+//	/*Eigen::Vector3f pEelbowR{ joints[9].Position.X,joints[9].Position.Y,joints[9].Position.Z };
+//	Eigen::Vector3f pShoulderR{ joints[8].Position.X,joints[8].Position.Y,joints[8].Position.Z };
+//	Eigen::Vector3f vecUpArm = pEelbowR - pShoulderR;
+//	
+//	float costheta = UpTkcoord.axis_x.dot(vecUpArm)/ (UpTkcoord.axis_x.norm()*vecUpArm.norm());
+//	float theta = RadianToDegree(acos(costheta));
+//	if (joints[9].Position.Z > joints[8].Position.Z)
+//	{
+//		return  theta;
+//	}
+//	else
+//	{
+//		return  theta;
+//	}*/
+//	float theta{ 0 };
+//
+//	Eigen::Vector3f ElbowR = Pg2l(joints[JointType_ElbowRight], UpTkcoord);
+//
+//	float X{ ElbowR.x() };
+//	float Y{ ElbowR.y() };
+//
+//	/*if (X > 0 && Y > 0)
+//	{
+//		theta = atan(Y / X);
+//	}
+//	if (X == 0 && Y > 0)
+//	{
+//		theta = PI/2;
+//	}
+//	if (X == 0 && Y < 0)
+//	{
+//		theta = -PI/2;
+//	}
+//	if (X<0&&Y>0)
+//	{
+//		theta = PI + atan(Y / X);
+//	}
+//	if (X < 0 && Y < 0)
+//	{
+//		theta = -PI + atan(Y / X);
+//	}
+//	if (X > 0 && Y < 0)
+//	{
+//		theta = atan(Y / X);
+//	}*/
+//	theta = atan2(Y, X);
+//	return theta * 180.0 / PI;
+//
+//}
+//
+//float myKinect::CalShodFE_R()
+//{
+//	/*Eigen::Vector3f pEelbowR{ joints[9].Position.X,joints[9].Position.Y,joints[9].Position.Z };
+//	Eigen::Vector3f pShoulderR{ joints[8].Position.X,joints[8].Position.Y,joints[8].Position.Z };
+//	Eigen::Vector3f vecUpArm = pEelbowR - pShoulderR;
+//
+//	float costheta = UpTkcoord.axis_y.dot(vecUpArm) / (UpTkcoord.axis_y.norm()*vecUpArm.norm());
+//	float theta = RadianToDegree(acos(costheta));
+//	
+//	if (joints[9].Position.Y > joints[8].Position.Y)
+//	{
+//		return 90+theta;
+//	}
+//	else
+//	{
+//		return 90-theta;
+//	}*/
+//	float theta{ 0 };
+//	
+//	Eigen::Vector3f ElbowR = Pg2l(joints[JointType_ElbowRight], UpTkcoord);
+//
+//	float X{ ElbowR.y() };
+//	float Y{ ElbowR.z() };
+//
+//	/*if (X > 0 && Y > 0)
+//	{
+//		theta = atan(Y / X);
+//	}
+//	if (X == 0 && Y > 0)
+//	{
+//		theta = PI/2;
+//	}
+//	if (X == 0 && Y < 0)
+//	{
+//		theta = -PI/2;
+//	}
+//	if (X<0&&Y>0)
+//	{
+//		theta = PI + atan(Y / X);
+//	}
+//	if (X < 0 && Y < 0)
+//	{
+//		theta = -PI + atan(Y / X);
+//	}
+//	if (X > 0 && Y < 0)
+//	{
+//		theta = atan(Y / X);
+//	}*/
+//	theta = atan2(Y, X);
+//	return theta * 180.0 / PI;
+//}
+//
+//
+//
+//float myKinect::CalShodAbd_L()
+//{
+//	return 0.0f;
+//}
+//
+//void myKinect::CalcoordupTunkR()
+//{
+//	Eigen::Vector3f pShoulderR{ joints[8].Position.X,joints[8].Position.Y,joints[8].Position.Z };
+//	Eigen::Vector3f pShoulderL{ joints[4].Position.X,joints[4].Position.Y,joints[4].Position.Z };
+//	Eigen::Vector3f pSpineMid{ joints[20].Position.X,joints[20].Position.Y,joints[20].Position.Z };
+//
+//	UpTkcoord.axis_x = (pShoulderR - pShoulderL) / (pShoulderR - pShoulderL).norm();
+//	UpTkcoord.axis_y = UpTkcoord.axis_x.cross(pShoulderR - pSpineMid) / UpTkcoord.axis_x.cross(pShoulderR - pSpineMid).norm();
+//	UpTkcoord.axis_z = UpTkcoord.axis_x.cross(UpTkcoord.axis_y);
+//	Eigen::Matrix3f rot;
+//	Eigen::Vector3f vec;
+//	rot << UpTkcoord.axis_x, UpTkcoord.axis_y, UpTkcoord.axis_z;
+//	vec << pShoulderR;
+//	UpTkcoord.R = rot;
+//	UpTkcoord.V = vec;
+//}
 
 Eigen::Vector3f myKinect::Pg2l(Joint& P, coordSys& lcoord)
 {

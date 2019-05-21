@@ -54,41 +54,12 @@
 #include <Qtime>
 #include <qtimer.h>
 #include <Eigen\Dense>
-struct CaliData
-{
-	int KneeR{0};
-	int KneeL{0};
-	int ElbowR{ 0 };
-	int ElbowL{ 0 };
-	float Spine{ 0.0};
-	int ShouderR{ 0 };
-	int ShouderL{ 0 };
-};
+#include "obj.h"
+#include "myKinect.h"
+#include <io.h>
+#include <direct.h>
 
-struct SubjInfo {
-	QString subjname{"null"};
-	QString gender{"null"};
-	QString preside{ "null" };
-	int age{ 0 };
-	float height{ 0.0 };
-	float weight{ 0.0 };
-	float bagWeight{ 0.0 };
-	std::vector<float> bagPosi{ 0.0,0.0,0.0 };
-	bool bag{ false };
 
-	
-
-	void print() {
-		qDebug() << "subjname: " << subjname << endl;
-		qDebug() << "gender: " << gender << endl;
-		qDebug() << "age: " << age << endl;
-		qDebug() << "height: " << height << endl;
-		qDebug() << "weight: " << weight << endl;
-		qDebug() << "bagPosi: " << bagPosi << endl;
-		qDebug() << "bagWeight: " << bagWeight << endl;
-		qDebug() << "isbag: " << bag << endl;
-	}
-};
 
 class FileREC : public QObject
 {
@@ -125,18 +96,19 @@ public:
 	//输出4个单自由度关节角度
 	std::array<float, 9> JointAngles();
 	//输出cali角度的资讯
-	CaliData caliAngle;
+	OBJ::JointAngles caliAngle;
 	//设定幁率
 	int framerate{25};
 	//设定文件头
 	void setfilehead();
 	void closefile();
 	//把四元数的文档转换成关节角度的文档
-	void Orient2angelFile();
+	//void Orient2angelFile();
 	void CalSubcaliAngle();
 private:
 	SubjInfo m_subjinfo;
-	char* m_subName ;
+	//char* m_subName ;
+	std::string path_subjInfo{"null"};
 	std::ofstream subjinfofile;
 	std::ofstream jointsPositionfile;
 	std::ofstream jointsOrientfile;
@@ -154,4 +126,9 @@ public:
 	QTimer *filetimer;
 	void start();
 	void stop();
+	
+	//把文件数据转换为
+	void readTrail(OBJ::Obj &obj);
+	void readSubjInfo(OBJ::Obj &obj);
+	void readCali(OBJ::Obj &obj);
 };

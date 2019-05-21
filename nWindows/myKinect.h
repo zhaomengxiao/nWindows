@@ -62,21 +62,22 @@ public:
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
 	void                    Update();//获得骨架、背景二值图和深度信息
-	//计算关节角度
-	static double			RadianToDegree(double angle);
-	float norm(std::vector<float> v);
-	//坐标系建立
+	//517
+	////计算关节角度
+	//static double			RadianToDegree(double angle);
+	//float norm(std::vector<float> v);
+	////坐标系建立
 
-	//upper trunk coordinats
-	coordSys UpTkcoord;
-	//关节角度
-	//1d
-	float KneeAgR{ 0.0 }, KneeAgL{ 0.0 }, ElbowAgR{ 0.0 }, ElbowAgL{ 0.0 };
-	float SpineAg{ 0.0 };
-	float NeckbfAg{ 0.0 }, NecklrAg{ 0.0 };
-	float ShoulderAgR{ 0.0 }, ShoulderAgL{ 0.0 };
-	float ShoulderABD_R{ 0.0 }, ShoulderFE_R{ 0.0 };
-	static Eigen::Vector3f  QuaternionToEuler(Eigen::Vector4f &quat);
+	////upper trunk coordinats
+	//coordSys UpTkcoord;
+	////关节角度
+	////1d
+	//float KneeAgR{ 0.0 }, KneeAgL{ 0.0 }, ElbowAgR{ 0.0 }, ElbowAgL{ 0.0 };
+	//float SpineAg{ 0.0 };
+	//float NeckbfAg{ 0.0 }, NecklrAg{ 0.0 };
+	//float ShoulderAgR{ 0.0 }, ShoulderAgL{ 0.0 };
+	//float ShoulderABD_R{ 0.0 }, ShoulderFE_R{ 0.0 };
+	//static Eigen::Vector3f  QuaternionToEuler(Eigen::Vector4f &quat);
 	//计算COM
 	void					SegCOM(Eigen::Vector3f &segcom, Joint &jointP, Joint &jointD, const int &segNum);
 	Eigen::Vector3f			BodyCOM(Eigen::Vector3f & thighcom_L, Eigen::Vector3f & thighcom_R, Eigen::Vector3f & shankcom_L, Eigen::Vector3f & shankcom_R, Eigen::Vector3f & footcom_L, Eigen::Vector3f & footcom_R, Eigen::Vector3f & upperArmCom_L, Eigen::Vector3f & upperArmCom_R, Eigen::Vector3f & fArmHand_L, Eigen::Vector3f & fArmHand_R, Eigen::Vector3f & Pelvis, Eigen::Vector3f & ThoraxAbdomen, Eigen::Vector3f & Headneck);
@@ -114,7 +115,7 @@ public:
 	std::ofstream csvfile;//用于输出csv文档
 	bool isAvailable();//todo
 private:
-	IKinectSensor * m_pKinectSensor;//kinect源
+	IKinectSensor *			m_pKinectSensor;	//kinect源
 	ICoordinateMapper*      m_pCoordinateMapper;//用于坐标变换
 	IBodyFrameReader*       m_pBodyFrameReader;//用于骨架数据读取
 	IDepthFrameReader*      m_pDepthFrameReader;//用于深度数据读取
@@ -125,15 +126,17 @@ private:
 	void DrawBone(const Joint* pJoints, const DepthSpacePoint* depthSpacePosition, JointType joint0, JointType joint1);
 	//画手的状态函数
 	void DrawHandState(const DepthSpacePoint depthSpacePosition, HandState handState);
-	//计算一维的关节角度
-	float CalJangle3j(const Joint* pJoints,  JointType joint0, JointType joint1, JointType joint2);
 
-	//计算shoulder向量到平面的角度
-	float CalShodAbd_R();
-	float CalShodFE_R();
-	float CalShodAbd_L();
-	//计算uppertunk的local坐标系
-	void CalcoordupTunkR();
+	//517
+	////计算一维的关节角度
+	//float CalJangle3j(const Joint* pJoints,  JointType joint0, JointType joint1, JointType joint2);
+
+	////计算shoulder向量到平面的角度
+	//float CalShodAbd_R();
+	//float CalShodFE_R();
+	//float CalShodAbd_L();
+	////计算uppertunk的local坐标系
+	//void CalcoordupTunkR();
 
 	//坐标系转换 
 	Eigen::Vector3f Pg2l(Joint& P,coordSys& lcoord);

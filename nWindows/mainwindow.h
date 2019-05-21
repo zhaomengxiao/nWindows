@@ -10,22 +10,22 @@
 #include <QLayout>
 #include <QTreeWidget>
 #include <QProgressBar>  
+#include <QtCore/QFile>
+#include <QtCore/QTextStream>
+#include <qdesktopservices.h>
+#include <qprocess.h>
 //charts
 #include <QtCharts/qchartview.h>
 #include <QtCharts\qlineseries.h>
 #include <QDateTime>
 #include "linechart.h"
-//opencv include
-#include <OpenNI.h>
-#include <opencv2/opencv.hpp>
-#include <opencv2/core/core.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-//openni include
+
 
 //class
 #include "camera.h"
 #include "myKinect.h"
 #include "filerec.h"
+
 //h
 #include <math.h>
 #include <fstream>
@@ -116,7 +116,8 @@ private slots:
 	void updateSkeletonFrame();
 	void updateLCDnumber_date();
 	void updateLCDnumber_RecTime();
-	void updateLCDnumber_angle();
+	//517
+	//void updateLCDnumber_angle();
 	void stopCamera();
 	void startCamera();
 	void on_saveImageButton_clicked();
@@ -151,4 +152,7 @@ private slots:
 	void Expend(QTreeWidgetItem *item);
 	void UpdateDir();
 	QFileInfoList allFile(QTreeWidgetItem *item,QString path);
+
+	//处理已收录的数据
+	void readRec();
 };

@@ -1,6 +1,6 @@
 #include "vtktimercallback.h"
 
-#include "filerec.h"
+
 //from extern 
 FileREC *pSender = new FileREC();
 int jointSelected;

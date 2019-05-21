@@ -2201,6 +2201,33 @@ QHeaderView::section{
         </item>
        </layout>
       </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Data Process</string>
+       </attribute>
+       <widget class="QPushButton" name="pushButton_2">
+        <property name="geometry">
+         <rect>
+          <x>90</x>
+          <y>70</y>
+          <width>131</width>
+          <height>71</height>
+         </rect>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+        </property>
+        <property name="text">
+         <string>Read Cali</string>
+        </property>
+       </widget>
+      </widget>
      </widget>
     </item>
     <item row="3" column="0" alignment="Qt::AlignRight">
@@ -2272,7 +2299,7 @@ QHeaderView::section{
    <hints>
     <hint type="sourcelabel">
      <x>1102</x>
-     <y>719</y>
+     <y>697</y>
     </hint>
     <hint type="destinationlabel">
      <x>1017</x>
@@ -2288,7 +2315,7 @@ QHeaderView::section{
    <hints>
     <hint type="sourcelabel">
      <x>1190</x>
-     <y>719</y>
+     <y>697</y>
     </hint>
     <hint type="destinationlabel">
      <x>1017</x>
@@ -2352,7 +2379,7 @@ QHeaderView::section{
    <hints>
     <hint type="sourcelabel">
      <x>695</x>
-     <y>798</y>
+     <y>772</y>
     </hint>
     <hint type="destinationlabel">
      <x>582</x>
@@ -2415,8 +2442,8 @@ QHeaderView::section{
    <slot>newTrail()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1233</x>
-     <y>590</y>
+     <x>1235</x>
+     <y>580</y>
     </hint>
     <hint type="destinationlabel">
      <x>1119</x>
@@ -2432,7 +2459,7 @@ QHeaderView::section{
    <hints>
     <hint type="sourcelabel">
      <x>395</x>
-     <y>729</y>
+     <y>707</y>
     </hint>
     <hint type="destinationlabel">
      <x>231</x>
@@ -2448,7 +2475,7 @@ QHeaderView::section{
    <hints>
     <hint type="sourcelabel">
      <x>395</x>
-     <y>729</y>
+     <y>707</y>
     </hint>
     <hint type="destinationlabel">
      <x>45</x>
@@ -2468,7 +2495,7 @@ QHeaderView::section{
     </hint>
     <hint type="destinationlabel">
      <x>395</x>
-     <y>729</y>
+     <y>707</y>
     </hint>
    </hints>
   </connection>
@@ -2480,7 +2507,7 @@ QHeaderView::section{
    <hints>
     <hint type="sourcelabel">
      <x>395</x>
-     <y>653</y>
+     <y>631</y>
     </hint>
     <hint type="destinationlabel">
      <x>79</x>
@@ -2495,8 +2522,8 @@ QHeaderView::section{
    <slot>SetLT(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>332</x>
-     <y>777</y>
+     <x>241</x>
+     <y>755</y>
     </hint>
     <hint type="destinationlabel">
      <x>962</x>
@@ -2511,12 +2538,28 @@ QHeaderView::section{
    <slot>timeLapse()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>155</x>
-     <y>768</y>
+     <x>153</x>
+     <y>754</y>
     </hint>
     <hint type="destinationlabel">
      <x>156</x>
      <y>940</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>readRec()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>196</x>
+     <y>210</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1546</x>
+     <y>228</y>
     </hint>
    </hints>
   </connection>
@@ -2546,5 +2589,6 @@ QHeaderView::section{
   <slot>ResetCD()</slot>
   <slot>SetLT(QString)</slot>
   <slot>timeLapse()</slot>
+  <slot>readRec()</slot>
  </slots>
 </ui>

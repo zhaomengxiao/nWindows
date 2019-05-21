@@ -97,6 +97,12 @@ void VTK::rend()
 	initialize();
 	setCallback();	
 }
+void VTK::rendcali()
+{
+	setPipline();
+	setCamera();
+	initialize();
+}
 vtkSmartPointer<vtkRenderWindow> VTK::RenderWindow()
 {
 	return p_renderWindow;
