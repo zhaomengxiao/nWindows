@@ -16,17 +16,15 @@ public:
 private:
 	int TimerCount;
 
-	std::array<float, 25> m_X{ 0 };
-	std::array<float, 25> m_Y{ 0 };
-	std::array<float, 25> m_Z{ 1500 };
 
-	std::array<float, 13> m_COM_x{ 0 };
-	std::array<float, 13> m_COM_y{ 0 };
-	std::array<float, 13> m_COM_z{ 0 };
+	std::array<Joint, 25> m_joints;
+	std::array<float, 13> m_COM_x;
+	std::array<float, 13> m_COM_y;
+	std::array<float, 13> m_COM_z;
 	std::array<Eigen::Vector3f, 13> m_COMs{ };
 	float m_fx, m_fy, m_fz;
 private:
-	void updateXYZ(int jointNumber);
+	void updateXYZ(const std::array<Joint, 25> &joints);
 	void updateCOMXYZ(int segNumber);
 
 public:
@@ -35,7 +33,7 @@ public:
 	vtkSmartPointer<vtkActor> actor_arrow;
 	
 	//+++
-	void updatePosition(int jointNumber); 
+	void updatePosition();
 	void updateCOMPosition(int segNumber); 
 
 	void calcSpinebaseFMwithBag(); 

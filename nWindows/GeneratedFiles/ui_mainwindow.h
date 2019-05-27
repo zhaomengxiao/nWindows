@@ -34,6 +34,7 @@
 #include <QtWidgets/QTabWidget>
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -43,6 +44,8 @@ class Ui_MainWindowClass
 public:
     QWidget *centralWidget;
     QGridLayout *gridLayout;
+    QLCDNumber *lcdNumber_date;
+    QProgressBar *progressBar_tl;
     QTabWidget *tabWidget;
     QWidget *tab_userinput;
     QGridLayout *gridLayout_10;
@@ -156,12 +159,16 @@ public:
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
     QPushButton *pushButton_openrecord;
-    QSpacerItem *horizontalSpacer_11;
     QTreeWidget *treeWidget;
-    QWidget *tab_3;
+    QWidget *widget_rpath;
+    QVBoxLayout *verticalLayout;
+    QLineEdit *lineEdit_rdate;
+    QLineEdit *lineEdit_rsubjn;
+    QLineEdit *lineEdit_rtn;
     QPushButton *pushButton_2;
-    QLCDNumber *lcdNumber_date;
-    QProgressBar *progressBar_tl;
+    QSpacerItem *horizontalSpacer_9;
+    QSpacerItem *horizontalSpacer_11;
+    QWidget *tab_3;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -178,6 +185,22 @@ public:
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        lcdNumber_date = new QLCDNumber(centralWidget);
+        lcdNumber_date->setObjectName(QStringLiteral("lcdNumber_date"));
+        lcdNumber_date->setMinimumSize(QSize(250, 20));
+        lcdNumber_date->setMaximumSize(QSize(250, 40));
+        lcdNumber_date->setLayoutDirection(Qt::LeftToRight);
+
+        gridLayout->addWidget(lcdNumber_date, 3, 0, 1, 1, Qt::AlignRight);
+
+        progressBar_tl = new QProgressBar(centralWidget);
+        progressBar_tl->setObjectName(QStringLiteral("progressBar_tl"));
+        progressBar_tl->setEnabled(true);
+        progressBar_tl->setValue(0);
+        progressBar_tl->setInvertedAppearance(false);
+
+        gridLayout->addWidget(progressBar_tl, 2, 0, 1, 1);
+
         tabWidget = new QTabWidget(centralWidget);
         tabWidget->setObjectName(QStringLiteral("tabWidget"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -1264,12 +1287,9 @@ public:
 
         gridLayout_4->addWidget(pushButton_openrecord, 0, 0, 1, 1);
 
-        horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_4->addItem(horizontalSpacer_11, 0, 1, 1, 1);
-
         treeWidget = new QTreeWidget(tab_2);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
+        treeWidget->setMinimumSize(QSize(1000, 500));
         treeWidget->setStyleSheet(QLatin1String("QTreeWidget{\n"
 "	\n"
 "	font: 75 20pt \"Arial\" ;\n"
@@ -1322,43 +1342,86 @@ public:
 ""));
         treeWidget->setAlternatingRowColors(true);
         treeWidget->setAnimated(true);
+        treeWidget->header()->setVisible(false);
 
-        gridLayout_4->addWidget(treeWidget, 1, 0, 1, 2);
+        gridLayout_4->addWidget(treeWidget, 1, 0, 1, 4);
+
+        widget_rpath = new QWidget(tab_2);
+        widget_rpath->setObjectName(QStringLiteral("widget_rpath"));
+        widget_rpath->setMinimumSize(QSize(400, 130));
+        widget_rpath->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(59, 65, 72);\n"
+"}\n"
+"\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(59, 65, 72)}"));
+        verticalLayout = new QVBoxLayout(widget_rpath);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        lineEdit_rdate = new QLineEdit(widget_rpath);
+        lineEdit_rdate->setObjectName(QStringLiteral("lineEdit_rdate"));
+        lineEdit_rdate->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 18pt \"Arial Black\";"));
+
+        verticalLayout->addWidget(lineEdit_rdate);
+
+        lineEdit_rsubjn = new QLineEdit(widget_rpath);
+        lineEdit_rsubjn->setObjectName(QStringLiteral("lineEdit_rsubjn"));
+        lineEdit_rsubjn->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 18pt \"Arial Black\";"));
+
+        verticalLayout->addWidget(lineEdit_rsubjn);
+
+        lineEdit_rtn = new QLineEdit(widget_rpath);
+        lineEdit_rtn->setObjectName(QStringLiteral("lineEdit_rtn"));
+        lineEdit_rtn->setStyleSheet(QLatin1String("background-color: rgb(100, 104, 97);\n"
+"border-radius: 10px;\n"
+"font: 87 18pt \"Arial Black\";"));
+
+        verticalLayout->addWidget(lineEdit_rtn);
+
+
+        gridLayout_4->addWidget(widget_rpath, 2, 0, 1, 2);
+
+        pushButton_2 = new QPushButton(tab_2);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        pushButton_2->setMinimumSize(QSize(120, 60));
+        pushButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px;\n"
+"font: 14pt \"Arial\";\n"
+"\n"
+"}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+
+        gridLayout_4->addWidget(pushButton_2, 2, 2, 1, 1);
+
+        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_4->addItem(horizontalSpacer_9, 2, 3, 1, 1);
+
+        horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_4->addItem(horizontalSpacer_11, 0, 1, 1, 3);
 
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/myimages/Resources/jilu.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tab_2, icon5, QString());
         tab_3 = new QWidget();
         tab_3->setObjectName(QStringLiteral("tab_3"));
-        pushButton_2 = new QPushButton(tab_3);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setGeometry(QRect(90, 70, 131, 71));
-        pushButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
         tabWidget->addTab(tab_3, QString());
 
-        gridLayout->addWidget(tabWidget, 1, 0, 1, 1);
-
-        lcdNumber_date = new QLCDNumber(centralWidget);
-        lcdNumber_date->setObjectName(QStringLiteral("lcdNumber_date"));
-        lcdNumber_date->setMinimumSize(QSize(250, 20));
-        lcdNumber_date->setMaximumSize(QSize(250, 40));
-        lcdNumber_date->setLayoutDirection(Qt::LeftToRight);
-
-        gridLayout->addWidget(lcdNumber_date, 3, 0, 1, 1, Qt::AlignRight);
-
-        progressBar_tl = new QProgressBar(centralWidget);
-        progressBar_tl->setObjectName(QStringLiteral("progressBar_tl"));
-        progressBar_tl->setEnabled(true);
-        progressBar_tl->setValue(0);
-        progressBar_tl->setInvertedAppearance(false);
-
-        gridLayout->addWidget(progressBar_tl, 2, 0, 1, 1);
+        gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
 
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
@@ -1390,6 +1453,11 @@ public:
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), MainWindowClass, SLOT(SetLT(QString)));
         QObject::connect(pushButton, SIGNAL(clicked()), MainWindowClass, SLOT(timeLapse()));
         QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindowClass, SLOT(readRec()));
+        QObject::connect(lineEdit_bagX, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagX(QString)));
+        QObject::connect(lineEdit_bagY, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagY(QString)));
+        QObject::connect(lineEdit_bagZ, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagZ(QString)));
+        QObject::connect(checkBox, SIGNAL(toggled(bool)), MainWindowClass, SLOT(bagSelect(bool)));
+        QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
 
         tabWidget->setCurrentIndex(1);
 
@@ -1506,8 +1574,8 @@ public:
         pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "Refresh", nullptr));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindowClass", "Data Base", nullptr));
+        pushButton_2->setText(QApplication::translate("MainWindowClass", "Reconstruct", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Files", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindowClass", "Read Cali", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "Data Process", nullptr));
     } // retranslateUi
 

@@ -59,7 +59,13 @@
 #include <io.h>
 #include <direct.h>
 
+//#define _Debug
 
+#ifdef _Debug
+#define Dbg(...) qDebug() << (__VA_ARGS__) << endl
+#else
+#define Dbg(...)
+#endif
 
 class FileREC : public QObject
 {
@@ -72,6 +78,7 @@ public:
 signals:
 	void Recording();
 	void Error_openfile();
+	void ReadFileProgress(int f);
 public slots:
 	void processfile();
 
@@ -80,23 +87,26 @@ public:
 	void creatDir();
 	QString m_subjpath;
 	QString m_trailName{"0"};
-
+	int frameNum{ 0 };
 	void creatFiles(QString trailName, QString path);
 	//Update
 	void updateJoints(Joint jointdate[JointType_Count]);
-	void updateOrientations(JointOrientation Orientdata[JointType_Count]);
+	//522
+	//void updateOrientations(JointOrientation Orientdata[JointType_Count]);
 	void updateSegCOM(std::array<Eigen::Vector3f, 13>& segCOMdata);
-	void updateJointAngles(std::array<float, 9>& JointAngleData);
+	//void updateJointAngles(std::array<float, 9>& JointAngleData);
 	//输出关节位置
-	std::vector<Joint> jointPositions();
+	std::array<Joint,25> jointPositions();
+	//522
 	//输出关节旋转（四元数）
-	std::vector<JointOrientation> JointOrientations();
+	//std::vector<JointOrientation> JointOrientations();
 	//输出segCOM位置
 	std::array<Eigen::Vector3f,13> segCOMs();
+	//522
 	//输出4个单自由度关节角度
-	std::array<float, 9> JointAngles();
+	//std::array<float, 9> JointAngles();
 	//输出cali角度的资讯
-	OBJ::JointAngles caliAngle;
+	//OBJ::JointAngles caliAngle;
 	//设定幁率
 	int framerate{25};
 	//设定文件头
@@ -104,7 +114,8 @@ public:
 	void closefile();
 	//把四元数的文档转换成关节角度的文档
 	//void Orient2angelFile();
-	void CalSubcaliAngle();
+	//522
+	//void CalSubcaliAngle();
 private:
 	SubjInfo m_subjinfo;
 	//char* m_subName ;
@@ -113,12 +124,14 @@ private:
 	std::ofstream jointsPositionfile;
 	std::ofstream jointsOrientfile;
 	std::ofstream jointsAnglefile;
-	std::vector<Joint> jointPosition_saved;
-	std::vector<JointOrientation> JointOrientation_saved;
+	std::array<Joint,25> jointPosition_saved;
+	//522
+	//std::vector<JointOrientation> JointOrientation_saved;
 	std::array<Eigen::Vector3f,13> segCOM_saved;
-	std::array<float, 9> JointAngle_saved;
+	//522
+	//std::array<float, 9> JointAngle_saved;
 	QTime fileTimeRec;
-	int frameNum{0};
+	
 	//线程管理
 	
 	bool m_runStatus{true};
@@ -127,8 +140,11 @@ public:
 	void start();
 	void stop();
 	
-	//把文件数据转换为
+	//把文件数据转换到obj
 	void readTrail(OBJ::Obj &obj);
 	void readSubjInfo(OBJ::Obj &obj);
 	void readCali(OBJ::Obj &obj);
+
+	//把obj中的内容转到csv文件
+	void writeTrialAngle(OBJ::Obj &obj);
 };

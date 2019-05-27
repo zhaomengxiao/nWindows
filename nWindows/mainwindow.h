@@ -85,7 +85,7 @@ private://**私有成员变量**
 	int countDown{0};
 	//timelapse time
 	int tLapse;
-	//std::ofstream jointsData{ "TEST.txt", std::ios::app };
+
 
 	//保存数据到文件
 	//FileREC *recorder = NULL;
@@ -116,12 +116,9 @@ private slots:
 	void updateSkeletonFrame();
 	void updateLCDnumber_date();
 	void updateLCDnumber_RecTime();
-	//517
-	//void updateLCDnumber_angle();
 	void stopCamera();
 	void startCamera();
 	void on_saveImageButton_clicked();
-	//void on_pushButton_openrecord_clicked();
 	//面板数据输入
 	void ListCurChange(int row);
 	void LineEdit_f(QString str);
@@ -143,9 +140,13 @@ private slots:
 	void stopRec();
 	void timeLapse();
 	void oneLapse();
-	void calSubcaliAngle(); 
-	void error_openfile();
+	void caliSaved();
+	//522
+	//void calSubcaliAngle(); 
 
+	//filerec 发送之信号槽
+	void error_openfile();
+	void readFileProgress(int f);
 	//文件预览界面
 	void Click(QTreeWidgetItem *item);
 	void DoubleClick(QTreeWidgetItem *item);

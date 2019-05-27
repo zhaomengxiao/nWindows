@@ -18,7 +18,39 @@
     <string notr="true">background-color:#464652;color:#E8E8E8</string>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="1" column="0">
+    <item row="3" column="0" alignment="Qt::AlignRight">
+     <widget class="QLCDNumber" name="lcdNumber_date">
+      <property name="minimumSize">
+       <size>
+        <width>250</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>250</width>
+        <height>40</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::LeftToRight</enum>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QProgressBar" name="progressBar_tl">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="value">
+       <number>0</number>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
@@ -2120,21 +2152,14 @@ background-color: rgb(76, 120, 65)}
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <spacer name="horizontalSpacer_11">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+        <item row="1" column="0" colspan="4">
+         <widget class="QTreeWidget" name="treeWidget">
+          <property name="minimumSize">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>1000</width>
+            <height>500</height>
            </size>
           </property>
-         </spacer>
-        </item>
-        <item row="1" column="0" colspan="2">
-         <widget class="QTreeWidget" name="treeWidget">
           <property name="styleSheet">
            <string notr="true">QTreeWidget{
 	
@@ -2192,6 +2217,9 @@ QHeaderView::section{
           <property name="animated">
            <bool>true</bool>
           </property>
+          <attribute name="headerVisible">
+           <bool>false</bool>
+          </attribute>
           <column>
            <property name="text">
             <string>Data Base</string>
@@ -2199,67 +2227,115 @@ QHeaderView::section{
           </column>
          </widget>
         </item>
+        <item row="2" column="0" colspan="2">
+         <widget class="QWidget" name="widget_rpath" native="true">
+          <property name="minimumSize">
+           <size>
+            <width>400</width>
+            <height>130</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(59, 65, 72);
+}
+
+
+QWidget::hover{
+background-color: rgb(59, 65, 72)}</string>
+          </property>
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
+            <widget class="QLineEdit" name="lineEdit_rdate">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 18pt &quot;Arial Black&quot;;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_rsubjn">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 18pt &quot;Arial Black&quot;;</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLineEdit" name="lineEdit_rtn">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(100, 104, 97);
+border-radius: 10px;
+font: 87 18pt &quot;Arial Black&quot;;</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px;
+font: 14pt &quot;Arial&quot;;
+
+}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+          </property>
+          <property name="text">
+           <string>Reconstruct</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <spacer name="horizontalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="1" colspan="3">
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab_3">
        <attribute name="title">
         <string>Data Process</string>
        </attribute>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="geometry">
-         <rect>
-          <x>90</x>
-          <y>70</y>
-          <width>131</width>
-          <height>71</height>
-         </rect>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QPushButton{border-radius: 10px}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}</string>
-        </property>
-        <property name="text">
-         <string>Read Cali</string>
-        </property>
-       </widget>
       </widget>
-     </widget>
-    </item>
-    <item row="3" column="0" alignment="Qt::AlignRight">
-     <widget class="QLCDNumber" name="lcdNumber_date">
-      <property name="minimumSize">
-       <size>
-        <width>250</width>
-        <height>20</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>250</width>
-        <height>40</height>
-       </size>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::LeftToRight</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="0">
-     <widget class="QProgressBar" name="progressBar_tl">
-      <property name="enabled">
-       <bool>true</bool>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="invertedAppearance">
-       <bool>false</bool>
-      </property>
      </widget>
     </item>
    </layout>
@@ -2394,8 +2470,8 @@ background-color: rgb(76, 120, 65)}</string>
    <slot>LineEdit_subjName(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>170</x>
-     <y>193</y>
+     <x>217</x>
+     <y>204</y>
     </hint>
     <hint type="destinationlabel">
      <x>174</x>
@@ -2410,8 +2486,8 @@ background-color: rgb(76, 120, 65)}</string>
    <slot>releaseOKbutton()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>207</x>
-     <y>193</y>
+     <x>254</x>
+     <y>204</y>
     </hint>
     <hint type="destinationlabel">
      <x>222</x>
@@ -2554,12 +2630,92 @@ background-color: rgb(76, 120, 65)}</string>
    <slot>readRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>196</x>
-     <y>210</y>
+     <x>525</x>
+     <y>735</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1546</x>
-     <y>228</y>
+     <x>414</x>
+     <y>915</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bagX</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagX(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>374</x>
+     <y>556</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1432</x>
+     <y>481</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bagY</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagY(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>579</x>
+     <y>548</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1451</x>
+     <y>495</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>lineEdit_bagZ</sender>
+   <signal>textChanged(QString)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>LineEdit_bagZ(QString)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>716</x>
+     <y>549</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1417</x>
+     <y>510</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>bagSelect(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>302</x>
+     <y>424</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1369</x>
+     <y>425</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidget_alljoint</sender>
+   <signal>currentRowChanged(int)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>ListCurChange(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>151</x>
+     <y>306</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-67</x>
+     <y>305</y>
     </hint>
    </hints>
   </connection>

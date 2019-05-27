@@ -244,11 +244,16 @@ namespace OBJ
 		~Obj();
 		Obj(const std::vector<std::array<Joint, JointType_Count>>& frames_j);
 	public:
-		QString path_cali;
+		QString path_ford;  //包含受试者资料的文件夹的路径
+		QString path_cali;	
 		QString path_subjInfo;
 		QString path_trail;
+		QString path_angle;
 		std::vector<std::array<Joint, JointType_Count>> cali_JointFrames;
 		std::vector<std::array<Segment, SegType_Count>> cali_SegFrames;
+
+		//帧数
+		int m_nFrames{ 0 };
 	private:
 		
 	
@@ -262,8 +267,7 @@ namespace OBJ
 		std::vector<std::array<Segment, SegType_Count>> m_framesS;
 		//从肢段信息计算二维关节的角度
 		std::vector<JointAngles>						m_2dJointAngles;
-		//帧数
-		int m_nFrames{ 0 };
+		
 	public:
 
 
@@ -288,10 +292,10 @@ namespace OBJ
 		//从关节资料建立以肢段为单位的资料，既可以输入单帧的Joints，也可以输入所有帧。
 		std::vector<std::array<Segment, SegType_Count>> buildSegments(const std::vector<std::array<Joint, JointType_Count>> &frames_J);
 		std::array<Segment, SegType_Count> buildSegments(const std::array<Joint, JointType_Count> &joints);
-		//输入受试者资料和校准档之路径
-		void setFilePath(QString p_subInfo, QString p_cali);
-		//输入实验档案路径
-		void addtrail(QString p_trail);
+		//输入受试者资料夹的路径，一旦输入会抓取cali的路径和subjInfo的路径,并建立其他档案的路径
+		void setFilePath(QString path);
+		//输入实验trail的名称，读取trail的关节位置档案并且计算关节角度。
+		void addtrail(QString trailname);
 		//计算两个肢段间的平面角度
 		float calJointAngle(const Segment &sA,const Segment &sB);
 		//计算所有关节角度，可以输入一帧也可以输入多帧

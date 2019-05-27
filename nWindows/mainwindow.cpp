@@ -54,8 +54,8 @@ MainWindow::MainWindow(QWidget *parent)
 	//root->addChild(new QTreeWidgetItem); //加入一个空子节点，以激活展开功能
 	////////////////////////////////////////////////////////////////////////////////////////
 	allFile(root, rootPath);
-
-
+	ui.treeWidget->setColumnWidth(0, 400);
+	ui.LCDwidget->hide();
 	//设置背景色
 	//this->setStyleSheet("background-color:#464652;color:#E8E8E8");
 	//this->setStyleSheet("");
@@ -153,15 +153,16 @@ void MainWindow::connectSignalSlot()
 	connect(videotimer, SIGNAL(timeout()),this,SLOT(updateVideoFrame()));
 	skeletontimer = new QTimer;
 	connect(skeletontimer, SIGNAL(timeout()), this, SLOT(updateSkeletonFrame()));
-	//517//connect(skeletontimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_angle()));
+	
 	lcdtimer = new QTimer;
 	connect(lcdtimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_date()));
-	//connect(ui.saveImageButton, SIGNAL(clicked()),this, SLOT(on_saveImageButton_clicked()));
+	
 	rectimer = new QTimer;
 	connect(rectimer, SIGNAL(timeout()), this, SLOT(updateLCDnumber_RecTime()));
 	lapsetimer = new QTimer;
 	connect(lapsetimer, SIGNAL(timeout()), this, SLOT(oneLapse()));
 	connect(pSender, SIGNAL(Error_openfile()), this, SLOT(error_openfile()));
+	connect(pSender, SIGNAL(ReadFileProgress(int)), this, SLOT(readFileProgress(int)));
 }
 
 int MainWindow::drawVTKscene()
@@ -335,9 +336,9 @@ void MainWindow::updateSkeletonFrame()
 	{
 		//把资料传到fierec类中储存并进行后续处理
 		pSender->updateJoints(mykinect->joints);
-		pSender->updateOrientations (mykinect->JointOrientations);
+		//pSender->updateOrientations (mykinect->JointOrientations);
 		pSender->updateSegCOM(mykinect->segCOMs);
-		pSender->updateJointAngles(mykinect->JointAngles);
+		//pSender->updateJointAngles(mykinect->JointAngles);
 	}
 }
 
@@ -362,43 +363,7 @@ void MainWindow::updateLCDnumber_RecTime()
 	ui.lcdNumber_RecTime->display(recTime);
 }
 
-//517
-////显示角度LCD
-//void MainWindow::updateLCDnumber_angle()
-//{
-//
-//
-//	ui.lcdNumber_M->display(int(M_spinebase.x()));
-//	ui.lcdNumber_M_2->display(int(M_spinebase.y()));
-//	ui.lcdNumber_M_3->display(int(M_spinebase.z()));
-//	ui.lcdNumber_force->display(int(F_spinebase));
-////	ui.lcdNumber_x->setMode(QLCDNumber::Dec);
-//	if (isSimpleMode)
-//	{
-//		ui.lcdNumber_ShoulderR->display(int(mykinect->ShoulderAgR));
-//		ui.lcdNumber_ShoulderL->display(int(mykinect->ShoulderAgL));
-//		ui.lcdNumber_ElbowR->display(int(mykinect->ElbowAgR));
-//		ui.lcdNumber_ElbowL->display(int(mykinect->ElbowAgL));
-//		ui.lcdNumber_KneeR->display(int(mykinect->KneeAgR));
-//		ui.lcdNumber_KneeL->display(int(mykinect->KneeAgL));
-//		ui.lcdNumber_Spine->display(int(mykinect->SpineAg));
-//		ui.lcdNumber_Neckfb->display(int(mykinect->NeckbfAg));
-//		ui.lcdNumber_Necklr->display(int(mykinect->NecklrAg));
-//	}
-//	else
-//	{
-//		//ui.lcdNumber_x->display(int(mykinect->getAngle_x()));
-//		//ui.lcdNumber_y->display(int(mykinect->getAngle_y()));
-//		//ui.lcdNumber_z->display(int(mykinect->getAngle_z()));
-//
-//		//ui.lcdNumber_KneeR->display(int(mykinect->angles2.y() * 180 / PI));
-//		//ui.lcdNumber_KneeL->display(int(mykinect->angles2.z() * 180 / PI));
-//		//ui.lcdNumber_ElbowR->display(int(mykinect->angles2.x() * 180 / PI));
-//	}
-//	
-//	
-//
-//}
+
 
 void MainWindow::stopCamera()
 {
@@ -628,7 +593,7 @@ void MainWindow::LineEdit_bagZ(QString str)
 {
 	qDebug() << str << endl;
 
-	bagZ = str.toFloat();
+	bagZ = - str.toFloat();
 }
 void MainWindow::bagSelect(bool i)
 {
@@ -737,9 +702,9 @@ void MainWindow::on_pushButton_calibration_clicked()
 	startRec();
 	//10s 后自动停止
 	QTimer::singleShot(10000, this, SLOT(stopRec()));
-
+	//522
 	//计算平均角度
-	QTimer::singleShot(13000, this, SLOT(calSubcaliAngle()));
+	QTimer::singleShot(13000, this, SLOT(caliSaved()));
 	//按键不能按，直到更改username
 	ui.pushButton_calibration ->setDisabled(true);
 	ui.pushButton_calibration ->setStyleSheet("background-color: rgb(170, 0, 255);");
@@ -846,26 +811,39 @@ void MainWindow::oneLapse()
 
 
 
-
-void MainWindow::calSubcaliAngle()
+//522
+void MainWindow::caliSaved()
 {
-	pSender->CalSubcaliAngle();
-	qDebug() << "calibration finished" << endl;
-	ui.statusBar->showMessage("Calibration Finished", 2000);
+//	pSender->CalSubcaliAngle();
+	qDebug() << "calibration saved" << endl;
+	ui.statusBar->showMessage("Calibration Saved", 2000);
 	QMessageBox::information(this, "Calibration", "Finished");
 }
 
 void MainWindow::error_openfile()
 {
 	ui.statusBar->showMessage("error_openfile!!!", 2000);
-	QMessageBox::information(this, "Calibration", "Can't Open file!!!");
+	QMessageBox::information(this, "Error:", "Can't Open file!!!");
 	ui.pushButton_StartRec->setDisabled(true);
 	ui.pushButton_StopRec->click();
 }
 
+void MainWindow::readFileProgress(int f)
+{
+	ui.progressBar_tl->setValue(f);
+}
+
 void MainWindow::Click(QTreeWidgetItem * item)
 {
-	qDebug() << "click" << item->text(1) << endl;
+	qDebug() << "click" << item->text(0) << endl;
+	if (item->text(0).contains(".csv", Qt::CaseSensitive))
+	{
+		ui.lineEdit_rtn->setText(item->text(0));
+		ui.lineEdit_rsubjn->setText(item->parent()->text(0));
+		ui.lineEdit_rdate->setText(item->parent()->parent()->text(0));
+	}
+	
+	
 }
 
 void MainWindow::DoubleClick(QTreeWidgetItem * item)
@@ -875,10 +853,31 @@ void MainWindow::DoubleClick(QTreeWidgetItem * item)
 	//QString path = QDir::currentPath();//获取程序当前目录
 	//path.replace("/", "\\");//将地址中的"/"替换为"\"，因为在Windows下使用的是"\"。
 	//
-	//if (item->text(0) == QString(".\\Record"))
-	//{
+	if (item->text(0) == QString("Record"))
+	{
 		QProcess::startDetached("explorer " + item->text(1));//打开上面获取的目录
-	//}
+	}
+	if (item->text(0).contains(".csv", Qt::CaseInsensitive))
+	{
+		//QProcess::execute("/E/Users/yj/Desktop/QTprogram/nWindows/nWindows/Record/2019-04-26/ivan/cali_Position.csv");
+		//QProcess p(0);
+		//QString filename = ".\\Record\\2019-04-26\\ivan\\cali_Position.csv";
+		QString tn = item->text(0);
+		QString sn = item->parent()->text(0);
+		QString dn = item->parent()->parent()->text(0);
+		QString filename = ".\\Record\\" + dn + "\\" + sn + "\\" + tn;
+
+		QFile file(filename);
+		if (file.exists())
+		{
+			QDesktopServices::openUrl(QUrl::fromLocalFile(filename));
+		}
+		
+		//p.execute(command);//command是要执行的命令,args是参数
+		//p.waitForFinished();
+		//qDebug() << QString::fromLocal8Bit(p.readAllStandardError());
+		//QProcess::startDetached("E:\\Users\\yj\\Desktop\\QTprogram\\nWindows\\nWindows\\Record\\2019-04-26\\ivan\\cali_Position.csv");
+	}
 	
 	//QProcess::execute("notepad.exe");
 }
@@ -947,14 +946,40 @@ QFileInfoList MainWindow::allFile(QTreeWidgetItem * item,QString path)
 
 void MainWindow::readRec()
 { 
-	OBJ::Obj obj;
-	obj.setFilePath(".\\Record\\2019-04-26\\ivan\\cali_SubjInfo.csv", ".\\Record\\2019-04-26\\ivan\\cali_Position.csv");
-	obj.addtrail(".\\Record\\2019-04-26\\ivan\\Oval_30RPM_Position.csv");
-	
-	pSender->readSubjInfo(obj);
-	pSender->readCali(obj);
-	pSender->readTrail(obj);
-	obj;
+	if (ui.lineEdit_rtn->text().contains("_Position.csv"))
+	{
+		OBJ::Obj obj;
+		QString filepath = ".\\Record\\" + ui.lineEdit_rdate->text() + "\\" + ui.lineEdit_rsubjn->text() + "\\";
+		//obj.setFilePath(".\\Record\\2019-04-26\\ivan\\");
+		obj.setFilePath(filepath);
+		QString tfn = ui.lineEdit_rtn->text();
+		QString tn = tfn.left(tfn.length() - 13); //从后面查找"/"位置
+		//QString tn = m_FilePath.right(m_FilePath.length() - first - 1); //从右边截取
+		obj.addtrail(tn);
+
+
+		//显示trail读取进度
+		ui.progressBar_tl->setValue(0);
+		ui.progressBar_tl->setRange(0, obj.m_nFrames); //还未读取到帧数，需要修正
+		ui.progressBar_tl->show();
+
+		pSender->readSubjInfo(obj);
+		pSender->readCali(obj);
+
+
+		pSender->readTrail(obj);
+		pSender->writeTrialAngle(obj);
+
+		//ui提示
+		ui.statusBar->showMessage("Reconstruct Success", 2000);
+		QMessageBox::information(this, "Reconstruct", "Reconstruct Success~");
+		ui.progressBar_tl->hide();
+	}
+	else
+	{
+		ui.statusBar->showMessage("Reconstruct failed", 2000);
+		QMessageBox::information(this, "Reconstruct", "Please select position file.");
+	}
 }
 
 

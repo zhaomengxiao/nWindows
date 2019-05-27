@@ -195,15 +195,17 @@ std::array<Segment, SegType_Count> OBJ::Obj::buildSegments(const std::array<Join
 }
 
 
-void OBJ::Obj::setFilePath(QString p_subInfo, QString p_cali)
+void OBJ::Obj::setFilePath(QString path)
 {
-	path_subjInfo = p_subInfo;
-	path_cali = p_cali;
+	path_ford = path;
+	path_subjInfo = path +"SubjInfo.csv";
+	path_cali = path + "cali_Position.csv";
 }
 
-void OBJ::Obj::addtrail(QString p_trail)
+void OBJ::Obj::addtrail(QString trailname)
 {
-	path_trail = p_trail;
+	path_trail = path_ford + trailname + "_Position.csv";
+	path_angle = path_ford + trailname + "_Angles.csv";
 }
 
 float OBJ::Obj::calJointAngle(const Segment &sP,const Segment &sD)
@@ -241,6 +243,8 @@ JointAngles OBJ::Obj::calAllJointAngles(const std::array<Segment, SegType_Count>
 	ja.KneeL  = calJointAngle(segments[SegType_LeftThigh], segments[SegType_LeftShank]);
 	ja.KneeR  = calJointAngle(segments[SegType_RightThigh], segments[SegType_RightShank]);
 	ja.Spine = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_Pelvis]);
+	ja.ShouderL = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_LeftUpperArm]);
+	ja.ShouderR = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_RightUpperArm]);
 	return ja;
 }
 

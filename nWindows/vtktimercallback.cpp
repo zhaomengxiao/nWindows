@@ -33,16 +33,7 @@ void vtkTimerCallback::Execute(vtkObject * caller, unsigned long eventId, void *
 	//std::cout << this->TimerCount << std::endl;
 	//actor_wrist_R->SetPosition   (m_X[10], m_Y[10], m_Z[10]);
 
-
-	for (int i = 0; i < 25; i++)
-	{
-		if (actor_joints[i] != NULL)
-		{
-			updatePosition(i);
-		}
-
-
-	}
+	updatePosition();
 
 	if (actor_arrow != NULL)
 	{
@@ -64,18 +55,21 @@ void vtkTimerCallback::Execute(vtkObject * caller, unsigned long eventId, void *
 	}
 	else
 	{
-		for (int i = 0; i < 25; i++)
+		//522
+		/*for (int i = 0; i < 25; i++)
 		{
 			updateXYZ(i);
-		}
+		}*/
+		updateXYZ(pSender->jointPositions());
 
 		for (int i = 0; i < 13; i++) {
 			updateCOMXYZ(i);
 		}
-
+		
 		//updateForcePosition
 		if (bag)
 		{
+			//设置力量的位置
 			m_fx = pSender->jointPositions()[1].Position.X * 1000 + bagX;
 			m_fy = pSender->jointPositions()[1].Position.Y * 1000 + bagY;
 			m_fz = pSender->jointPositions()[1].Position.Z * 1000 + bagZ;
@@ -87,18 +81,17 @@ void vtkTimerCallback::Execute(vtkObject * caller, unsigned long eventId, void *
 			m_fy = pSender->jointPositions()[jointSelected].Position.Y * 1000;
 			m_fz = pSender->jointPositions()[jointSelected].Position.Z * 1000;
 		}
-
-
-
+		
 	}
 	//std::cout << x << "," << y << "," << z << endl;
 	vtkRenderWindowInteractor *iren = vtkRenderWindowInteractor::SafeDownCast(caller);
 	iren->GetRenderWindow()->Render();
 }
 
-void vtkTimerCallback::updateXYZ(int jointNumber)
+void vtkTimerCallback::updateXYZ(const std::array<Joint,25>& joints)
 {
-	if (pSender->jointPositions()[jointNumber].TrackingState == 2)
+	//522
+	/*if (pSender->jointPositions()[jointNumber].TrackingState == 2)
 	{
 		m_X[jointNumber] = pSender->jointPositions()[jointNumber].Position.X * 1000;
 		m_Y[jointNumber] = pSender->jointPositions()[jointNumber].Position.Y * 1000;
@@ -109,7 +102,9 @@ void vtkTimerCallback::updateXYZ(int jointNumber)
 		m_X[jointNumber] = 0;
 		m_Y[jointNumber] = 0;
 		m_Z[jointNumber] = 0;
-	}
+	}*/
+	m_joints = joints;
+	 
 }
 
 void vtkTimerCallback::updateCOMXYZ(int segNumber)
@@ -120,9 +115,13 @@ void vtkTimerCallback::updateCOMXYZ(int segNumber)
 	m_COMs[segNumber] = pSender->segCOMs()[segNumber];
 }
 
-void vtkTimerCallback::updatePosition(int jointNumber)
+
+void vtkTimerCallback::updatePosition()
 {
-	actor_joints[jointNumber]->SetPosition(m_X[jointNumber], m_Y[jointNumber], m_Z[jointNumber]);
+	for (int i = 0; i < 25; i++)
+	{
+		actor_joints[i]->SetPosition(m_joints[i].Position.X*1000, m_joints[i].Position.Y*1000, m_joints[i].Position.Z*1000);
+	}
 }
 
 void vtkTimerCallback::updateCOMPosition(int segNumber)
@@ -140,7 +139,7 @@ void vtkTimerCallback::calcSpinebaseFMwithBag()
 		Headneck_M(0, 0, -0.081*9.8 *bodyWeight);
 	Eigen::Vector3f fPosition(m_fx / 1000, m_fy / 1000, m_fz / 1000);
 	Eigen::Vector3f vforce(0, 0, -force * 9.8);
-	Eigen::Vector3f spinebaseXYZ(m_X[0] / 1000, m_Y[0] / 1000, m_Z[0] / 1000);
+	Eigen::Vector3f spinebaseXYZ(m_joints[0].Position.X / 1000, m_joints[0].Position.Y / 1000, m_joints[0].Position.Z / 1000);
 	M_spinebase = ((m_COMs[6] - spinebaseXYZ).cross(upperArm_M) + (m_COMs[7] - spinebaseXYZ).cross(upperArm_M)
 		+ (m_COMs[8] - spinebaseXYZ).cross(fArmhand_M) + (m_COMs[9] - spinebaseXYZ).cross(fArmhand_M)
 		+ (m_COMs[10] - spinebaseXYZ).cross(Pelvis_M) + (m_COMs[11] - spinebaseXYZ).cross(ThoraxAbdomen_M)
