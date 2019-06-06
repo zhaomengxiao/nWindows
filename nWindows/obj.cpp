@@ -24,6 +24,12 @@ void Joint::print()
 	std::cout << jointPosition << std::endl;
 }
 
+std::array<float, 3> OBJ::Joint::subtract(const OBJ::Joint & r)
+{
+	std::array<float, 3> res{ this->jointPosition.x() - r.jointPosition.x(), this->jointPosition.y() - r.jointPosition.y(), this->jointPosition.z() - r.jointPosition.z() };
+	return res;
+}
+
 //Segment
 Segment::Segment()
 {
@@ -95,7 +101,7 @@ void Segment::calSegCOM(Eigen::Vector3f &segcom,const Joint &jointP,const Joint 
 void OBJ::Segment::calSegL()
 {
 	length = sqrt(pow((Jdistal.jointPosition.x() - Jproximal.jointPosition.x()), 2) + pow((Jdistal.jointPosition.y() - Jproximal.jointPosition.y()), 2)
-		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2));
+		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2))*100.0;
 }
 
 
@@ -108,14 +114,14 @@ Obj::~Obj()
 {
 }
 
-Obj::Obj(const std::vector<std::array<Joint, JointType_Count>>& frames_j)
+Obj::Obj(const std::vector<Joints>& frames_j)
 {
 	m_framesJ = frames_j;
 	//build segments
 
 }
  
-void OBJ::Obj::setJoints(const std::vector<std::array<Joint, JointType_Count>> &frames_j)
+void OBJ::Obj::setJoints(const std::vector<Joints> &frames_j)
 {
 	m_nFrames = frames_j.size();
 	m_framesJ.clear();
@@ -123,7 +129,7 @@ void OBJ::Obj::setJoints(const std::vector<std::array<Joint, JointType_Count>> &
 	m_framesJ = frames_j;
 }
 
-void OBJ::Obj::setSegments(const std::vector<std::array<Segment, SegType_Count>>& frames_S)
+void OBJ::Obj::setSegments(const std::vector<Segs>& frames_S)
 {
 	m_framesS = frames_S;
 }
@@ -133,18 +139,18 @@ void OBJ::Obj::setJointAngles(std::vector<JointAngles>& frames_JA)
 	m_2dJointAngles = frames_JA;
 }
 
-void OBJ::Obj::setJointAngles(const std::vector<std::array<Segment, SegType_Count>> &frames_S)
+void OBJ::Obj::setJointAngles(const std::vector<Segs> &frames_S)
 {
 	
 }
 
 
-std::vector<std::array<Segment, SegType_Count>> Obj::buildSegments(const std::vector<std::array<Joint, JointType_Count>> &frames_J)
+std::vector<Segs> Obj::buildSegments(const std::vector<Joints> &frames_J)
 {
-	std::vector<std::array<Segment, SegType_Count>> frames_Seg;
+	std::vector<Segs> frames_Seg;
 	frames_Seg.clear();
 	frames_Seg.reserve(frames_J.size());
-	std::array<Segment, SegType_Count> segments;
+	Segs segments;
 	for (auto joints : frames_J)
 	{
 		
@@ -160,9 +166,9 @@ std::vector<std::array<Segment, SegType_Count>> Obj::buildSegments(const std::ve
 		segments[SegType_LeftForArmHand] = Segment{ joints[JointType_ElbowLeft] ,joints[JointType_WristLeft],SegType_LeftForArmHand };
 		segments[SegType_RightForArmHand] = Segment{ joints[JointType_ElbowRight] ,joints[JointType_WristRight],SegType_RightForArmHand };
 
-		segments[SegType_Pelvis] = Segment{ joints[JointType_SpineMid] ,joints[JointType_SpineBase],SegType_Pelvis };
-		segments[SegType_ThoraxAbdomen] = Segment{ joints[JointType_SpineShoulder] ,joints[JointType_SpineMid],SegType_ThoraxAbdomen };
-		segments[SegType_HeadNeck] = Segment{ joints[JointType_Head] ,joints[JointType_SpineShoulder],SegType_HeadNeck };
+		segments[SegType_Pelvis] = cSegment{ joints[JointType_SpineMid] ,joints[JointType_SpineBase],joints[JointType_HipLeft],joints[JointType_HipRight],SegType_Pelvis };
+		segments[SegType_ThoraxAbdomen] = cSegment{ joints[JointType_SpineMid] ,joints[JointType_SpineShoulder],joints[JointType_ShoulderLeft],joints[JointType_ShoulderRight],SegType_ThoraxAbdomen };
+		segments[SegType_HeadNeck] = Segment{ joints[JointType_SpineShoulder] ,joints[JointType_Head],SegType_HeadNeck };
 
 		frames_Seg.push_back(segments);
 	}
@@ -170,9 +176,9 @@ std::vector<std::array<Segment, SegType_Count>> Obj::buildSegments(const std::ve
 
 	return frames_Seg;
 }
-std::array<Segment, SegType_Count> OBJ::Obj::buildSegments(const std::array<Joint, JointType_Count>& joints)
+Segs OBJ::Obj::buildSegments(const Joints& joints)
 {
-	std::array<Segment, SegType_Count> segments;
+	Segs segments;
 
 	segments[SegType_LeftThigh] = Segment{ joints[JointType_HipLeft] ,joints[JointType_KneeLeft],SegType_LeftThigh };
 	segments[SegType_RightThigh] = Segment{ joints[JointType_HipRight] ,joints[JointType_KneeRight],SegType_RightThigh };
@@ -186,8 +192,8 @@ std::array<Segment, SegType_Count> OBJ::Obj::buildSegments(const std::array<Join
 	segments[SegType_LeftForArmHand] = Segment{ joints[JointType_ElbowLeft] ,joints[JointType_WristLeft],SegType_LeftForArmHand };
 	segments[SegType_RightForArmHand] = Segment{ joints[JointType_ElbowRight] ,joints[JointType_WristRight],SegType_RightForArmHand };
 
-	segments[SegType_Pelvis] = Segment{ joints[JointType_SpineMid] ,joints[JointType_SpineBase],SegType_Pelvis };
-	segments[SegType_ThoraxAbdomen] = Segment{ joints[JointType_SpineShoulder] ,joints[JointType_SpineMid],SegType_ThoraxAbdomen };
+	segments[SegType_Pelvis] = cSegment{ joints[JointType_SpineMid] ,joints[JointType_SpineBase],joints[JointType_HipLeft],joints[JointType_HipRight],SegType_Pelvis };
+	segments[SegType_ThoraxAbdomen] = cSegment{ joints[JointType_SpineShoulder] ,joints[JointType_SpineMid],joints[JointType_ShoulderLeft],joints[JointType_ShoulderRight],SegType_ThoraxAbdomen };
 	segments[SegType_HeadNeck] = Segment{ joints[JointType_Head] ,joints[JointType_SpineShoulder],SegType_HeadNeck };
 
 
@@ -219,9 +225,9 @@ float OBJ::Obj::calJointAngle(const Segment &sP,const Segment &sD)
 		return 0.0;
 	}
 
-	std::vector<float> vector1
+	std::array<float, 3> vector1
 	{ sP.Jproximal.jointPosition.x() - sP.Jdistal.jointPosition.x() , sP.Jproximal.jointPosition.y() - sP.Jdistal.jointPosition.y() , sP.Jproximal.jointPosition.z() - sP.Jdistal.jointPosition.z() };
-	std::vector<float> vector2
+	std::array<float, 3> vector2
 	{ sD.Jdistal.jointPosition.x() - sD.Jproximal.jointPosition.x() , sD.Jdistal.jointPosition.y() - sD.Jproximal.jointPosition.y() , sD.Jdistal.jointPosition.z() - sD.Jproximal.jointPosition.z() };
 
 
@@ -235,7 +241,7 @@ float OBJ::Obj::calJointAngle(const Segment &sP,const Segment &sD)
 
 }
 
-JointAngles OBJ::Obj::calAllJointAngles(const std::array<Segment, SegType_Count> &segments)
+JointAngles OBJ::Obj::calAllJointAngles(const Segs &segments)
 {
 	JointAngles ja;
 	ja.ElbowL = calJointAngle(segments[SegType_LeftUpperArm], segments[SegType_LeftForArmHand]);
@@ -248,7 +254,7 @@ JointAngles OBJ::Obj::calAllJointAngles(const std::array<Segment, SegType_Count>
 	return ja;
 }
 
-std::vector<JointAngles> OBJ::Obj::calAllJointAngles(const std::vector<std::array<Segment, SegType_Count>>& frames_S)
+std::vector<JointAngles> OBJ::Obj::calAllJointAngles(const std::vector<Segs>& frames_S)
 {
 	std::vector<JointAngles> op;
 	op.clear();
@@ -343,12 +349,12 @@ CaliInfo OBJ::Obj::getCaliInfo()
 	return m_caliInfo;
 }
 
-std::vector<std::array<Joint, JointType_Count>> OBJ::Obj::getJoints()
+std::vector<Joints> OBJ::Obj::getJoints() const
 {
 	return m_framesJ;
 }
 
-std::vector<std::array<Segment, SegType_Count>> OBJ::Obj::getSegments()
+std::vector<Segs> OBJ::Obj::getSegments() const
 {
 	return m_framesS;
 }
@@ -371,12 +377,18 @@ SubjInfo::~SubjInfo()
 {
 }
 
-float dot(std::vector<float> v1, std::vector<float> v2)
+float dot(std::array<float, 3> v1, std::array<float, 3> v2)
 {
 	return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
 }
 
-float norm(std::vector<float> v)
+std::array<float, 3> cross(std::array<float, 3> A, std::array<float, 3> B)
+{
+	std::array<float, 3> C{ A[1] * B[2] - A[2] * B[1] ,-A[0] * B[2] + A[2] * B[0], A[0] * B[1] - A[1] * B[0] };
+	return C;
+}
+
+float norm(std::array<float, 3> v)
 {
 	return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
@@ -384,4 +396,42 @@ float norm(std::vector<float> v)
 double RadianToDegree(double angle)
 {
 	return angle * (180.0 / PI);
+}
+
+OBJ::cSegment::cSegment(const Joint & jp, const Joint & jd, const Joint & jl, const Joint & jr, SegType st)
+{
+	Jdistal = jd;
+	Jproximal = jp;
+	Jleft = jl;
+	Jright = jr;
+
+	SegmentType = st;
+
+	if (jp.trackingState == 2 && jd.trackingState == 2 && jl.trackingState == 2 && jr.trackingState == 2)
+	{
+		trackingState = TrackingState(2);
+	}
+	else if (jp.trackingState == 0 || jd.trackingState == 0 || jl.trackingState == 0 || jr.trackingState == 0)
+	{
+		trackingState = TrackingState(0);
+	}
+	else
+	{
+		trackingState = TrackingState(1);
+	}
+}
+
+void OBJ::cSegment::calSegL()
+{
+	std::array<float, 3> left_local = Jleft.subtract(Jproximal);
+	std::array<float, 3> right_local = Jright.subtract(Jproximal);
+	for (auto i : left_local)
+	{
+		i = i * 100.0;
+	}
+	for (auto i : right_local)
+	{
+		i = i * 100.0;
+	}
+	length = norm(cross(left_local, right_local)) / 2.0;
 }

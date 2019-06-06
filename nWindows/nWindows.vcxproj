@@ -46,12 +46,14 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>E:\cppLibrary\dlib-19.17\dlib-19.17;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>E:\cppLibrary\dlib-19.17\dlib-19.17;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -110,6 +112,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -173,6 +176,7 @@
       <DebugInformationFormat />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -229,6 +233,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\..\cppLibrary\dlib-19.17\dlib-19.17\dlib\all\source.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="chart.cpp" />
     <ClCompile Include="filerec.cpp" />
@@ -238,6 +243,7 @@
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="myKinect.cpp" />
     <ClCompile Include="obj.cpp" />
+    <ClCompile Include="optimiz.cpp" />
     <ClCompile Include="vtk.cpp" />
     <ClCompile Include="vtktimercallback.cpp" />
   </ItemGroup>
@@ -268,6 +274,7 @@
   <ItemGroup>
     <ClInclude Include="camera.h" />
     <ClInclude Include="obj.h" />
+    <ClInclude Include="optimiz.h" />
     <ClInclude Include="vtk.h" />
     <ClInclude Include="vtkshape.h" />
     <ClInclude Include="vtktimercallback.h" />

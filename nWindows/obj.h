@@ -20,10 +20,12 @@
 
 
 #pragma region Math
-float dot(std::vector<float> v1, std::vector<float> v2);
+float dot(std::array<float, 3> v1, std::array<float, 3> v2);
+std::array<float, 3> cross(std::array<float, 3> A, std::array<float, 3> B);
 
-float norm(std::vector<float> v);
+float norm(std::array<float, 3> v);
 double RadianToDegree(double angle);
+
 
 #pragma endregion
 
@@ -197,6 +199,7 @@ namespace OBJ
 
 	public:
 		void print();
+		std::array<float, 3> subtract(const OBJ::Joint & r);
 	};
 
 	
@@ -224,33 +227,56 @@ namespace OBJ
 		//肢段的质量中心
 		Eigen::Vector3f segcom;
 
+		
 	public:
 		//计算segCOM_ /Dampster
 		void calSegCOM(Eigen::Vector3f &segcom, const Joint &jointP, const Joint &jointD, const int &segNum);
 		//计算肢段长度
-		void calSegL();
+		virtual void calSegL();
+	};
+	
+	class cSegment :public Segment
+	{
+	public:
+		cSegment(const Joint& jp, const Joint& jd, const Joint& jl, const Joint& jr, SegType st);
+	private:
+		//近端关节
+		Joint	Jleft;
+		//远端关节点
+		Joint	Jright;
+
+	public:
+		virtual void calSegL();
+		
 	};
 
+	
 	struct CaliInfo
 	{
 		JointAngles caliJA;//初始角度
 		float		caliH;//Kinect计算得之身高
 		std::array<float, SegType_Count> SegL; //Kinect 计算得之肢段长度
 	};
+
+	//一个frame的关节资讯
+	typedef std::array<OBJ::Joint, OBJ::JointType_Count> Joints;
+	//一个frame的肢段资讯
+	typedef std::array<OBJ::Segment, OBJ::SegType_Count> Segs;
+
 	class Obj
 	{
 	public:
 		Obj();
 		~Obj();
-		Obj(const std::vector<std::array<Joint, JointType_Count>>& frames_j);
+		Obj(const std::vector<Joints>& frames_j);
 	public:
 		QString path_ford;  //包含受试者资料的文件夹的路径
 		QString path_cali;	
 		QString path_subjInfo;
 		QString path_trail;
 		QString path_angle;
-		std::vector<std::array<Joint, JointType_Count>> cali_JointFrames;
-		std::vector<std::array<Segment, SegType_Count>> cali_SegFrames;
+		std::vector<Joints> cali_JointFrames;
+		std::vector<Segs> cali_SegFrames;
 
 		//帧数
 		int m_nFrames{ 0 };
@@ -262,11 +288,11 @@ namespace OBJ
 		//calibration得到之资讯
 		CaliInfo m_caliInfo;
 		//储存从文件读取到的关节点信息
-		std::vector<std::array<Joint, JointType_Count>> m_framesJ;
+		std::vector<Joints>			m_framesJ;
 		//将关节点信息整理为肢段信息
-		std::vector<std::array<Segment, SegType_Count>> m_framesS;
+		std::vector<Segs>			m_framesS;
 		//从肢段信息计算二维关节的角度
-		std::vector<JointAngles>						m_2dJointAngles;
+		std::vector<JointAngles>	m_2dJointAngles;
 		
 	public:
 
@@ -274,24 +300,24 @@ namespace OBJ
 		#pragma region Get
 		SubjInfo getSubjInfo();
 		CaliInfo getCaliInfo();
-		std::vector<std::array<Joint, JointType_Count>> getJoints();
-		std::vector<std::array<Segment, SegType_Count>> getSegments();
+		std::vector<Joints> getJoints()const;
+		std::vector<Segs> getSegments()const;
 		std::vector<JointAngles> getJointAngles();
 		#pragma endregion
 		
 		#pragma region Set
 		void setSubjInfo(SubjInfo &subjinfo);
-		void setJoints(const std::vector<std::array<Joint, JointType_Count>> &frames_J);
-		void setSegments(const std::vector<std::array<Segment, SegType_Count>> &frames_S);
+		void setJoints(const std::vector<Joints> &frames_J);
+		void setSegments(const std::vector<Segs> &frames_S);
 		void setJointAngles(std::vector<JointAngles> &frames_JA);
-		void setJointAngles(const std::vector<std::array<Segment, SegType_Count>> &frames_S);
+		void setJointAngles(const std::vector<Segs> &frames_S);
 		#pragma endregion
 
 		
 		
 		//从关节资料建立以肢段为单位的资料，既可以输入单帧的Joints，也可以输入所有帧。
-		std::vector<std::array<Segment, SegType_Count>> buildSegments(const std::vector<std::array<Joint, JointType_Count>> &frames_J);
-		std::array<Segment, SegType_Count> buildSegments(const std::array<Joint, JointType_Count> &joints);
+		std::vector<Segs> buildSegments(const std::vector<Joints> &frames_J);
+		Segs buildSegments(const Joints &joints);
 		//输入受试者资料夹的路径，一旦输入会抓取cali的路径和subjInfo的路径,并建立其他档案的路径
 		void setFilePath(QString path);
 		//输入实验trail的名称，读取trail的关节位置档案并且计算关节角度。
@@ -299,13 +325,13 @@ namespace OBJ
 		//计算两个肢段间的平面角度
 		float calJointAngle(const Segment &sA,const Segment &sB);
 		//计算所有关节角度，可以输入一帧也可以输入多帧
-		JointAngles calAllJointAngles(const std::array<Segment, SegType_Count> &segments); //1 frame
-		std::vector<JointAngles> calAllJointAngles(const std::vector<std::array<Segment, SegType_Count>> &frames_S); //n frame
+		JointAngles calAllJointAngles(const Segs &segments); //1 frame
+		std::vector<JointAngles> calAllJointAngles(const std::vector<Segs> &frames_S); //n frame
 		
 		//操作
 		void cali();
 		void calTrailJointAngle();
-
+		
 	};
 
 }

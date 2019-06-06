@@ -25,7 +25,7 @@
 #include "camera.h"
 #include "myKinect.h"
 #include "filerec.h"
-
+#include "optimiz.h"
 //h
 #include <math.h>
 #include <fstream>

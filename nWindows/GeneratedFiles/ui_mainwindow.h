@@ -1459,7 +1459,7 @@ public:
         QObject::connect(checkBox, SIGNAL(toggled(bool)), MainWindowClass, SLOT(bagSelect(bool)));
         QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
 
-        tabWidget->setCurrentIndex(1);
+        tabWidget->setCurrentIndex(2);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);

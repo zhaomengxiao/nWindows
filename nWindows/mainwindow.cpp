@@ -7,6 +7,7 @@ QImage  Mat2QImage(cv::Mat cvImg);
 //传出区
 //===============================
 extern FileREC *pSender ;
+extern OBJ::CaliInfo *p_optParameters;
 extern int jointSelected;
 extern float force;
 extern float bodyWeight;
@@ -970,6 +971,9 @@ void MainWindow::readRec()
 		pSender->readTrail(obj);
 		pSender->writeTrialAngle(obj);
 
+		//opt
+		p_optParameters = &obj.getCaliInfo();
+		OPT::optSingleF(obj.getJoints()[0]);
 		//ui提示
 		ui.statusBar->showMessage("Reconstruct Success", 2000);
 		QMessageBox::information(this, "Reconstruct", "Reconstruct Success~");

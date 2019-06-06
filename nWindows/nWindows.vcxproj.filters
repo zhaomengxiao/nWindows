@@ -63,6 +63,12 @@
     <ClCompile Include="obj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="optimiz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\..\cppLibrary\dlib-19.17\dlib-19.17\dlib\all\source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -120,6 +126,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="obj.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="optimiz.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

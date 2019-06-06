@@ -361,7 +361,7 @@ void FileREC::readTrail(OBJ::Obj &obj)
 				joints[i] = OBJ::Joint{ OBJ::JointType(i),0,0,0,OBJ::TrackingState(0) };
 				++i;
 				joints[i] = OBJ::Joint{ OBJ::JointType(blocks[2].toInt()),blocks[4].toFloat(),blocks[5].toFloat(),blocks[6].toFloat(),OBJ::TrackingState(blocks[3].toInt()) };
-				qDebug() << "missing joint" << endl;
+				qDebug() << "missing joint: " << i << "  ,at frame: " << frame << endl;
 			}
 			else
 			{
