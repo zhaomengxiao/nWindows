@@ -7,7 +7,7 @@
 #include <array>
 #include <vector>
 #include <math.h>
-
+#include <Kinect.h>
 #define PI 3.14159265
 
 //struct coordSys {
@@ -38,14 +38,14 @@ struct SubjInfo {
 	float	height		{ 0.0 };
 	float	weight		{ 0.0 };
 	float	bagWeight	{ 0.0 };
-	std::vector<float> bagPosi{ 0.0,0.0,0.0 };
+	Eigen::Vector3f bagPosi{ 0.0,0.0,0.0 };
 	bool	bag			{ true };
 
 	SubjInfo();
 	SubjInfo(QString sn, QString gd, QString ps, int a, float h, float w, float bw, float x, float y, float z):
 		subjname(sn),gender(gd),preside(ps),age(a),height(h),weight(w),bagWeight(bw)
 	{
-		bagPosi = std::vector<float>{ x,y,z };
+		bagPosi = Eigen::Vector3f{ x,y,z };
 		if (bw == 0.0)
 		{
 			bag = false;
@@ -59,7 +59,7 @@ struct SubjInfo {
 		qDebug() << "age: "			<< age			<< endl;
 		qDebug() << "height: "		<< height		<< endl;
 		qDebug() << "weight: "		<< weight		<< endl;
-		qDebug() << "bagPosi: "		<< bagPosi		<< endl;
+		qDebug() << "bagPosi: " << bagPosi.x() << "," << bagPosi.y() << "," << bagPosi.z() << endl;
 		qDebug() << "bagWeight: "	<< bagWeight	<< endl;
 		qDebug() << "isbag: "		<< bag			<< endl;
 	}
@@ -126,47 +126,55 @@ namespace OBJ
 		}
 
 	};
-	enum JointType
-	{
-		JointType_SpineBase = 0,
-		JointType_SpineMid = 1,
-		JointType_Neck = 2,
-		JointType_Head = 3,
-		JointType_ShoulderLeft = 4,
-		JointType_ElbowLeft = 5,
-		JointType_WristLeft = 6,
-		JointType_HandLeft = 7,
-		JointType_ShoulderRight = 8,
-		JointType_ElbowRight = 9,
-		JointType_WristRight = 10,
-		JointType_HandRight = 11,
-		JointType_HipLeft = 12,
-		JointType_KneeLeft = 13,
-		JointType_AnkleLeft = 14,
-		JointType_FootLeft = 15,
-		JointType_HipRight = 16,
-		JointType_KneeRight = 17,
-		JointType_AnkleRight = 18,
-		JointType_FootRight = 19,
-		JointType_SpineShoulder = 20,
-		JointType_HandTipLeft = 21,
-		JointType_ThumbLeft = 22,
-		JointType_HandTipRight = 23,
-		JointType_ThumbRight = 24,
-		JointType_Count = (JointType_ThumbRight + 1)
-	};
+	//enum JointType
+	//{
+	//	JointType_SpineBase = 0,
+	//	JointType_SpineMid = 1,
+	//	JointType_Neck = 2,
+	//	JointType_Head = 3,
+	//	JointType_ShoulderLeft = 4,
+	//	JointType_ElbowLeft = 5,
+	//	JointType_WristLeft = 6,
+	//	JointType_HandLeft = 7,
+	//	JointType_ShoulderRight = 8,
+	//	JointType_ElbowRight = 9,
+	//	JointType_WristRight = 10,
+	//	JointType_HandRight = 11,
+	//	JointType_HipLeft = 12,
+	//	JointType_KneeLeft = 13,
+	//	JointType_AnkleLeft = 14,
+	//	JointType_FootLeft = 15,
+	//	JointType_HipRight = 16,
+	//	JointType_KneeRight = 17,
+	//	JointType_AnkleRight = 18,
+	//	JointType_FootRight = 19,
+	//	JointType_SpineShoulder = 20,
+	//	JointType_HandTipLeft = 21,
+	//	JointType_ThumbLeft = 22,
+	//	JointType_HandTipRight = 23,
+	//	JointType_ThumbRight = 24,
+	//	JointType_Count = (JointType_ThumbRight + 1)
+	//};
 
 	
 
 
-	enum TrackingState
-	{
-		TrackingState_NotTracked = 0,
-		TrackingState_Inferred = 1,
-		TrackingState_Tracked = 2
+	//enum TrackingState
+	//{
+	//	TrackingState_NotTracked = 0,
+	//	TrackingState_Inferred = 1,
+	//	TrackingState_Tracked = 2
+	//};
+
+	struct coordSys {
+		Eigen::Vector3f axis_x{ 0,0,0 };
+		Eigen::Vector3f axis_y{ 0,0,0 };
+		Eigen::Vector3f axis_z{ 0,0,0 };
+		Eigen::Matrix3f R;
+		Eigen::Vector3f V;
+
+		void print();
 	};
-
-
 
 	enum SegType {
 		SegType_LeftThigh = 0,
@@ -191,7 +199,6 @@ namespace OBJ
 		Joint();
 		~Joint();
 		Joint(JointType jt,float x,float y,float z, TrackingState ts);
-	
 	public:
 		JointType		jointType;
 		Eigen::Vector3f jointPosition; //相机空间坐标：x向右 y向上 z代表距离相机之深度距离
@@ -200,15 +207,18 @@ namespace OBJ
 	public:
 		void print();
 		std::array<float, 3> subtract(const OBJ::Joint & r);
+		Eigen::Vector3f Pg2l(const coordSys& lcoord);
 	};
 
+	
 	
 	class Segment
 	{
 	public:
 		Segment();
 		~Segment();
-		Segment(const Joint& jp, const Joint& jd, SegType st);
+		Segment(const Joint& jp, const Joint& jd,const SegType& st,const SubjInfo & subjinfo); //初始化带有肢段质量
+		Segment(const Joint& jp, const Joint& jd, const SegType& st); 
 	public:
 		SegType SegmentType;
 		//近端关节
@@ -216,8 +226,6 @@ namespace OBJ
 		//远端关节点
 		Joint	Jdistal;
 		TrackingState trackingState;
-		//local坐标系
-		//coordSys local;
 
 		//惯性参数
 		//肢段长度
@@ -230,9 +238,10 @@ namespace OBJ
 		
 	public:
 		//计算segCOM_ /Dampster
-		void calSegCOM(Eigen::Vector3f &segcom, const Joint &jointP, const Joint &jointD, const int &segNum);
+		void calSegCOM();
 		//计算肢段长度
 		virtual void calSegL();
+		void calSegMass(const SubjInfo & subjinfo);
 	};
 	
 	class cSegment :public Segment
@@ -259,7 +268,7 @@ namespace OBJ
 	};
 
 	//一个frame的关节资讯
-	typedef std::array<OBJ::Joint, OBJ::JointType_Count> Joints;
+	typedef std::array<OBJ::Joint, JointType_Count> Joints;
 	//一个frame的肢段资讯
 	typedef std::array<OBJ::Segment, OBJ::SegType_Count> Segs;
 
@@ -275,11 +284,11 @@ namespace OBJ
 		QString path_subjInfo;
 		QString path_trail;
 		QString path_angle;
+		QString path_moment;
 		std::vector<Joints> cali_JointFrames;
 		std::vector<Segs> cali_SegFrames;
 
-		//帧数
-		int m_nFrames{ 0 };
+		
 	private:
 		
 	
@@ -293,7 +302,12 @@ namespace OBJ
 		std::vector<Segs>			m_framesS;
 		//从肢段信息计算二维关节的角度
 		std::vector<JointAngles>	m_2dJointAngles;
-		
+		//腰部所受外力产生之力矩
+		std::vector<Eigen::Vector3f> m_moments;
+		//帧数
+		int m_nFrames{ 0 };
+		//储存外力资讯
+		std::vector<Eigen::Vector3f> m_fp_g;
 	public:
 
 
@@ -303,6 +317,10 @@ namespace OBJ
 		std::vector<Joints> getJoints()const;
 		std::vector<Segs> getSegments()const;
 		std::vector<JointAngles> getJointAngles();
+		std::vector<Eigen::Vector3f> getMoments();
+		std::array<Eigen::Vector3f, 13> getCOMs(const Segs & segs);
+		int getFrameNumber();
+		std::vector<Eigen::Vector3f> getForcePosi();
 		#pragma endregion
 		
 		#pragma region Set
@@ -327,11 +345,16 @@ namespace OBJ
 		//计算所有关节角度，可以输入一帧也可以输入多帧
 		JointAngles calAllJointAngles(const Segs &segments); //1 frame
 		std::vector<JointAngles> calAllJointAngles(const std::vector<Segs> &frames_S); //n frame
+		//建立body坐标系
+		coordSys calCoordupTunkR(const Joints &joints);
+		Eigen::Vector3f Pg2l(const Joint& Pg, const coordSys& lcoord);
+		Eigen::Vector3f Pl2g(Eigen::Vector3f Pl, const coordSys& lcoord);
 		
 		//操作
 		void cali();
 		void calTrailJointAngle();
 		
+		void calcSpinebaseFMwithBag();
 	};
 
 }

@@ -27,7 +27,9 @@
 #include <QtWidgets/QMenuBar>
 #include <QtWidgets/QProgressBar>
 #include <QtWidgets/QPushButton>
+#include <QtWidgets/QRadioButton>
 #include <QtWidgets/QScrollArea>
+#include <QtWidgets/QSlider>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QSpinBox>
 #include <QtWidgets/QStatusBar>
@@ -89,6 +91,7 @@ public:
     QSpacerItem *verticalSpacer_3;
     QSpacerItem *horizontalSpacer_3;
     QSpacerItem *verticalSpacer_4;
+    QLabel *label_14;
     QWidget *tab;
     QGridLayout *gridLayout_2;
     QScrollArea *scrollArea;
@@ -158,17 +161,18 @@ public:
     QLabel *label_13;
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
-    QPushButton *pushButton_openrecord;
     QTreeWidget *treeWidget;
+    QPushButton *pushButton_openrecord;
+    QSpacerItem *horizontalSpacer_11;
+    QRadioButton *radioButton;
+    QPushButton *pushButton_recon;
+    QSlider *horizontalSlider;
     QWidget *widget_rpath;
     QVBoxLayout *verticalLayout;
     QLineEdit *lineEdit_rdate;
     QLineEdit *lineEdit_rsubjn;
     QLineEdit *lineEdit_rtn;
-    QPushButton *pushButton_2;
-    QSpacerItem *horizontalSpacer_9;
-    QSpacerItem *horizontalSpacer_11;
-    QWidget *tab_3;
+    QSpinBox *spinBox_Nframe;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -177,7 +181,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1294, 887);
+        MainWindowClass->resize(1272, 897);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral("background-color:#464652;color:#E8E8E8"));
@@ -641,6 +645,12 @@ public:
 
         gridLayout_5->addItem(verticalSpacer_4, 3, 0, 1, 6);
 
+        label_14 = new QLabel(LCDwidget_3);
+        label_14->setObjectName(QStringLiteral("label_14"));
+        label_14->setStyleSheet(QStringLiteral("font: 14pt \"Arial\";"));
+
+        gridLayout_5->addWidget(label_14, 2, 3, 1, 2);
+
 
         gridLayout_10->addWidget(LCDwidget_3, 2, 0, 1, 1);
 
@@ -665,7 +675,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1233, 678));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1211, 684));
         gridLayout_26 = new QGridLayout(scrollAreaWidgetContents);
         gridLayout_26->setSpacing(6);
         gridLayout_26->setContentsMargins(11, 11, 11, 11);
@@ -1265,28 +1275,6 @@ public:
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
-        pushButton_openrecord = new QPushButton(tab_2);
-        pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
-        pushButton_openrecord->setMinimumSize(QSize(100, 30));
-        QFont font6;
-        font6.setFamily(QStringLiteral("Arial"));
-        font6.setPointSize(14);
-        pushButton_openrecord->setFont(font6);
-        pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-""));
-        QIcon icon4;
-        icon4.addFile(QStringLiteral(":/tree/Resources/shuaxin.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_openrecord->setIcon(icon4);
-        pushButton_openrecord->setFlat(false);
-
-        gridLayout_4->addWidget(pushButton_openrecord, 0, 0, 1, 1);
-
         treeWidget = new QTreeWidget(tab_2);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
         treeWidget->setMinimumSize(QSize(1000, 500));
@@ -1344,7 +1332,73 @@ public:
         treeWidget->setAnimated(true);
         treeWidget->header()->setVisible(false);
 
-        gridLayout_4->addWidget(treeWidget, 1, 0, 1, 4);
+        gridLayout_4->addWidget(treeWidget, 1, 0, 1, 5);
+
+        pushButton_openrecord = new QPushButton(tab_2);
+        pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
+        pushButton_openrecord->setMinimumSize(QSize(100, 30));
+        QFont font6;
+        font6.setFamily(QStringLiteral("Arial"));
+        font6.setPointSize(14);
+        pushButton_openrecord->setFont(font6);
+        pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/tree/Resources/shuaxin.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_openrecord->setIcon(icon4);
+        pushButton_openrecord->setFlat(false);
+
+        gridLayout_4->addWidget(pushButton_openrecord, 0, 0, 1, 1);
+
+        horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_4->addItem(horizontalSpacer_11, 0, 1, 1, 1);
+
+        radioButton = new QRadioButton(tab_2);
+        radioButton->setObjectName(QStringLiteral("radioButton"));
+        radioButton->setMinimumSize(QSize(120, 60));
+        radioButton->setMaximumSize(QSize(120, 60));
+        radioButton->setStyleSheet(QLatin1String("QRadioButton{border-radius: 10px;\n"
+"font: 14pt \"Arial\";\n"
+"\n"
+"}\n"
+"\n"
+"QRadioButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QRadioButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+
+        gridLayout_4->addWidget(radioButton, 3, 2, 1, 1);
+
+        pushButton_recon = new QPushButton(tab_2);
+        pushButton_recon->setObjectName(QStringLiteral("pushButton_recon"));
+        pushButton_recon->setMinimumSize(QSize(120, 60));
+        pushButton_recon->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px;\n"
+"font: 14pt \"Arial\";\n"
+"\n"
+"}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+
+        gridLayout_4->addWidget(pushButton_recon, 2, 2, 1, 1);
+
+        horizontalSlider = new QSlider(tab_2);
+        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
+        horizontalSlider->setOrientation(Qt::Horizontal);
+
+        gridLayout_4->addWidget(horizontalSlider, 3, 4, 1, 1);
 
         widget_rpath = new QWidget(tab_2);
         widget_rpath->setObjectName(QStringLiteral("widget_rpath"));
@@ -1387,46 +1441,25 @@ public:
         verticalLayout->addWidget(lineEdit_rtn);
 
 
-        gridLayout_4->addWidget(widget_rpath, 2, 0, 1, 2);
+        gridLayout_4->addWidget(widget_rpath, 2, 0, 2, 2);
 
-        pushButton_2 = new QPushButton(tab_2);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
-        pushButton_2->setMinimumSize(QSize(120, 60));
-        pushButton_2->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px;\n"
-"font: 14pt \"Arial\";\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-""));
+        spinBox_Nframe = new QSpinBox(tab_2);
+        spinBox_Nframe->setObjectName(QStringLiteral("spinBox_Nframe"));
+        spinBox_Nframe->setMinimumSize(QSize(40, 40));
+        spinBox_Nframe->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
 
-        gridLayout_4->addWidget(pushButton_2, 2, 2, 1, 1);
-
-        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_4->addItem(horizontalSpacer_9, 2, 3, 1, 1);
-
-        horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_4->addItem(horizontalSpacer_11, 0, 1, 1, 3);
+        gridLayout_4->addWidget(spinBox_Nframe, 2, 4, 1, 1);
 
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/myimages/Resources/jilu.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tab_2, icon5, QString());
-        tab_3 = new QWidget();
-        tab_3->setObjectName(QStringLiteral("tab_3"));
-        tabWidget->addTab(tab_3, QString());
 
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
 
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1294, 23));
+        menuBar->setGeometry(QRect(0, 0, 1272, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -1452,12 +1485,15 @@ public:
         QObject::connect(pushButton_resetCD, SIGNAL(clicked()), MainWindowClass, SLOT(ResetCD()));
         QObject::connect(comboBox, SIGNAL(currentTextChanged(QString)), MainWindowClass, SLOT(SetLT(QString)));
         QObject::connect(pushButton, SIGNAL(clicked()), MainWindowClass, SLOT(timeLapse()));
-        QObject::connect(pushButton_2, SIGNAL(clicked()), MainWindowClass, SLOT(readRec()));
+        QObject::connect(pushButton_recon, SIGNAL(clicked()), MainWindowClass, SLOT(readRec()));
         QObject::connect(lineEdit_bagX, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagX(QString)));
         QObject::connect(lineEdit_bagY, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagY(QString)));
         QObject::connect(lineEdit_bagZ, SIGNAL(textChanged(QString)), MainWindowClass, SLOT(LineEdit_bagZ(QString)));
         QObject::connect(checkBox, SIGNAL(toggled(bool)), MainWindowClass, SLOT(bagSelect(bool)));
         QObject::connect(listWidget_alljoint, SIGNAL(currentRowChanged(int)), MainWindowClass, SLOT(ListCurChange(int)));
+        QObject::connect(radioButton, SIGNAL(clicked(bool)), MainWindowClass, SLOT(OffMode(bool)));
+        QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), MainWindowClass, SLOT(Nframe(int)));
+        QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), spinBox_Nframe, SLOT(setValue(int)));
 
         tabWidget->setCurrentIndex(2);
 
@@ -1479,12 +1515,13 @@ public:
         lineEdit_height->setText(QString());
         lineEdit_subjectName->setText(QString());
         label_12->setText(QApplication::translate("MainWindowClass", "Preference Side", nullptr));
-        label_text_3->setText(QApplication::translate("MainWindowClass", "Bag Position (mm)", nullptr));
-        lineEdit_bagZ->setText(QApplication::translate("MainWindowClass", "z", nullptr));
-        lineEdit_bagY->setText(QApplication::translate("MainWindowClass", "y", nullptr));
+        label_text_3->setText(QApplication::translate("MainWindowClass", "Bag Position (m)", nullptr));
+        lineEdit_bagZ->setText(QApplication::translate("MainWindowClass", "down", nullptr));
+        lineEdit_bagY->setText(QApplication::translate("MainWindowClass", "backwards", nullptr));
         label_text_2->setText(QApplication::translate("MainWindowClass", "Bag Weight (kg)", nullptr));
-        lineEdit_bagX->setText(QApplication::translate("MainWindowClass", "x", nullptr));
+        lineEdit_bagX->setText(QApplication::translate("MainWindowClass", "right", nullptr));
         lineEdit_f->setText(QString());
+        label_14->setText(QApplication::translate("MainWindowClass", "Relative to the midpoint of the spine", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_userinput), QApplication::translate("MainWindowClass", "SubjInfo", nullptr));
 
         const bool __sortingEnabled = listWidget_alljoint->isSortingEnabled();
@@ -1571,12 +1608,12 @@ public:
 
         label_13->setText(QApplication::translate("MainWindowClass", "min", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Control Panel ", nullptr));
-        pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "Refresh", nullptr));
         QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
         ___qtreewidgetitem->setText(0, QApplication::translate("MainWindowClass", "Data Base", nullptr));
-        pushButton_2->setText(QApplication::translate("MainWindowClass", "Reconstruct", nullptr));
+        pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "Refresh", nullptr));
+        radioButton->setText(QApplication::translate("MainWindowClass", "Offline", nullptr));
+        pushButton_recon->setText(QApplication::translate("MainWindowClass", "Reconstruct", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Files", nullptr));
-        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "Data Process", nullptr));
     } // retranslateUi
 
 };

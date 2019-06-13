@@ -83,6 +83,8 @@ int VTK::setCallback()
 	//+++^^^add more cb sign up above^^^+++
 
 	p_renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);
+	
+	//设定更新帧率
 	int timerId = p_renderWindowInteractor->CreateRepeatingTimer(33);
 
 	p_renderWindowInteractor->Start();

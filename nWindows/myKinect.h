@@ -32,13 +32,7 @@ inline void SafeRelease(Interface *& pInterfaceToRelease)
 	}
 
 }
-struct coordSys {
-	Eigen::Vector3f axis_x{ 0,0,0 };
-	Eigen::Vector3f axis_y{ 0,0,0 };
-	Eigen::Vector3f axis_z{ 0,0,0 };
-	Eigen::Matrix3f R;
-	Eigen::Vector3f V;
-};
+
 
 class myKinect
 {
@@ -46,11 +40,7 @@ private:
 	//kinect 2.0 的深度空间的高*宽是 424 * 512，在官网上有说明
 	static const int        cDepthWidth { 512 };//c++ 11
 	static const int        cDepthHeight{ 424 };
-	//旋转角度数据存储
-	//522
-	//Eigen::Vector4f quatshow;
-	//
-	//Eigen::Vector3f angles;//changed f
+	
 	
 	//
 public:
@@ -62,11 +52,7 @@ public:
 	cv::Mat					getDepthImg();//取得深度图
 	cv::Mat					getSkeletonImg();//取得骨骼图
 	void                    Update();//获得骨架、背景二值图和深度信息
-	//522
-	////坐标系建立
-
-	////upper trunk coordinats
-	//coordSys UpTkcoord;
+	
 	
 	//计算COM
 	void					SegCOM(Eigen::Vector3f &segcom, Joint &jointP, Joint &jointD, const int &segNum);
@@ -75,34 +61,14 @@ public:
 	Eigen::Vector3f			myCOM; //传出COM用于显示
 	Eigen::Vector3f			thighcom_L, thighcom_R, shankcom_L, shankcom_R, footcom_L, footcom_R,upperArmCom_L, upperArmCom_R, fArmHand_L, fArmHand_R,Pelvis, ThoraxAbdomen, Headneck;
 	
-	//Eigen::Vector3f angles2;
+	
 	//============传出数据===========
 	Joint joints[JointType_Count]; //储存关节信息
 	//std::array < Joint, JointType_Count> joints_array;
 	//522
 	//JointOrientation JointOrientations[JointType_Count];//存储关节旋转
 	std::array<Eigen::Vector3f, 13> segCOMs;//储存13个肢段质量中心
-	//522
-	//std::array<float, 9> JointAngles{-190,-190,-190,-190,-190,-190,-190,0,0 };//储存4个单自由度关节角度
-	
 
-	/*JointAngles[0] = ElbowAgR;
-	JointAngles[1] = ElbowAgL;
-	JointAngles[2] = KneeAgR;
-	JointAngles[3] = KneeAgL;
-	JointAngles[4] = SpineAg;
-	JointAngles[5] = ShoulderAgR;
-	JointAngles[6] = ShoulderAgL;
-	JointAngles[7] = NeckbfAg;
-	JointAngles[8] = NecklrAg;*/
-	
-	
-	//3d
-	//522
-	/*float getAngle_x();
-	float getAngle_y();
-	float getAngle_z();*/
-	//Return degrees (0-360) from radians
 	
 	int jointnumber = 0;
 	std::ofstream csvfile;//用于输出csv文档
@@ -121,15 +87,6 @@ private:
 	void DrawHandState(const DepthSpacePoint depthSpacePosition, HandState handState);
 
 	
-	////计算shoulder向量到平面的角度
-	//float CalShodAbd_R();
-	//float CalShodFE_R();
-	//float CalShodAbd_L();
-	////计算uppertunk的local坐标系
-	//void CalcoordupTunkR();
-
-	//坐标系转换 
-	Eigen::Vector3f Pg2l(Joint& P,coordSys& lcoord);
 	//显示图像的Mat
 	cv::Mat skeletonImg;
 	cv::Mat depthImg;

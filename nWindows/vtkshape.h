@@ -189,5 +189,22 @@ namespace vtkShape {
 			return actor;
 		}
 	};
+	
+	/*class VTKsegment
+	{
+	public:
+		VTKsegment();
+		~VTKsegment();
 
+	private:
+
+	};
+
+	VTKsegment::VTKsegment()
+	{
+	}
+
+	VTKsegment::~VTKsegment()
+	{
+	}*/
 }

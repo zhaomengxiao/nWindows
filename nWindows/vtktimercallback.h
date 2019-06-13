@@ -1,9 +1,11 @@
 #pragma once
 #include "filerec.h"
+#include "obj.h"
 #include <vtkCommand.h>
 #include <vtkshape.h>
 #include <array>
 #include <Eigen\Dense>
+
 
 //#include "mainwindow.h"
 class vtkTimerCallback :
@@ -15,18 +17,13 @@ public:
 		void * vtkNotUsed(callData));
 private:
 	int TimerCount;
-
-
-	std::array<Joint, 25> m_joints;
-	std::array<float, 13> m_COM_x;
-	std::array<float, 13> m_COM_y;
-	std::array<float, 13> m_COM_z;
-	std::array<Eigen::Vector3f, 13> m_COMs{ };
-	float m_fx, m_fy, m_fz;
+	OBJ::Joints m_joints;
+	std::array<Eigen::Vector3f, 13> m_COMs;
+	Eigen::Vector3f m_Pforce;
 private:
-	void updateXYZ(const std::array<Joint, 25> &joints);
-	void updateCOMXYZ(int segNumber);
-
+	void updateXYZ(const OBJ::Joints &joints);
+	void updateCOMXYZ(const std::array<Eigen::Vector3f,13> &coms);
+	void updateForceXYZ(const Eigen::Vector3f pf);
 public:
 	std::array<vtkSmartPointer<vtkActor>, 25> actor_joints{};
 	std::array<vtkSmartPointer<vtkActor>, 13> actor_COMs{};
@@ -34,9 +31,9 @@ public:
 	
 	//+++
 	void updatePosition();
-	void updateCOMPosition(int segNumber); 
-
-	void calcSpinebaseFMwithBag(); 
+	void updateCOMPosition(); 
+	void updateForcePosition();
+	//void calcSpinebaseFMwithBag(); 
 
 };
 

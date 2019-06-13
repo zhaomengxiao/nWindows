@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1294</width>
-    <height>887</height>
+    <width>1272</width>
+    <height>897</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -784,7 +784,7 @@ font: 87 20pt &quot;Arial&quot;;
 border-radius: 10px;</string>
              </property>
              <property name="text">
-              <string>Bag Position (mm)</string>
+              <string>Bag Position (m)</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -811,7 +811,7 @@ border-radius: 10px;
 font: 87 10pt &quot;Arial Black&quot;;</string>
              </property>
              <property name="text">
-              <string>z</string>
+              <string>down</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -838,7 +838,7 @@ border-radius: 10px;
 font: 87 10pt &quot;Arial Black&quot;;</string>
              </property>
              <property name="text">
-              <string>y</string>
+              <string>backwards</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -892,7 +892,7 @@ border-radius: 10px;
 font: 87 10pt &quot;Arial Black&quot;;</string>
              </property>
              <property name="text">
-              <string>x</string>
+              <string>right</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignCenter</set>
@@ -978,6 +978,16 @@ font: 87 10pt &quot;Arial Black&quot;;</string>
              </property>
             </spacer>
            </item>
+           <item row="2" column="3" colspan="2">
+            <widget class="QLabel" name="label_14">
+             <property name="styleSheet">
+              <string notr="true">font: 14pt &quot;Arial&quot;;</string>
+             </property>
+             <property name="text">
+              <string>Relative to the midpoint of the spine</string>
+             </property>
+            </widget>
+           </item>
           </layout>
          </widget>
         </item>
@@ -1015,8 +1025,8 @@ font: 87 10pt &quot;Arial Black&quot;;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1233</width>
-             <height>678</height>
+             <width>1211</width>
+             <height>684</height>
             </rect>
            </property>
            <layout class="QGridLayout" name="gridLayout_26">
@@ -2116,43 +2126,7 @@ QWidget{font: 14pt &quot;Arial&quot;;}</string>
         <string>Files</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton_openrecord">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{border-radius: 10px}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}
-</string>
-          </property>
-          <property name="text">
-           <string>Refresh</string>
-          </property>
-          <property name="icon">
-           <iconset resource="treewidget.qrc">
-            <normaloff>:/tree/Resources/shuaxin.png</normaloff>:/tree/Resources/shuaxin.png</iconset>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="4">
+        <item row="1" column="0" colspan="5">
          <widget class="QTreeWidget" name="treeWidget">
           <property name="minimumSize">
            <size>
@@ -2227,7 +2201,120 @@ QHeaderView::section{
           </column>
          </widget>
         </item>
-        <item row="2" column="0" colspan="2">
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_openrecord">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+          </property>
+          <property name="text">
+           <string>Refresh</string>
+          </property>
+          <property name="icon">
+           <iconset resource="treewidget.qrc">
+            <normaloff>:/tree/Resources/shuaxin.png</normaloff>:/tree/Resources/shuaxin.png</iconset>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_11">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="3" column="2">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QRadioButton{border-radius: 10px;
+font: 14pt &quot;Arial&quot;;
+
+}
+
+QRadioButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QRadioButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+          </property>
+          <property name="text">
+           <string>Offline</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QPushButton" name="pushButton_recon">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px;
+font: 14pt &quot;Arial&quot;;
+
+}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+          </property>
+          <property name="text">
+           <string>Reconstruct</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="4">
+         <widget class="QSlider" name="horizontalSlider">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" rowspan="2" colspan="2">
          <widget class="QWidget" name="widget_rpath" native="true">
           <property name="minimumSize">
            <size>
@@ -2277,64 +2364,20 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
           </layout>
          </widget>
         </item>
-        <item row="2" column="2">
-         <widget class="QPushButton" name="pushButton_2">
+        <item row="2" column="4">
+         <widget class="QSpinBox" name="spinBox_Nframe">
           <property name="minimumSize">
            <size>
-            <width>120</width>
-            <height>60</height>
+            <width>40</width>
+            <height>40</height>
            </size>
           </property>
           <property name="styleSheet">
-           <string notr="true">QPushButton{border-radius: 10px;
-font: 14pt &quot;Arial&quot;;
-
-}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}
-</string>
-          </property>
-          <property name="text">
-           <string>Reconstruct</string>
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="3">
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="0" column="1" colspan="3">
-         <spacer name="horizontalSpacer_11">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
        </layout>
-      </widget>
-      <widget class="QWidget" name="tab_3">
-       <attribute name="title">
-        <string>Data Process</string>
-       </attribute>
       </widget>
      </widget>
     </item>
@@ -2345,7 +2388,7 @@ background-color: rgb(76, 120, 65)}
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1294</width>
+     <width>1272</width>
      <height>23</height>
     </rect>
    </property>
@@ -2374,8 +2417,8 @@ background-color: rgb(76, 120, 65)}
    <slot>startRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1102</x>
-     <y>697</y>
+     <x>1080</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>1017</x>
@@ -2390,8 +2433,8 @@ background-color: rgb(76, 120, 65)}
    <slot>stopRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1190</x>
-     <y>697</y>
+     <x>1168</x>
+     <y>703</y>
     </hint>
     <hint type="destinationlabel">
      <x>1017</x>
@@ -2454,8 +2497,8 @@ background-color: rgb(76, 120, 65)}
    <slot>ready4Rec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>695</x>
-     <y>772</y>
+     <x>684</x>
+     <y>782</y>
     </hint>
     <hint type="destinationlabel">
      <x>582</x>
@@ -2486,8 +2529,8 @@ background-color: rgb(76, 120, 65)}
    <slot>releaseOKbutton()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>254</x>
-     <y>204</y>
+     <x>248</x>
+     <y>208</y>
     </hint>
     <hint type="destinationlabel">
      <x>222</x>
@@ -2518,11 +2561,11 @@ background-color: rgb(76, 120, 65)}
    <slot>newTrail()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1235</x>
-     <y>580</y>
+     <x>1213</x>
+     <y>586</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1119</x>
+     <x>1049</x>
      <y>626</y>
     </hint>
    </hints>
@@ -2534,7 +2577,7 @@ background-color: rgb(76, 120, 65)}
    <slot>SetCD(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>395</x>
+     <x>338</x>
      <y>707</y>
     </hint>
     <hint type="destinationlabel">
@@ -2550,7 +2593,7 @@ background-color: rgb(76, 120, 65)}
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>395</x>
+     <x>338</x>
      <y>707</y>
     </hint>
     <hint type="destinationlabel">
@@ -2570,7 +2613,7 @@ background-color: rgb(76, 120, 65)}
      <y>678</y>
     </hint>
     <hint type="destinationlabel">
-     <x>395</x>
+     <x>338</x>
      <y>707</y>
     </hint>
    </hints>
@@ -2582,7 +2625,7 @@ background-color: rgb(76, 120, 65)}
    <slot>ResetCD()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>395</x>
+     <x>338</x>
      <y>631</y>
     </hint>
     <hint type="destinationlabel">
@@ -2598,7 +2641,7 @@ background-color: rgb(76, 120, 65)}
    <slot>SetLT(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>241</x>
+     <x>213</x>
      <y>755</y>
     </hint>
     <hint type="destinationlabel">
@@ -2614,28 +2657,28 @@ background-color: rgb(76, 120, 65)}
    <slot>timeLapse()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>153</x>
+     <x>134</x>
      <y>754</y>
     </hint>
     <hint type="destinationlabel">
      <x>156</x>
-     <y>940</y>
+     <y>886</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>pushButton_2</sender>
+   <sender>pushButton_recon</sender>
    <signal>clicked()</signal>
    <receiver>MainWindowClass</receiver>
    <slot>readRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>525</x>
-     <y>735</y>
+     <x>633</x>
+     <y>718</y>
     </hint>
     <hint type="destinationlabel">
      <x>414</x>
-     <y>915</y>
+     <y>886</y>
     </hint>
    </hints>
   </connection>
@@ -2650,7 +2693,7 @@ background-color: rgb(76, 120, 65)}
      <y>556</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1432</x>
+     <x>1049</x>
      <y>481</y>
     </hint>
    </hints>
@@ -2662,11 +2705,11 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_bagY(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>579</x>
-     <y>548</y>
+     <x>551</x>
+     <y>569</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1451</x>
+     <x>1049</x>
      <y>495</y>
     </hint>
    </hints>
@@ -2678,11 +2721,11 @@ background-color: rgb(76, 120, 65)}
    <slot>LineEdit_bagZ(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>716</x>
-     <y>549</y>
+     <x>667</x>
+     <y>569</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1417</x>
+     <x>1049</x>
      <y>510</y>
     </hint>
    </hints>
@@ -2698,7 +2741,7 @@ background-color: rgb(76, 120, 65)}
      <y>424</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1369</x>
+     <x>1049</x>
      <y>425</y>
     </hint>
    </hints>
@@ -2714,8 +2757,56 @@ background-color: rgb(76, 120, 65)}
      <y>306</y>
     </hint>
     <hint type="destinationlabel">
-     <x>-67</x>
+     <x>0</x>
      <y>305</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>radioButton</sender>
+   <signal>clicked(bool)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>OffMode(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>718</x>
+     <y>776</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>577</x>
+     <y>896</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>Nframe(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>879</x>
+     <y>756</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1150</x>
+     <y>780</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>sliderMoved(int)</signal>
+   <receiver>spinBox_Nframe</receiver>
+   <slot>setValue(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>858</x>
+     <y>764</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>856</x>
+     <y>699</y>
     </hint>
    </hints>
   </connection>
@@ -2746,5 +2837,7 @@ background-color: rgb(76, 120, 65)}
   <slot>SetLT(QString)</slot>
   <slot>timeLapse()</slot>
   <slot>readRec()</slot>
+  <slot>OffMode(bool)</slot>
+  <slot>Nframe(int)</slot>
  </slots>
 </ui>

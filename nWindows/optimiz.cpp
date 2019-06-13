@@ -9,10 +9,10 @@ void OPT::optSingleF(const OBJ::Joints &joints)
 {
 #pragma region Pelvis Opt
 
-	vec hipLeft_local = OPT::subtract(joints[OBJ::JointType_HipLeft], joints[OBJ::JointType_SpineMid]);
-	vec hipRight_local = OPT::subtract(joints[OBJ::JointType_HipRight], joints[OBJ::JointType_SpineMid]);
-	vec shoulderLeft_local = OPT::subtract(joints[OBJ::JointType_ShoulderLeft], joints[OBJ::JointType_SpineMid]);
-	vec shoulderRight_local = OPT::subtract(joints[OBJ::JointType_ShoulderRight], joints[OBJ::JointType_SpineMid]);
+	vec hipLeft_local = OPT::subtract(joints[JointType_HipLeft], joints[JointType_SpineMid]);
+	vec hipRight_local = OPT::subtract(joints[JointType_HipRight], joints[JointType_SpineMid]);
+	vec shoulderLeft_local = OPT::subtract(joints[JointType_ShoulderLeft], joints[JointType_SpineMid]);
+	vec shoulderRight_local = OPT::subtract(joints[JointType_ShoulderRight], joints[JointType_SpineMid]);
 
 	column_vector  pelvis_OptVar = {
 		hipLeft_local.x(), hipLeft_local.y(), hipLeft_local.z(),
@@ -31,8 +31,8 @@ void OPT::optSingleF(const OBJ::Joints &joints)
 	
 #pragma region Leg_left opt
 
-	vec kneeLeft_local = OPT::subtract(joints[OBJ::JointType_KneeLeft], joints[OBJ::JointType_HipLeft]);
-	vec ankleLeft_local = OPT::subtract(joints[OBJ::JointType_AnkleLeft], joints[OBJ::JointType_HipLeft]);
+	vec kneeLeft_local = OPT::subtract(joints[JointType_KneeLeft], joints[JointType_HipLeft]);
+	vec ankleLeft_local = OPT::subtract(joints[JointType_AnkleLeft], joints[JointType_HipLeft]);
 	
 	column_vector  Leg_left_OptVar = {
 		kneeLeft_local.x(), kneeLeft_local.y(), kneeLeft_local.z(),
@@ -49,8 +49,8 @@ void OPT::optSingleF(const OBJ::Joints &joints)
 
 #pragma region Leg_right opt
 
-	vec kneeRight_local = OPT::subtract(joints[OBJ::JointType_KneeRight], joints[OBJ::JointType_HipRight]);
-	vec ankleRight_local = OPT::subtract(joints[OBJ::JointType_AnkleRight], joints[OBJ::JointType_HipLeft]);
+	vec kneeRight_local = OPT::subtract(joints[JointType_KneeRight], joints[JointType_HipRight]);
+	vec ankleRight_local = OPT::subtract(joints[JointType_AnkleRight], joints[JointType_HipLeft]);
 
 	column_vector  Leg_right_OptVar = {
 		kneeRight_local.x(), kneeRight_local.y(), kneeRight_local.z(),
@@ -85,7 +85,7 @@ double OPT::cfun_Trunk(const column_vector &x)
 	
 	double _length = OPT::norm(_a.cross(_b)) / 2.0 ;
 	double length = p_optParameters->SegL[OBJ::SegType_Pelvis];
-	double err = (_length - length)*(_length - length)+;
+	double err = (_length - length)*(_length - length);
 
 	return err;
 }

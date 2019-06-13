@@ -59,6 +59,7 @@
 #include <io.h>
 #include <direct.h>
 
+//设定是否打印更多Debug资讯，
 //#define _Debug
 
 #ifdef _Debug
@@ -91,31 +92,17 @@ public:
 	void creatFiles(QString trailName, QString path);
 	//Update
 	void updateJoints(Joint jointdate[JointType_Count]);
-	//522
-	//void updateOrientations(JointOrientation Orientdata[JointType_Count]);
 	void updateSegCOM(std::array<Eigen::Vector3f, 13>& segCOMdata);
 	//void updateJointAngles(std::array<float, 9>& JointAngleData);
 	//输出关节位置
-	std::array<Joint,25> jointPositions();
-	//522
-	//输出关节旋转（四元数）
-	//std::vector<JointOrientation> JointOrientations();
+	OBJ::Joints jointPositions();
 	//输出segCOM位置
 	std::array<Eigen::Vector3f,13> segCOMs();
-	//522
-	//输出4个单自由度关节角度
-	//std::array<float, 9> JointAngles();
-	//输出cali角度的资讯
-	//OBJ::JointAngles caliAngle;
 	//设定幁率
 	int framerate{25};
 	//设定文件头
 	void setfilehead();
 	void closefile();
-	//把四元数的文档转换成关节角度的文档
-	//void Orient2angelFile();
-	//522
-	//void CalSubcaliAngle();
 private:
 	SubjInfo m_subjinfo;
 	//char* m_subName ;
@@ -124,12 +111,9 @@ private:
 	std::ofstream jointsPositionfile;
 	std::ofstream jointsOrientfile;
 	std::ofstream jointsAnglefile;
-	std::array<Joint,25> jointPosition_saved;
-	//522
-	//std::vector<JointOrientation> JointOrientation_saved;
+	OBJ::Joints jointPosition_saved;
 	std::array<Eigen::Vector3f,13> segCOM_saved;
-	//522
-	//std::array<float, 9> JointAngle_saved;
+
 	QTime fileTimeRec;
 	
 	//线程管理
@@ -147,4 +131,7 @@ public:
 
 	//把obj中的内容转到csv文件
 	void writeTrialAngle(OBJ::Obj &obj);
+	void writeMoment(OBJ::Obj &obj);
+	//把Kinect的Joint数据转为自己的OBJ::Joint
+	OBJ::Joint KinectJ_2_ObjJ(const Joint &joint);
 };

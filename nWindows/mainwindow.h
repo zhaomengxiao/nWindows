@@ -99,7 +99,7 @@ private://**私有成员变量**
 	QTreeWidgetItem * root;
 	QString rootPath;
 public:
-	int drawVTKscene();   //绘制3d场景
+	//int drawVTKscene();   //绘制3d场景
 private://**私有函数**
 	//界面
 	void createAction();   //创建动作
@@ -129,6 +129,8 @@ private slots:
 	void LineEdit_subjName(QString str);
 	void bagSelect(bool);
 	void SimpleMode(bool);
+	void OffMode(bool);
+	void Nframe(int i);
 	void SetCD(int t);
 	void ResetCD();
 	void SetLT(QString str);

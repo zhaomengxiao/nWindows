@@ -8,6 +8,7 @@ QImage  Mat2QImage(cv::Mat cvImg);
 //===============================
 extern FileREC *pSender ;
 extern OBJ::CaliInfo *p_optParameters;
+extern OBJ::Obj *p_obj;
 extern int jointSelected;
 extern float force;
 extern float bodyWeight;
@@ -15,8 +16,10 @@ extern float bagX;
 extern float bagY;
 extern float bagZ;
 extern bool bag;
-
+extern bool isOffMode;
+extern int n_frame;//传出滑动条的数值控制三维绘制第几帧
 bool isSimpleMode{ false };
+
 //bool isTimeLapseMode{ false };
 char* subjName = new char[20];
 QString qsubjname{"null"};
@@ -166,11 +169,11 @@ void MainWindow::connectSignalSlot()
 	connect(pSender, SIGNAL(ReadFileProgress(int)), this, SLOT(readFileProgress(int)));
 }
 
-int MainWindow::drawVTKscene()
-{
-
-	return 0;
-}
+//int MainWindow::drawVTKscene()
+//{
+//
+//	return 0;
+//}
 
 
 
@@ -216,10 +219,7 @@ void MainWindow::fileOpenImage_clicked()
 		QImage qImage = Mat2QImage(image);
 
 		ui.colorwindow->setPixmap(QPixmap::fromImage(qImage));
-
-	}
-		
-		
+	}				
 }
 
 //功能2.从文件夹选择视频打开
@@ -287,8 +287,6 @@ void MainWindow::fileOpenVedio_clicked()
 	myCamera->openCamera(); // 打开摄像头，从摄像头中获取视频
 	myCamera->createStream();//打开视频流
 	videotimer->start(30);// 开始计时，超时则发出timeout()信号
-	
-
 }
 //功能4.显示骨骼
 void MainWindow::showSkeleton_clicked()
@@ -304,13 +302,6 @@ void MainWindow::showSkeleton_clicked()
 		std::cout << "kinect initialization failed!" << std::endl;
 		system("pause");
 	}
-	
-	
-	
-
-	
-
-
 }
 //更新视频帧
 void MainWindow::updateVideoFrame()
@@ -337,9 +328,7 @@ void MainWindow::updateSkeletonFrame()
 	{
 		//把资料传到fierec类中储存并进行后续处理
 		pSender->updateJoints(mykinect->joints);
-		//pSender->updateOrientations (mykinect->JointOrientations);
-		pSender->updateSegCOM(mykinect->segCOMs);
-		//pSender->updateJointAngles(mykinect->JointAngles);
+		pSender->updateSegCOM(mykinect->segCOMs);	
 	}
 }
 
@@ -385,6 +374,7 @@ void MainWindow::on_saveImageButton_clicked()
 	//std::string imagepath = tmp.toStdString().data();
 	cv::imwrite("E:/backremoved.png", backmoveimage);
 }
+
 //绘制曲线图
 //void MainWindow::on_pushButton_openrecord_clicked()
 //{
@@ -554,10 +544,10 @@ void MainWindow::on_saveImageButton_clicked()
 //	ui.chartscrollArea_3->setWidget(mychartview_z);
 //}
 //从列表选择想要查看的关节
+
 void MainWindow::ListCurChange(int row)
 {
-	qDebug() << row << endl;
-	
+	Dbg(row);
 	if (mykinect != NULL) {
 		mykinect->jointnumber = row;
 		jointSelected = row;
@@ -568,37 +558,32 @@ void MainWindow::ListCurChange(int row)
 //面板输入数据
 void MainWindow::LineEdit_f(QString str)
 {
-	qDebug() << str << endl;
-	
+	Dbg(str);
 	force = str.toFloat();
 }
 void MainWindow::LineEdit_bodyWeight(QString str)
 {
-	qDebug() << str << endl;
-
+	Dbg(str);
 	bodyWeight = str.toFloat();
 }
 void MainWindow::LineEdit_bagX(QString str)
 {
-	qDebug() << str << endl;
-
+	Dbg(str);
 	bagX = str.toFloat();
 }
 void MainWindow::LineEdit_bagY(QString str)
 {
-	qDebug() << str << endl;
-
+	Dbg(str);
 	bagY = str.toFloat();
 }
 void MainWindow::LineEdit_bagZ(QString str)
 {
-	qDebug() << str << endl;
-
+	Dbg(str);
 	bagZ = - str.toFloat();
 }
 void MainWindow::bagSelect(bool i)
 {
-	qDebug() << i << endl;
+	Dbg(i);
 	bag = i;
 }
 
@@ -606,6 +591,19 @@ void MainWindow::SimpleMode(bool i)
 {
 	isSimpleMode = i;
 	qDebug() << "SimpleMode: " << isSimpleMode << endl;
+}
+
+void MainWindow::OffMode(bool i)
+{
+	isOffMode = i;
+	qDebug() << "OfflineMode: " << isOffMode << endl;
+}
+
+void MainWindow::Nframe(int i)
+{
+	n_frame = i;
+	Dbg("N frame drawed: ");
+	Dbg(n_frame);
 }
 
 void MainWindow::SetCD(int t)
@@ -688,6 +686,7 @@ void MainWindow::newTrail()
 	pSender->setfilehead();
 	qDebug() << "New Trail Created" << endl;
 	ui.statusBar->showMessage("New Trail Created", 2000);
+	QMessageBox::information(this, "Trail Manager", "New Trail Created");
 }
 
 
@@ -949,31 +948,64 @@ void MainWindow::readRec()
 { 
 	if (ui.lineEdit_rtn->text().contains("_Position.csv"))
 	{
-		OBJ::Obj obj;
+		//OBJ::Obj obj;
 		QString filepath = ".\\Record\\" + ui.lineEdit_rdate->text() + "\\" + ui.lineEdit_rsubjn->text() + "\\";
 		//obj.setFilePath(".\\Record\\2019-04-26\\ivan\\");
-		obj.setFilePath(filepath);
+		p_obj->setFilePath(filepath);
 		QString tfn = ui.lineEdit_rtn->text();
 		QString tn = tfn.left(tfn.length() - 13); //从后面查找"/"位置
 		//QString tn = m_FilePath.right(m_FilePath.length() - first - 1); //从右边截取
-		obj.addtrail(tn);
+		p_obj->addtrail(tn);
 
 
 		//显示trail读取进度
 		ui.progressBar_tl->setValue(0);
-		ui.progressBar_tl->setRange(0, obj.m_nFrames); //还未读取到帧数，需要修正
+		ui.progressBar_tl->setRange(0, p_obj->getFrameNumber()); //还未读取到帧数，需要修正
 		ui.progressBar_tl->show();
 
-		pSender->readSubjInfo(obj);
-		pSender->readCali(obj);
+		pSender->readSubjInfo(*p_obj);
+		pSender->readCali(*p_obj);
+		//读取Position.csv
+		pSender->readTrail(*p_obj);
+		//设定滑动条范围用于预览
+		ui.horizontalSlider->setRange(0, p_obj->getFrameNumber() - 1);
+		ui.spinBox_Nframe->setRange(0, p_obj->getFrameNumber() - 1);
 
+		//写出Angles.csv和moment
+		pSender->writeTrialAngle(*p_obj);
+		p_obj->calcSpinebaseFMwithBag();
+		pSender->writeMoment(*p_obj);
+		
+		////opt
+		//p_optParameters = &(p_obj->getCaliInfo());
+		//OPT::optSingleF(p_obj->getJoints()[0]);
 
-		pSender->readTrail(obj);
-		pSender->writeTrialAngle(obj);
+		////coord
+		//OBJ::coordSys coordtrunk;
+		//coordtrunk = p_obj->calCoordupTunkR(p_obj->getJoints()[0]);
+		//coordtrunk.print();
+		////打印trunk位置
+		//std::cout << "trunk" << std::endl;
+		//std::cout << p_obj->getJoints()[0][JointType_ShoulderLeft].jointPosition << std::endl;
+		//std::cout << p_obj->getJoints()[0][JointType_ShoulderRight].jointPosition << std::endl;
+		//std::cout << p_obj->getJoints()[0][JointType_SpineMid].jointPosition << std::endl;
+		//std::cout << "trunk t" << std::endl;
+		//std::cout << p_obj->Pg2l(p_obj->getJoints()[0][JointType_ShoulderLeft], coordtrunk) << std::endl;
+		//std::cout << p_obj->Pg2l(p_obj->getJoints()[0][JointType_ShoulderRight], coordtrunk) << std::endl;
+		//std::cout << p_obj->Pg2l(p_obj->getJoints()[0][JointType_SpineMid], coordtrunk) << std::endl;
 
-		//opt
-		p_optParameters = &obj.getCaliInfo();
-		OPT::optSingleF(obj.getJoints()[0]);
+		////打印bag位置
+		//Eigen::Vector3f Pbag{0,0.2,0};
+		//Eigen::Vector3f Pbaglocal = p_obj->getJoints()[0][JointType_SpineMid].Pg2l(coordtrunk) + Pbag;
+		//Eigen::Vector3f PbagG = p_obj->Pl2g(Pbaglocal, coordtrunk);
+		//std::cout << "bag position" << std::endl;
+		//std::cout << PbagG << std::endl;
+		//////打印pelvis
+		//std::cout << "Pelvis" << std::endl;
+		//std::cout << p_obj->getJoints()[0][JointType_HipLeft].jointPosition << std::endl;
+		//std::cout << p_obj->getJoints()[0][JointType_HipRight].jointPosition << std::endl;
+		//std::cout << p_obj->getJoints()[0][JointType_SpineMid].jointPosition << std::endl;
+
 		//ui提示
 		ui.statusBar->showMessage("Reconstruct Success", 2000);
 		QMessageBox::information(this, "Reconstruct", "Reconstruct Success~");

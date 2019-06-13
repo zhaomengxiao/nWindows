@@ -1,22 +1,7 @@
 #include "mainwindow.h"
-//#include "ui_MainWindow.h"
 #include "imagewindow.h"
-//#include <QtWidgets/QApplication>
-//#include <QTextCodec>
-//#include <thread>
-//#include <array>
 
-//#include "vtkshape.h"
 
-//from extern 
-//FileREC *pSender = new FileREC();
-//int jointSelected;
-//float force ;
-//float bodyWeight;
-//float bagX ;
-//float bagY ;
-//float bagZ ;
-//bool bag ;
 
 //extern
 extern float F_spinebase;

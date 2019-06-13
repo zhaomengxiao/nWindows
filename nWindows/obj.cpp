@@ -4,21 +4,21 @@
 using namespace OBJ;
 
 //Joint
-Joint::Joint()
+OBJ::Joint::Joint()
 {
 }
 
-Joint::~Joint()
+OBJ::Joint::~Joint()
 {
 }
-Joint::Joint(JointType jt, float x, float y, float z, TrackingState ts)
+OBJ::Joint::Joint(JointType jt, float x, float y, float z, TrackingState ts)
 {
 	jointType = jt;
 	jointPosition<< x,y,z;
 	trackingState = ts;
 }
 
-void Joint::print()
+void OBJ::Joint::print()
 {
 	std::cout << jointType << "  ,  " << trackingState << "  ,  " << std::endl;
 	std::cout << jointPosition << std::endl;
@@ -28,6 +28,13 @@ std::array<float, 3> OBJ::Joint::subtract(const OBJ::Joint & r)
 {
 	std::array<float, 3> res{ this->jointPosition.x() - r.jointPosition.x(), this->jointPosition.y() - r.jointPosition.y(), this->jointPosition.z() - r.jointPosition.z() };
 	return res;
+}
+
+Eigen::Vector3f OBJ::Joint::Pg2l(const coordSys & lcoord)
+{
+	Eigen::Vector3f pointG = this->jointPosition;
+	Eigen::Vector3f pointL = (lcoord.R).transpose()*(pointG - lcoord.V);
+	return pointL;
 }
 
 //Segment
@@ -40,13 +47,14 @@ Segment::~Segment()
 {
 }
 
-Segment::Segment(const Joint& jp,const Joint& jd, SegType st)
+Segment::Segment(const OBJ::Joint& jp,const OBJ::Joint& jd,const SegType& st, const SubjInfo & subjinfo)
 {
+	
 	Jproximal = jp;
 	Jdistal = jd;
 	
 	SegmentType = st;
-	
+	//设定trackingState
 	if (jp.trackingState == 2 && jd.trackingState == 2)
 	{
 		trackingState = TrackingState(2);
@@ -59,49 +67,235 @@ Segment::Segment(const Joint& jp,const Joint& jd, SegType st)
 	{
 		trackingState = TrackingState(1);
 	}
-
+	//设定肢段质量mass(kg)
+	float w = subjinfo.weight;
+	switch (SegmentType)
+	{
+	case SegType_LeftThigh://thigh
+		mass = w*0.1;
+		break;
+	case SegType_RightThigh://thigh
+		mass = w * 0.1;
+		break;
+	case SegType_LeftShank://shank
+		mass = w * 0.0465;
+		break;
+	case SegType_RightShank://shank
+		mass = w * 0.0465;
+		break;
+	case SegType_LeftFoot://foot
+		mass = w * 0.0145;
+		break;
+	case SegType_RightFoot://foot
+		mass = w * 0.0145;
+		break;
+	case SegType_LeftUpperArm://Upper arm
+		mass = w * 0.028;
+		break;
+	case SegType_RightUpperArm://Upper arm
+		mass = w * 0.028;
+		break;
+	case SegType_LeftForArmHand://forearm and hand
+		mass = w * 0.022;
+		break;
+	case SegType_RightForArmHand://forearm and hand
+		mass = w * 0.022;
+		break;
+	case SegType_Pelvis://Pelvis
+		mass = w * 0.142;
+		break;
+	case SegType_ThoraxAbdomen://Thorax and abdomen
+		mass = w * 0.355;
+		break;
+	case SegType_HeadNeck://Head and neck
+		mass = w * 0.081;
+		break;
+	default:
+		break;
+	}
+	//设定肢段长度length(cm)
+	/*length = sqrt(pow((Jdistal.jointPosition.x() - Jproximal.jointPosition.x()), 2) + pow((Jdistal.jointPosition.y() - Jproximal.jointPosition.y()), 2)
+		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2))*100.0;*/
+	length = (Jdistal.jointPosition - Jproximal.jointPosition).norm()*100;
 }
 
-void Segment::calSegCOM(Eigen::Vector3f &segcom,const Joint &jointP,const Joint &jointD, const int &segNum)
+OBJ::Segment::Segment(const Joint & jp, const Joint & jd, const SegType & st)
+{
+	Jproximal = jp;
+	Jdistal = jd;
+
+	SegmentType = st;
+	//设定trackingState
+	if (jp.trackingState == 2 && jd.trackingState == 2)
+	{
+		trackingState = TrackingState(2);
+	}
+	else if (jp.trackingState == 0 && jd.trackingState == 0)
+	{
+		trackingState = TrackingState(0);
+	}
+	else
+	{
+		trackingState = TrackingState(1);
+	}
+	//设定肢段长度length(cm)
+	/*length = sqrt(pow((Jdistal.jointPosition.x() - Jproximal.jointPosition.x()), 2) + pow((Jdistal.jointPosition.y() - Jproximal.jointPosition.y()), 2)
+		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2))*100.0;*/
+	length = (Jdistal.jointPosition - Jproximal.jointPosition).norm() * 100;
+	//设定COM
+	Eigen::Vector3f coordP{ Jproximal.jointPosition };
+	Eigen::Vector3f coordD{ Jdistal.jointPosition };
+	switch (SegmentType)
+	{
+	case SegType_LeftThigh://thigh
+		segcom = coordP + (coordD - coordP)* 0.433;
+		break;
+	case SegType_RightThigh://thigh
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case SegType_LeftShank://shank
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case SegType_RightShank://shank
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case SegType_LeftFoot://foot
+		segcom = coordP + (coordD - coordP) * 0.5;
+		break;
+	case SegType_RightFoot://foot
+		segcom = coordP + (coordD - coordP) * 0.5;
+		break;
+	case SegType_LeftUpperArm://Upper arm
+		segcom = coordP + (coordD - coordP) * 0.436;
+		break;
+	case SegType_RightUpperArm://Upper arm
+		segcom = coordP + (coordD - coordP) * 0.436;
+		break;
+	case SegType_LeftForArmHand://forearm and hand
+		segcom = coordP + (coordD - coordP) * 0.682;
+		break;
+	case SegType_RightForArmHand://forearm and hand
+		segcom = coordP + (coordD - coordP) * 0.682;
+		break;
+	case SegType_Pelvis://Pelvis
+		segcom = coordP + (coordD - coordP) * 0.105;
+		break;
+	case SegType_ThoraxAbdomen://Thorax and abdomen
+		segcom = coordP + (coordD - coordP) * 0.63;
+		break;
+	case SegType_HeadNeck://Head and neck
+		segcom = coordP + (coordD - coordP) * 1.0;
+		break;
+	default:
+		break;
+	}
+}
+
+void Segment::calSegCOM()
 {
 	
-	//Eigen::Vector3f coordP(jointP.Position.X, jointP.Position.Y, jointP.Position.Z);
-	//Eigen::Vector3f coordD(jointD.Position.X, jointD.Position.Y, jointD.Position.Z);
-	//switch (segNum)
-	//{
-	//case 0://thigh
-	//	segcom = coordP + (coordD - coordP)* 0.433;
-	//	break;
-	//case 1://shank
-	//	segcom = coordP + (coordD - coordP) * 0.433;
-	//	break;
-	//case 2://foot
-	//	segcom = coordP + (coordD - coordP) * 0.5;
-	//	break;
-	//case 3://Upper arm
-	//	segcom = coordP + (coordD - coordP) * 0.436;
-	//	break;
-	//case 4://forearm and hand
-	//	segcom = coordP + (coordD - coordP) * 0.682;
-	//	break;
-	//case 5://Pelvis
-	//	segcom = coordP + (coordD - coordP) * 0.105;
-	//	break;
-	//case 6://Thorax and abdomen
-	//	segcom = coordP + (coordD - coordP) * 0.63;
-	//	break;
-	//case 7://Head and neck
-	//	segcom = coordP + (coordD - coordP) * 1.0;
-	//	break;
-	//default:
-	//	break;
-	//}
+	Eigen::Vector3f coordP{ Jproximal.jointPosition };
+	Eigen::Vector3f coordD{ Jdistal.jointPosition };
+	switch (SegmentType)
+	{
+	case SegType_LeftThigh://thigh
+		segcom = coordP + (coordD - coordP)* 0.433;
+		break;
+	case SegType_RightThigh://thigh
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case SegType_LeftShank://shank
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case SegType_RightShank://shank
+		segcom = coordP + (coordD - coordP) * 0.433;
+		break;
+	case SegType_LeftFoot://foot
+		segcom = coordP + (coordD - coordP) * 0.5;
+		break;
+	case SegType_RightFoot://foot
+		segcom = coordP + (coordD - coordP) * 0.5;
+		break;
+	case SegType_LeftUpperArm://Upper arm
+		segcom = coordP + (coordD - coordP) * 0.436;
+		break;
+	case SegType_RightUpperArm://Upper arm
+		segcom = coordP + (coordD - coordP) * 0.436;
+		break;
+	case SegType_LeftForArmHand://forearm and hand
+		segcom = coordP + (coordD - coordP) * 0.682;
+		break;
+	case SegType_RightForArmHand://forearm and hand
+		segcom = coordP + (coordD - coordP) * 0.682;
+		break;
+	case SegType_Pelvis://Pelvis
+		segcom = coordP + (coordD - coordP) * 0.105;
+		break;
+	case SegType_ThoraxAbdomen://Thorax and abdomen
+		segcom = coordP + (coordD - coordP) * 0.63;
+		break;
+	case SegType_HeadNeck://Head and neck
+		segcom = coordP + (coordD - coordP) * 1.0;
+		break;
+	default:
+		break;
+	}
 }
 
 void OBJ::Segment::calSegL()
 {
 	length = sqrt(pow((Jdistal.jointPosition.x() - Jproximal.jointPosition.x()), 2) + pow((Jdistal.jointPosition.y() - Jproximal.jointPosition.y()), 2)
 		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2))*100.0;
+}
+
+void OBJ::Segment::calSegMass(const SubjInfo & subjinfo)
+{
+	//设定肢段质量m(kg)
+	float w = subjinfo.weight;
+	switch (SegmentType)
+	{
+	case SegType_LeftThigh://thigh
+		mass = w * 0.1;
+		break;
+	case SegType_RightThigh://thigh
+		mass = w * 0.1;
+		break;
+	case SegType_LeftShank://shank
+		mass = w * 0.0465;
+		break;
+	case  SegType_RightShank://shank
+		mass = w * 0.0465;
+		break;
+	case SegType_LeftFoot://foot
+		mass = w * 0.0145;
+		break;
+	case SegType_RightFoot://foot
+		mass = w * 0.0145;
+		break;
+	case SegType_LeftUpperArm://Upper arm
+		mass = w * 0.028;
+		break;
+	case SegType_RightUpperArm://Upper arm
+		mass = w * 0.028;
+		break;
+	case SegType_LeftForArmHand://forearm and hand
+		mass = w * 0.022;
+		break;
+	case SegType_RightForArmHand://forearm and hand
+		mass = w * 0.022;
+		break;
+	case SegType_Pelvis://Pelvis
+		mass = w * 0.142;
+		break;
+	case SegType_ThoraxAbdomen://Thorax and abdomen
+		mass = w * 0.355;
+		break;
+	case SegType_HeadNeck://Head and neck
+		mass = w * 0.081;
+		break;
+	default:
+		break;
+	}
 }
 
 
@@ -212,6 +406,7 @@ void OBJ::Obj::addtrail(QString trailname)
 {
 	path_trail = path_ford + trailname + "_Position.csv";
 	path_angle = path_ford + trailname + "_Angles.csv";
+	path_moment = path_ford + trailname + "_Moment.csv";
 }
 
 float OBJ::Obj::calJointAngle(const Segment &sP,const Segment &sD)
@@ -265,6 +460,39 @@ std::vector<JointAngles> OBJ::Obj::calAllJointAngles(const std::vector<Segs>& fr
 		op.push_back(calAllJointAngles(segments));
 	}
 	return op;
+}
+
+coordSys OBJ::Obj::calCoordupTunkR(const Joints &joints)
+{
+	Eigen::Vector3f pShoulderR = joints[JointType_ShoulderRight].jointPosition;
+	Eigen::Vector3f pShoulderL = joints[JointType_ShoulderLeft].jointPosition;
+	Eigen::Vector3f pSpineMid = joints[JointType_SpineMid].jointPosition;
+	
+	coordSys UpTkcoord;
+	UpTkcoord.axis_x = (pShoulderR - pShoulderL) / (pShoulderR - pShoulderL).norm();
+	UpTkcoord.axis_y = UpTkcoord.axis_x.cross(pShoulderR - pSpineMid) / UpTkcoord.axis_x.cross(pShoulderR - pSpineMid).norm();
+	UpTkcoord.axis_z = UpTkcoord.axis_x.cross(UpTkcoord.axis_y);
+	Eigen::Matrix3f rot;
+	Eigen::Vector3f vec;
+	rot << UpTkcoord.axis_x, UpTkcoord.axis_y, UpTkcoord.axis_z;
+	vec << pShoulderR;
+	UpTkcoord.R = rot;
+	UpTkcoord.V = vec;
+
+	return UpTkcoord;
+}
+
+Eigen::Vector3f OBJ::Obj::Pg2l(const Joint & Pg, const coordSys & lcoord)
+{
+	Eigen::Vector3f pointG = Pg.jointPosition;
+	Eigen::Vector3f pointL = (lcoord.R).transpose()*(pointG - lcoord.V);
+	return pointL;
+}
+
+Eigen::Vector3f OBJ::Obj::Pl2g(Eigen::Vector3f Pl, const coordSys & lcoord)
+{
+	Eigen::Vector3f pointG = lcoord.R*Pl + lcoord.V;
+	return pointG;
 }
 
 void OBJ::Obj::cali()
@@ -335,6 +563,42 @@ void OBJ::Obj::calTrailJointAngle()
 	m_2dJointAngles = calAllJointAngles(m_framesS);
 }
 
+//计算脊椎关节受力和力矩
+void OBJ::Obj::calcSpinebaseFMwithBag()
+{
+	m_fp_g.clear();
+	m_fp_g.reserve(m_nFrames);
+	m_moments.clear();
+	m_moments.reserve(m_nFrames);
+	for (int i = 0; i < m_nFrames; i++)
+	{
+		float F_spinebase = m_subjInfo.weight * (0.081 + 0.142 + 0.355 + 0.028 * 2 + 0.022 * 2)*9.8 + m_subjInfo.bagWeight * 9.8;
+		OBJ::coordSys coordtrunk;
+		coordtrunk =calCoordupTunkR(m_framesJ[i]);
+		Eigen::Vector3f thigh_M(0, -0.1*9.8 *m_subjInfo.weight, 0), shank_M(0, -0.0465*9.8 *m_subjInfo.weight, 0), foot_M(0, -0.0145*9.8 *m_subjInfo.weight, 0),
+			upperArm_M(0, -0.028 *9.8 *m_subjInfo.weight, 0), fArmhand_M(0, -0.022*9.8 *m_subjInfo.weight, 0), Pelvis_M(0, -0.142*9.8 *m_subjInfo.weight, 0), ThoraxAbdomen_M(0, -0.355*9.8 *m_subjInfo.weight, 0),
+			Headneck_M(0, -0.081*9.8 *m_subjInfo.weight, 0);
+
+		// 计算bag位置
+		Eigen::Vector3f Pbag{ m_subjInfo.bagPosi };//從subjinfo输入
+		Eigen::Vector3f Pbaglocal = m_framesJ[i][JointType_SpineMid].Pg2l(coordtrunk) + Pbag;
+		Eigen::Vector3f PbagG = Pl2g(Pbaglocal, coordtrunk);
+		
+
+		Eigen::Vector3f vforce(0, -m_subjInfo.bagWeight * 9.8,0);//bagweight:KG
+		Eigen::Vector3f spinebaseXYZ = m_framesJ[i][JointType_SpineBase].jointPosition;
+		Eigen::Vector3f M_spinebase = ((m_framesS[i][SegType_LeftUpperArm].segcom - spinebaseXYZ).cross(upperArm_M) 
+			+ (m_framesS[i][SegType_RightUpperArm].segcom - spinebaseXYZ).cross(upperArm_M)
+			+ (m_framesS[i][SegType_LeftForArmHand].segcom - spinebaseXYZ).cross(fArmhand_M) 
+			+ (m_framesS[i][SegType_RightForArmHand].segcom - spinebaseXYZ).cross(fArmhand_M)
+			+ (m_framesS[i][SegType_ThoraxAbdomen].segcom - spinebaseXYZ).cross(ThoraxAbdomen_M)
+			+ (m_framesS[i][SegType_HeadNeck].segcom - spinebaseXYZ).cross(Headneck_M)) 
+			+ (PbagG - spinebaseXYZ).cross(vforce);
+		m_fp_g.push_back(PbagG);
+		m_moments.push_back(M_spinebase);
+	}
+}
+
 SubjInfo OBJ::Obj::getSubjInfo()
 {
 	if (m_subjInfo.subjname =="null")
@@ -362,6 +626,31 @@ std::vector<Segs> OBJ::Obj::getSegments() const
 std::vector<JointAngles> OBJ::Obj::getJointAngles()
 {
 	return m_2dJointAngles;
+}
+
+std::vector<Eigen::Vector3f> OBJ::Obj::getMoments()
+{
+	return m_moments;
+}
+
+std::array<Eigen::Vector3f, 13> OBJ::Obj::getCOMs(const Segs & segs)
+{
+	std::array<Eigen::Vector3f, 13> coms;
+	for (int i = 0; i < 13; i++)
+	{
+		coms[i] = segs[i].segcom;
+	}
+	return coms;
+}
+
+int OBJ::Obj::getFrameNumber()
+{
+	return m_nFrames;
+}
+
+std::vector<Eigen::Vector3f> OBJ::Obj::getForcePosi()
+{
+	return m_fp_g;
 }
 
 void OBJ::Obj::setSubjInfo(SubjInfo & subjinfo)
@@ -434,4 +723,12 @@ void OBJ::cSegment::calSegL()
 		i = i * 100.0;
 	}
 	length = norm(cross(left_local, right_local)) / 2.0;
+}
+
+void OBJ::coordSys::print()
+{
+	std::cout << axis_x << std::endl;
+	std::cout << axis_y << std::endl;
+	std::cout << axis_z << std::endl;
+	std::cout << V << std::endl;
 }
