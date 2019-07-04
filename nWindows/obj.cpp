@@ -245,7 +245,7 @@ void Segment::calSegCOM()
 void OBJ::Segment::calSegL()
 {
 	length = sqrt(pow((Jdistal.jointPosition.x() - Jproximal.jointPosition.x()), 2) + pow((Jdistal.jointPosition.y() - Jproximal.jointPosition.y()), 2)
-		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2))*100.0;
+		+ pow((Jdistal.jointPosition.z() - Jproximal.jointPosition.z()), 2));
 }
 
 void OBJ::Segment::calSegMass(const SubjInfo & subjinfo)
@@ -323,9 +323,19 @@ void OBJ::Obj::setJoints(const std::vector<Joints> &frames_j)
 	m_framesJ = frames_j;
 }
 
+void OBJ::Obj::setJoints_filted(const std::vector<Joints>& frames_J_filted)
+{
+	m_framesJ_filted = frames_J_filted;
+}
+
 void OBJ::Obj::setSegments(const std::vector<Segs>& frames_S)
 {
 	m_framesS = frames_S;
+}
+
+void OBJ::Obj::setSegments_filted(const std::vector<Segs>& frames_S)
+{
+	m_framesS_filted = frames_S;
 }
 
 void OBJ::Obj::setJointAngles(std::vector<JointAngles>& frames_JA)
@@ -336,6 +346,16 @@ void OBJ::Obj::setJointAngles(std::vector<JointAngles>& frames_JA)
 void OBJ::Obj::setJointAngles(const std::vector<Segs> &frames_S)
 {
 	
+}
+
+void OBJ::Obj::setOptJoints(const std::vector<OptJoints>& frames_optJ)
+{
+	m_framesOptJ = frames_optJ;
+}
+
+void OBJ::Obj::setJoints_opted(const std::vector<Joints>& frames_J_opted)
+{
+	m_framesJ_opted = frames_J_opted;
 }
 
 
@@ -409,6 +429,7 @@ void OBJ::Obj::addtrail(QString trailname)
 	path_moment = path_ford + trailname + "_Moment.csv";
 }
 
+
 float OBJ::Obj::calJointAngle(const Segment &sP,const Segment &sD)
 {
 	
@@ -434,6 +455,18 @@ float OBJ::Obj::calJointAngle(const Segment &sP,const Segment &sD)
 
 	return theta;
 
+}
+
+float OBJ::Obj::calJointAngle(const Segment & seg, const coordSys & coord)
+{
+	Eigen::Vector3f pD_l = Pg2l(seg.Jdistal, coord);
+	Eigen::Vector3f pP_l = Pg2l(seg.Jproximal, coord);
+	Eigen::Vector3f vec1 = pD_l - pP_l;
+	Eigen::Vector3f vec2 = coord.axis_z;
+
+	float costheta = (vec1.dot(vec2)) / (vec1.norm()*vec2.norm());
+	float theta = RadianToDegree(acos(costheta));
+	return theta;
 }
 
 JointAngles OBJ::Obj::calAllJointAngles(const Segs &segments)
@@ -480,6 +513,26 @@ coordSys OBJ::Obj::calCoordupTunkR(const Joints &joints)
 	UpTkcoord.V = vec;
 
 	return UpTkcoord;
+}
+
+coordSys OBJ::Obj::calCoordPelvisR(const Joints & joints)
+{
+	Eigen::Vector3f pHipR = joints[JointType_HipRight].jointPosition;
+	Eigen::Vector3f pHipL = joints[JointType_HipLeft].jointPosition;
+	Eigen::Vector3f pSpineMid = joints[JointType_SpineMid].jointPosition;
+
+	coordSys PelvisCoord;
+	PelvisCoord.axis_x = (pHipR - pHipL) / (pHipR - pHipL).norm();
+	PelvisCoord.axis_y = PelvisCoord.axis_x.cross(pHipR - pSpineMid) / PelvisCoord.axis_x.cross(pHipR - pSpineMid).norm();
+	PelvisCoord.axis_z = PelvisCoord.axis_x.cross(PelvisCoord.axis_y);
+	Eigen::Matrix3f rot;
+	Eigen::Vector3f vec;
+	rot << PelvisCoord.axis_x, PelvisCoord.axis_y, PelvisCoord.axis_z;
+	vec << pHipR;
+	PelvisCoord.R = rot;
+	PelvisCoord.V = vec;
+
+	return PelvisCoord;
 }
 
 Eigen::Vector3f OBJ::Obj::Pg2l(const Joint & Pg, const coordSys & lcoord)
@@ -563,6 +616,33 @@ void OBJ::Obj::calTrailJointAngle()
 	m_2dJointAngles = calAllJointAngles(m_framesS);
 }
 
+
+
+void OBJ::Obj::calJointAngles_filted()
+{
+	if (!m_framesS_filted.empty())
+	{
+		m_2dJointAngles_filted = calAllJointAngles(m_framesS_filted);
+	}
+	else
+	{
+		qDebug() << "no filted Seg frames" << endl;
+	}
+	
+}
+
+void OBJ::Obj::calJointAngles_opted()
+{
+	if (!m_framesS_filted.empty())
+	{
+		m_2dJointAngles_opted = calAllJointAngles(m_framesS_opted);
+	}
+	else
+	{
+		qDebug() << "no opted Seg frames" << endl;
+	}
+}
+
 //计算脊椎关节受力和力矩
 void OBJ::Obj::calcSpinebaseFMwithBag()
 {
@@ -608,7 +688,7 @@ SubjInfo OBJ::Obj::getSubjInfo()
 	return m_subjInfo;
 }
 
-CaliInfo OBJ::Obj::getCaliInfo()
+CaliInfo OBJ::Obj::getCaliInfo() const
 {
 	return m_caliInfo;
 }
@@ -618,14 +698,44 @@ std::vector<Joints> OBJ::Obj::getJoints() const
 	return m_framesJ;
 }
 
+std::vector<Joints> OBJ::Obj::getJoints_filted() const
+{
+	return m_framesJ_filted;
+}
+
+std::vector<Joints> OBJ::Obj::getJoints_opted() const
+{
+	return m_framesJ_opted;
+}
+
 std::vector<Segs> OBJ::Obj::getSegments() const
 {
 	return m_framesS;
 }
 
-std::vector<JointAngles> OBJ::Obj::getJointAngles()
+std::vector<Segs> OBJ::Obj::getSegments_filted() const
+{
+	return m_framesS_filted;
+}
+
+std::vector<Segs> OBJ::Obj::getSegments_opted() const
+{
+	return m_framesS_opted;
+}
+
+std::vector<JointAngles> OBJ::Obj::getJointAngles() const
 {
 	return m_2dJointAngles;
+}
+
+std::vector<JointAngles> OBJ::Obj::getJointAngles_filted() const
+{
+	return m_2dJointAngles_filted;
+}
+
+std::vector<JointAngles> OBJ::Obj::getJointAngles_opted() const
+{
+	return m_2dJointAngles_opted;
 }
 
 std::vector<Eigen::Vector3f> OBJ::Obj::getMoments()
@@ -643,7 +753,7 @@ std::array<Eigen::Vector3f, 13> OBJ::Obj::getCOMs(const Segs & segs)
 	return coms;
 }
 
-int OBJ::Obj::getFrameNumber()
+int OBJ::Obj::getFrameNumber()const
 {
 	return m_nFrames;
 }
@@ -651,6 +761,11 @@ int OBJ::Obj::getFrameNumber()
 std::vector<Eigen::Vector3f> OBJ::Obj::getForcePosi()
 {
 	return m_fp_g;
+}
+
+std::vector<OptJoints> OBJ::Obj::getOptJ() const
+{
+	return m_framesOptJ;
 }
 
 void OBJ::Obj::setSubjInfo(SubjInfo & subjinfo)
@@ -682,7 +797,7 @@ float norm(std::array<float, 3> v)
 	return sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2]);
 }
 
-double RadianToDegree(double angle)
+float RadianToDegree(float angle)
 {
 	return angle * (180.0 / PI);
 }
@@ -708,6 +823,8 @@ OBJ::cSegment::cSegment(const Joint & jp, const Joint & jd, const Joint & jl, co
 	{
 		trackingState = TrackingState(1);
 	}
+
+	calLocalCoord();
 }
 
 void OBJ::cSegment::calSegL()
@@ -723,6 +840,26 @@ void OBJ::cSegment::calSegL()
 		i = i * 100.0;
 	}
 	length = norm(cross(left_local, right_local)) / 2.0;
+}
+
+void OBJ::cSegment::calLocalCoord()
+{
+	Eigen::Vector3f pShoulderR = Jright.jointPosition;
+	Eigen::Vector3f pShoulderL = Jleft.jointPosition;
+	Eigen::Vector3f pSpineMid = Jproximal.jointPosition;
+
+	coordSys localCoord;
+	localCoord.axis_x = (pShoulderR - pShoulderL) / (pShoulderR - pShoulderL).norm();
+	localCoord.axis_y = localCoord.axis_x.cross(pShoulderR - pSpineMid) / localCoord.axis_x.cross(pShoulderR - pSpineMid).norm();
+	localCoord.axis_z = localCoord.axis_x.cross(localCoord.axis_y);
+	Eigen::Matrix3f rot;
+	Eigen::Vector3f vec;
+	rot << localCoord.axis_x, localCoord.axis_y, localCoord.axis_z;
+	vec << pShoulderR;
+	localCoord.R = rot;
+	localCoord.V = vec;
+
+	lcoord = localCoord;
 }
 
 void OBJ::coordSys::print()

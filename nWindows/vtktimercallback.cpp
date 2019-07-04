@@ -43,6 +43,9 @@ void vtkTimerCallback::Execute(vtkObject * caller, unsigned long eventId, void *
 
 	updateCOMPosition();
 
+	updateSegPosition();
+	updateCoords();
+	updateOptPosition();
 	//==test==
 	
 	if (isOffMode)
@@ -56,12 +59,16 @@ void vtkTimerCallback::Execute(vtkObject * caller, unsigned long eventId, void *
 			if (p_obj->getSegments().size() > 0)
 			{
 				updateCOMXYZ(p_obj->getCOMs(p_obj->getSegments()[n_frame]));
+				updateSegsXYZ(p_obj->getSegments()[n_frame]); //TODO:seg可以整合显示
 			}
 			if (p_obj->getForcePosi().size()>0 && p_obj->getSubjInfo().bag == true)
 			{
 				updateForceXYZ(p_obj->getForcePosi()[n_frame]);
 			}
-			
+			if (p_obj->getOptJ().size() > 0)
+			{
+				updateOptSegXYZ(p_obj->getOptJ()[n_frame]);
+			}
 		}
 			
 	}
@@ -114,6 +121,17 @@ void vtkTimerCallback::updateForceXYZ(const Eigen::Vector3f pf)
 	m_Pforce = pf;
 }
 
+void vtkTimerCallback::updateSegsXYZ(const OBJ::Segs & segs)
+{
+	m_Segs = segs;
+}
+
+void vtkTimerCallback::updateOptSegXYZ(const OBJ::OptJoints & optjoints)
+{
+	m_optJoints = optjoints;
+}
+
+
 
 void vtkTimerCallback::updatePosition()
 {
@@ -134,6 +152,126 @@ void vtkTimerCallback::updateCOMPosition()
 void vtkTimerCallback::updateForcePosition()
 {
 	actor_arrow->SetPosition(m_Pforce.x() * 1000, m_Pforce.y() * 1000, m_Pforce.z() * 1000);
+}
+
+void vtkTimerCallback::updateSegPosition()
+{
+	for (int i = 0; i < 13; i++)
+	{
+		
+		source_Segs[i]->SetPoint1(
+			m_Segs[i].Jdistal.jointPosition.x() * 1000,
+			m_Segs[i].Jdistal.jointPosition.y() * 1000,
+			m_Segs[i].Jdistal.jointPosition.z() * 1000
+		);
+		
+		source_Segs[i]->SetPoint2(
+			m_Segs[i].Jproximal.jointPosition.x() * 1000,
+			m_Segs[i].Jproximal.jointPosition.y() * 1000,
+			m_Segs[i].Jproximal.jointPosition.z() * 1000
+		);
+		source_Segs[i]->Update();
+
+	}
+}
+
+void vtkTimerCallback::updateCoords()
+{
+	for (int i = 0; i < 2; i++)
+	{
+
+		source_Coords_axisX[i]->SetPoint1(
+			m_Segs[10 + i].Jdistal.jointPosition.x() * 1000,
+			m_Segs[10 + i].Jdistal.jointPosition.y() * 1000,
+			m_Segs[10 + i].Jdistal.jointPosition.z() * 1000
+		);
+		source_Coords_axisX[i]->SetPoint2(
+			(m_Segs[10 + i].Jdistal.jointPosition.x() * 1000 + m_Segs[10+i].lcoord.axis_x.x() * 300) ,
+			(m_Segs[10 + i].Jdistal.jointPosition.y() * 1000 + m_Segs[10+i].lcoord.axis_x.y() * 300) ,
+			(m_Segs[10 + i].Jdistal.jointPosition.z() * 1000 + m_Segs[10+i].lcoord.axis_x.z() * 300)
+		);
+		source_Coords_axisX[i]->Update();
+
+		source_Coords_axisY[i]->SetPoint1(
+			m_Segs[10 + i].Jdistal.jointPosition.x() * 1000,
+			m_Segs[10+i].Jdistal.jointPosition.y() * 1000,
+			m_Segs[10+i].Jdistal.jointPosition.z() * 1000
+		);
+		source_Coords_axisY[i]->SetPoint2(
+			(m_Segs[10+i].Jdistal.jointPosition.x() * 1000 + m_Segs[10+i].lcoord.axis_y.x() * 300),
+			(m_Segs[10+i].Jdistal.jointPosition.y() * 1000 + m_Segs[10+i].lcoord.axis_y.y() * 300),
+			(m_Segs[10+i].Jdistal.jointPosition.z() * 1000 + m_Segs[10+i].lcoord.axis_y.z() * 300)
+		);
+		source_Coords_axisY[i]->Update();
+
+		source_Coords_axisZ[i]->SetPoint1(
+			m_Segs[10+i].Jdistal.jointPosition.x() * 1000,
+			m_Segs[10+i].Jdistal.jointPosition.y() * 1000,
+			m_Segs[10+i].Jdistal.jointPosition.z() * 1000
+		);
+		source_Coords_axisZ[i]->SetPoint2(
+			(m_Segs[10+i].Jdistal.jointPosition.x() * 1000 + m_Segs[10+i].lcoord.axis_z.x() * 300),
+			(m_Segs[10+i].Jdistal.jointPosition.y() * 1000 + m_Segs[10+i].lcoord.axis_z.y() * 300),
+			(m_Segs[10+i].Jdistal.jointPosition.z() * 1000 + m_Segs[10+i].lcoord.axis_z.z() * 300)
+		);
+		source_Coords_axisZ[i]->Update();
+
+	}
+}
+
+void vtkTimerCallback::updateOptPosition()
+{
+	source_OptSegs[0]->SetPoint1(
+		m_optJoints[0].x() * 1000,
+		m_optJoints[0].y() * 1000,
+		m_optJoints[0].z() * 1000
+	);
+
+	source_OptSegs[0]->SetPoint2(
+		m_optJoints[2].x() * 1000,
+		m_optJoints[2].y() * 1000,
+		m_optJoints[2].z() * 1000
+	);
+
+	source_OptSegs[1]->SetPoint1(
+		m_optJoints[2].x() * 1000,
+		m_optJoints[2].y() * 1000,
+		m_optJoints[2].z() * 1000
+	);
+
+	source_OptSegs[1]->SetPoint2(
+		m_optJoints[3].x() * 1000,
+		m_optJoints[3].y() * 1000,
+		m_optJoints[3].z() * 1000
+	);
+
+	source_OptSegs[2]->SetPoint1(
+		m_optJoints[1].x() * 1000,
+		m_optJoints[1].y() * 1000,
+		m_optJoints[1].z() * 1000
+	);
+
+	source_OptSegs[2]->SetPoint2(
+		m_optJoints[4].x() * 1000,
+		m_optJoints[4].y() * 1000,
+		m_optJoints[4].z() * 1000
+	);
+
+	source_OptSegs[3]->SetPoint1(
+		m_optJoints[4].x() * 1000,
+		m_optJoints[4].y() * 1000,
+		m_optJoints[4].z() * 1000
+	);
+
+	source_OptSegs[3]->SetPoint2(
+		m_optJoints[5].x() * 1000,
+		m_optJoints[5].y() * 1000,
+		m_optJoints[5].z() * 1000
+	);
+	source_Segs[0]->Update();
+	source_Segs[1]->Update();
+	source_Segs[2]->Update();
+	source_Segs[3]->Update();
 }
 
 

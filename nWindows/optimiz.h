@@ -9,15 +9,18 @@ namespace OPT{
 	typedef dlib::matrix<double, 0, 1> column_vector;
 
 	//执行对一帧的最佳化
-	void optSingleF(const OBJ::Joints &joints);
+	OBJ::OptJoints optSingleF(const OBJ::Obj &obj, int frameNum);
+	std::vector< OBJ::OptJoints> Optframes(const OBJ::Obj &obj);
 	//math
 	vec subtract(const OBJ::Joint &A, const OBJ::Joint &B);
 	double norm(vec v);
 	
 	//const func, 放入find_min中作为要最小化的目标函数
-	double cfun_Trunk(const column_vector &x);
+	/*double cfun_Trunk(const column_vector &x);
 	double cfun_Leg_L(const column_vector &x);
-	double cfun_Leg_R(const column_vector &x);
+	double cfun_Leg_R(const column_vector &x);*/
+
+	
 	vec subtract(const OBJ::Joint &A, const OBJ::Joint &B);
 }
 

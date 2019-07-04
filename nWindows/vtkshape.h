@@ -3,6 +3,7 @@
 #include <vtkSphereSource.h>
 #include <vtkCubeSource.h>
 #include <vtkArrowSource.h>
+#include <vtkLineSource.h>
 #include <vtkAxesActor.h>
 #include <vtkPolyData.h>
 #include <vtkSmartPointer.h>
@@ -26,57 +27,13 @@ namespace vtkShape {
 	class Arrow
 	{
 	public:
-		Arrow()
-		{
-			// Create a sphere
-			arrowSource =
-				vtkSmartPointer<vtkArrowSource>::New();
-			arrowSource->SetShaftRadius(0.05);
-			arrowSource->SetTipRadius(0.1);
-			arrowSource->SetTipLength(0.3);
-			arrowSource->SetInvert(1);
-
-
-			arrowSource->Update();
-
-
-			vtkSmartPointer<vtkPolyDataMapper> mapper =
-				vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(arrowSource->GetOutputPort());
-
-			actor =
-				vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-			actor->GetProperty()->SetColor(1, 0, 0);//red
-			actor->SetPosition(0, 0, 1500);
-			actor->SetScale(200);
-			actor->RotateZ(90);
-		};
-		Arrow(float TipLength) : m_TipLength(TipLength)
-		{
-			// Create a sphere
-			arrowSource =
-				vtkSmartPointer<vtkArrowSource>::New();
-			arrowSource->SetShaftRadius(30);
-			arrowSource->SetTipLength(TipLength);
-			arrowSource->SetTipRadius(15);
-
-			arrowSource->Update();
-			vtkSmartPointer<vtkPolyDataMapper> mapper =
-				vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(arrowSource->GetOutputPort());
-
-			actor =
-				vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-			actor->GetProperty()->SetColor(1, 0, 0);//red
-			actor->SetPosition(-100, -100, 1500);
-		};
-		~Arrow() {};
+		Arrow();
+		
+		Arrow(float TipLength);
+		
+		~Arrow();
 	public:
-		vtkSmartPointer<vtkActor> Actor() {
-			return actor;
-		}
+		vtkSmartPointer<vtkActor> Actor();
 	private:
 		float m_TipLength{};
 		vtkSmartPointer<vtkArrowSource> arrowSource;
@@ -89,62 +46,11 @@ namespace vtkShape {
 	class Sphere
 	{
 	public:
-		Sphere()
-		{
-			// Create a sphere
-			sphereSource =
-				vtkSmartPointer<vtkSphereSource>::New();
-			//sphereSource->SetCenter(m_x, m_y, m_z);
-			sphereSource->SetRadius(m_r);
-			// Make the surface smooth.
-			sphereSource->SetPhiResolution(100);
-			sphereSource->SetThetaResolution(100);
-			vtkSmartPointer<vtkPolyDataMapper> mapper =
-				vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(sphereSource->GetOutputPort());
-
-			actor =
-				vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-			actor->GetProperty()->SetColor(0, 1, 0);
-			actor->SetPosition(0, 0, 1500);
-		};
-		Sphere(float r, char color) : m_r(r)
-		{
-			// Create a sphere
-			sphereSource =
-				vtkSmartPointer<vtkSphereSource>::New();
-			//sphereSource->SetCenter(x, y, z);
-			sphereSource->SetRadius(r);
-			// Make the surface smooth.
-			sphereSource->SetPhiResolution(100);
-			sphereSource->SetThetaResolution(100);
-			vtkSmartPointer<vtkPolyDataMapper> mapper =
-				vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(sphereSource->GetOutputPort());
-
-			actor =
-				vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-			if (color == 'r')
-			{
-				actor->GetProperty()->SetColor(1, 0, 0);
-			}
-			if (color == 'g')
-			{
-				actor->GetProperty()->SetColor(0, 1, 0);
-			}
-			if (color == 'b')
-			{
-				actor->GetProperty()->SetColor(0, 0, 1);
-			}
-			actor->SetPosition(0, 0, 1500);
-		};
-		~Sphere() {};
+		Sphere();
+		Sphere(float r, char color);
+		~Sphere();
 	public:
-		vtkSmartPointer<vtkActor> Actor() {
-			return actor;
-		}
+		vtkSmartPointer<vtkActor> Actor();
 	private:
 
 		float m_r{ 30 };
@@ -158,37 +64,59 @@ namespace vtkShape {
 	class Camera
 	{
 	public:
-		Camera()
-		{
-			// Create a sphere
-			cameraSource =
-				vtkSmartPointer<vtkCubeSource>::New();
-			cameraSource->SetCenter(0, 0, -30);
-			cameraSource->SetXLength(150.0);
-			cameraSource->SetYLength(60.0);
-			cameraSource->SetZLength(60.0);
-			cameraSource->Update();
-
-
-			vtkSmartPointer<vtkPolyDataMapper> mapper =
-				vtkSmartPointer<vtkPolyDataMapper>::New();
-			mapper->SetInputConnection(cameraSource->GetOutputPort());
-
-			actor =
-				vtkSmartPointer<vtkActor>::New();
-			actor->SetMapper(mapper);
-		};
-		~Camera() {};
+		Camera();
+		~Camera();
 
 	private:
 		vtkSmartPointer<vtkCubeSource> cameraSource;
 		vtkSmartPointer<vtkActor> actor;
 	
 	public:
-		vtkSmartPointer<vtkActor> Actor() {
-			return actor;
-		}
+		vtkSmartPointer<vtkActor> Actor();
 	};
+	
+	class Line
+	{
+	public:
+		Line();
+		Line(float width, char color);
+		~Line();
+
+	private:
+		vtkSmartPointer<vtkLineSource> lineSource;
+		vtkSmartPointer<vtkActor> actor;
+
+	public:
+		vtkSmartPointer<vtkActor> Actor();
+		vtkSmartPointer<vtkLineSource> LineSource();
+	};
+
+	class Coord
+	{
+	public:
+		Coord();
+		~Coord();
+
+	private:
+	private:
+		vtkSmartPointer<vtkLineSource> lineSource_axisX;
+		vtkSmartPointer<vtkLineSource> lineSource_axisY;
+		vtkSmartPointer<vtkLineSource> lineSource_axisZ;
+		vtkSmartPointer<vtkActor> actor_axisX;
+		vtkSmartPointer<vtkActor> actor_axisY;
+		vtkSmartPointer<vtkActor> actor_axisZ;
+
+	public:
+		vtkSmartPointer<vtkActor> Actor_axisX();
+		vtkSmartPointer<vtkActor> Actor_axisY();
+		vtkSmartPointer<vtkActor> Actor_axisZ();
+		vtkSmartPointer<vtkLineSource> LineSource_axisX();
+		vtkSmartPointer<vtkLineSource> LineSource_axisY();
+		vtkSmartPointer<vtkLineSource> LineSource_axisZ();
+
+	};
+
+
 	
 	/*class VTKsegment
 	{

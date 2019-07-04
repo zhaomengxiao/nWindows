@@ -35,6 +35,21 @@ void VTK::addActor()
 	{
 		this->p_renderer->AddActor(jointsSphere[i].Actor());
 	}
+	for (int i = 0; i < 13; i++)
+	{
+		this->p_renderer->AddActor(SegLines[i].Actor());
+	}
+	for (int i = 0; i < 2; i++)
+	{
+		this->p_renderer->AddActor(Coords[i].Actor_axisX());
+		this->p_renderer->AddActor(Coords[i].Actor_axisY());
+		this->p_renderer->AddActor(Coords[i].Actor_axisZ());
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		this->p_renderer->AddActor(OptSegLines[i].Actor());
+		OptSegLines[i].Actor()->GetProperty()->SetColor(1, 0, 0);
+	}
 	p_renderer->AddActor(camera.Actor());
 	p_renderer->SetBackground(.1, .2, .3); // Background color green
 	p_renderer->ResetCamera();
@@ -79,6 +94,24 @@ int VTK::setCallback()
 	for (int i = 0; i < 25; i++)
 	{
 		cb->actor_joints[i] = jointsSphere[i].Actor();
+	}
+	//Segs
+	for (int i = 0; i < 13; i++)
+	{
+		cb->source_Segs[i] = SegLines[i].LineSource();
+	}
+
+	for (int i = 0; i < Coords.size(); i++)
+	{
+		cb->source_Coords_axisX[i] = Coords[i].LineSource_axisX();
+		cb->source_Coords_axisY[i] = Coords[i].LineSource_axisY();
+		cb->source_Coords_axisZ[i] = Coords[i].LineSource_axisZ();
+
+	}
+
+	for (int i = 0; i < 4; i++)
+	{
+		cb->source_OptSegs[i] = OptSegLines[i].LineSource();
 	}
 	//+++^^^add more cb sign up above^^^+++
 

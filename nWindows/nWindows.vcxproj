@@ -236,15 +236,19 @@
     <ClCompile Include="..\..\..\..\..\..\cppLibrary\dlib-19.17\dlib-19.17\dlib\all\source.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="chart.cpp" />
+    <ClCompile Include="cycle.cpp" />
     <ClCompile Include="filerec.cpp" />
+    <ClCompile Include="filter.cpp" />
     <ClCompile Include="imagewindow.cpp" />
     <ClCompile Include="linechart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="motiondetect.cpp" />
     <ClCompile Include="myKinect.cpp" />
     <ClCompile Include="obj.cpp" />
     <ClCompile Include="optimiz.cpp" />
     <ClCompile Include="vtk.cpp" />
+    <ClCompile Include="vtkshape.cpp" />
     <ClCompile Include="vtktimercallback.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -273,6 +277,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.h" />
+    <ClInclude Include="cycle.h" />
+    <ClInclude Include="filter.h" />
+    <ClInclude Include="motiondetect.h" />
     <ClInclude Include="obj.h" />
     <ClInclude Include="optimiz.h" />
     <ClInclude Include="vtk.h" />

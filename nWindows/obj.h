@@ -24,7 +24,7 @@ float dot(std::array<float, 3> v1, std::array<float, 3> v2);
 std::array<float, 3> cross(std::array<float, 3> A, std::array<float, 3> B);
 
 float norm(std::array<float, 3> v);
-double RadianToDegree(double angle);
+float RadianToDegree(float angle);
 
 
 #pragma endregion
@@ -126,46 +126,7 @@ namespace OBJ
 		}
 
 	};
-	//enum JointType
-	//{
-	//	JointType_SpineBase = 0,
-	//	JointType_SpineMid = 1,
-	//	JointType_Neck = 2,
-	//	JointType_Head = 3,
-	//	JointType_ShoulderLeft = 4,
-	//	JointType_ElbowLeft = 5,
-	//	JointType_WristLeft = 6,
-	//	JointType_HandLeft = 7,
-	//	JointType_ShoulderRight = 8,
-	//	JointType_ElbowRight = 9,
-	//	JointType_WristRight = 10,
-	//	JointType_HandRight = 11,
-	//	JointType_HipLeft = 12,
-	//	JointType_KneeLeft = 13,
-	//	JointType_AnkleLeft = 14,
-	//	JointType_FootLeft = 15,
-	//	JointType_HipRight = 16,
-	//	JointType_KneeRight = 17,
-	//	JointType_AnkleRight = 18,
-	//	JointType_FootRight = 19,
-	//	JointType_SpineShoulder = 20,
-	//	JointType_HandTipLeft = 21,
-	//	JointType_ThumbLeft = 22,
-	//	JointType_HandTipRight = 23,
-	//	JointType_ThumbRight = 24,
-	//	JointType_Count = (JointType_ThumbRight + 1)
-	//};
-
 	
-
-
-	//enum TrackingState
-	//{
-	//	TrackingState_NotTracked = 0,
-	//	TrackingState_Inferred = 1,
-	//	TrackingState_Tracked = 2
-	//};
-
 	struct coordSys {
 		Eigen::Vector3f axis_x{ 0,0,0 };
 		Eigen::Vector3f axis_y{ 0,0,0 };
@@ -193,6 +154,18 @@ namespace OBJ
 		SegType_Count = (SegType_HeadNeck + 1)
 	};
 	
+	enum JAngleType {
+		JAngleType_KneeR	= 0,
+		JAngleType_KneeL	= 1,
+		JAngleType_HipR		= 2,
+		JAngleType_HipL		= 3,
+		JAngleType_ElbowR	= 4,
+		JAngleType_ElbowL	= 5,
+		JAngleType_Spine	= 6,
+		JAngleType_ShouderR = 7,
+		JAngleType_ShouderL = 8,
+		JAngleType_Count = (JAngleType_ShouderL + 1)
+	};
 	class Joint
 	{
 	public:
@@ -210,6 +183,49 @@ namespace OBJ
 		Eigen::Vector3f Pg2l(const coordSys& lcoord);
 	};
 
+	struct JointAngle
+	{
+		JAngleType jAngleType;
+		float Angle_x;
+		float Angle_y;
+		float Angle_z;
+
+	public:
+		JointAngle operator+(const JointAngle& b)
+		{
+			JointAngle ja;
+			ja.Angle_x = this->Angle_x + b.Angle_x;
+			ja.Angle_y = this->Angle_y + b.Angle_y;
+			ja.Angle_z = this->Angle_z + b.Angle_z;
+			
+			return ja;
+		}
+
+		JointAngle operator-(const JointAngle& b)
+		{
+			JointAngle ja;
+			ja.Angle_x = this->Angle_x - b.Angle_x;
+			ja.Angle_y = this->Angle_y - b.Angle_y;
+			ja.Angle_z = this->Angle_z - b.Angle_z;
+
+			return ja;
+		}
+
+		JointAngle operator/(int b)
+		{
+			if (b == 0)
+			{
+				qDebug() << "cant divide 0" << endl;
+			}
+			JointAngle ja;
+			ja.Angle_x = this->Angle_x / b;
+			ja.Angle_y = this->Angle_y / b;
+			ja.Angle_z = this->Angle_z / b;
+			return ja;
+		}
+	}; 
+	
+
 	
 	
 	class Segment
@@ -226,7 +242,8 @@ namespace OBJ
 		//远端关节点
 		Joint	Jdistal;
 		TrackingState trackingState;
-
+		//局部坐标系
+		coordSys lcoord;
 		//惯性参数
 		//肢段长度
 		float	length;
@@ -256,7 +273,7 @@ namespace OBJ
 
 	public:
 		virtual void calSegL();
-		
+		virtual void calLocalCoord();
 	};
 
 	
@@ -271,7 +288,8 @@ namespace OBJ
 	typedef std::array<OBJ::Joint, JointType_Count> Joints;
 	//一个frame的肢段资讯
 	typedef std::array<OBJ::Segment, OBJ::SegType_Count> Segs;
-
+	typedef std::array< Eigen::Vector3f, 6> OptJoints;
+	
 	class Obj
 	{
 	public:
@@ -287,7 +305,7 @@ namespace OBJ
 		QString path_moment;
 		std::vector<Joints> cali_JointFrames;
 		std::vector<Segs> cali_SegFrames;
-
+		int RPM;
 		
 	private:
 		
@@ -298,37 +316,66 @@ namespace OBJ
 		CaliInfo m_caliInfo;
 		//储存从文件读取到的关节点信息
 		std::vector<Joints>			m_framesJ;
+		
 		//将关节点信息整理为肢段信息
 		std::vector<Segs>			m_framesS;
+		
+		
 		//从肢段信息计算二维关节的角度
 		std::vector<JointAngles>	m_2dJointAngles;
+		std::vector<JointAngles>	m_2dJointAngles_filted;
+		std::vector<JointAngles>	m_2dJointAngles_opted;
 		//腰部所受外力产生之力矩
 		std::vector<Eigen::Vector3f> m_moments;
+		//局部坐标系
+		coordSys m_trunkCoord;
 		//帧数
 		int m_nFrames{ 0 };
 		//储存外力资讯
 		std::vector<Eigen::Vector3f> m_fp_g;
+		//储存filter后的资料
+		std::vector<Joints>			m_framesJ_filted;	//储存filter之后的关节点信息
+		std::vector<Segs>			m_framesS_filted;	//储存filter之后的肢段
+		//储存最佳化后之资料
+		std::vector<OptJoints>		m_framesOptJ;
+		std::vector<Joints>			m_framesJ_opted;	//储存opt之后的关节点信息
+		std::vector<Segs>			m_framesS_opted;	//储存opt之后的肢段
+		
 	public:
 
 
 		#pragma region Get
 		SubjInfo getSubjInfo();
-		CaliInfo getCaliInfo();
+		CaliInfo getCaliInfo()const;
+		
 		std::vector<Joints> getJoints()const;
+		std::vector<Joints> getJoints_filted()const;
+		std::vector<Joints> getJoints_opted()const;
+		
 		std::vector<Segs> getSegments()const;
-		std::vector<JointAngles> getJointAngles();
+		std::vector<Segs> getSegments_filted()const;
+		std::vector<Segs> getSegments_opted()const;
+		
+		std::vector<JointAngles> getJointAngles()const;
+		std::vector<JointAngles> getJointAngles_filted()const;
+		std::vector<JointAngles> getJointAngles_opted()const;
 		std::vector<Eigen::Vector3f> getMoments();
 		std::array<Eigen::Vector3f, 13> getCOMs(const Segs & segs);
-		int getFrameNumber();
+		int getFrameNumber()const;
 		std::vector<Eigen::Vector3f> getForcePosi();
+		std::vector<OptJoints> getOptJ()const;
 		#pragma endregion
 		
 		#pragma region Set
 		void setSubjInfo(SubjInfo &subjinfo);
 		void setJoints(const std::vector<Joints> &frames_J);
+		void setJoints_filted(const std::vector<Joints> &frames_J_filted);
 		void setSegments(const std::vector<Segs> &frames_S);
+		void setSegments_filted(const std::vector<Segs> &frames_S);
 		void setJointAngles(std::vector<JointAngles> &frames_JA);
 		void setJointAngles(const std::vector<Segs> &frames_S);
+		void setOptJoints(const std::vector<OptJoints> &frames_optJ);
+		void setJoints_opted(const std::vector<Joints> &frames_J_opted);
 		#pragma endregion
 
 		
@@ -340,20 +387,25 @@ namespace OBJ
 		void setFilePath(QString path);
 		//输入实验trail的名称，读取trail的关节位置档案并且计算关节角度。
 		void addtrail(QString trailname);
+		
 		//计算两个肢段间的平面角度
 		float calJointAngle(const Segment &sA,const Segment &sB);
+		//计算一个肢段与一个局部坐标系之z轴之交角
+		float calJointAngle(const Segment &seg, const coordSys &coord);
 		//计算所有关节角度，可以输入一帧也可以输入多帧
 		JointAngles calAllJointAngles(const Segs &segments); //1 frame
 		std::vector<JointAngles> calAllJointAngles(const std::vector<Segs> &frames_S); //n frame
 		//建立body坐标系
 		coordSys calCoordupTunkR(const Joints &joints);
-		Eigen::Vector3f Pg2l(const Joint& Pg, const coordSys& lcoord);
-		Eigen::Vector3f Pl2g(Eigen::Vector3f Pl, const coordSys& lcoord);
+		coordSys calCoordPelvisR(const Joints &joints);
+		static Eigen::Vector3f Pg2l(const Joint& Pg, const coordSys& lcoord);
+		static Eigen::Vector3f Pl2g(Eigen::Vector3f Pl, const coordSys& lcoord);
 		
 		//操作
 		void cali();
 		void calTrailJointAngle();
-		
+		void calJointAngles_filted();
+		void calJointAngles_opted();
 		void calcSpinebaseFMwithBag();
 	};
 

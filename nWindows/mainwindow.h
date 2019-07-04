@@ -26,6 +26,8 @@
 #include "myKinect.h"
 #include "filerec.h"
 #include "optimiz.h"
+#include "filter.h"
+#include "cycle.h"
 //h
 #include <math.h>
 #include <fstream>

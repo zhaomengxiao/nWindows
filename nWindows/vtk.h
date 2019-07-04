@@ -17,8 +17,9 @@ private:
 	vtkShape::Camera camera;
 	std::array<vtkShape::Sphere, 13> COMSphere;
 	std::array<vtkShape::Sphere, 25> jointsSphere;
-	
-
+	std::array<vtkShape::Line, 13> SegLines;
+	std::array<vtkShape::Coord,2> Coords;
+	std::array<vtkShape::Line, 4> OptSegLines;
 	//pipline
 	//vtkSmartPointer<vtkPolyDataMapper> p_mapper;
 	//vtkSmartPointer<vtkActor> p_actor;

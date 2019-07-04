@@ -523,15 +523,7 @@ void MainWindow::on_saveImageButton_clicked()
 //	mychartview->setRenderHint(QPainter::Antialiasing);
 //	ui.chartscrollArea->setWidget(mychartview);
 //
-//	LineChart *chart_y = new LineChart();
-//	chart_y->SetXY(frames, Y);
-//	chart_y->setTitle("Position_Y");
-//	chart_y->legend()->hide();
-//	chart_y->setAnimationOptions(QChart::AllAnimations);
-//	QChartView *mychartview_y = new QChartView();
-//	mychartview_y->setChart(chart_y);
-//	mychartview_y->setRenderHint(QPainter::Antialiasing);
-//	ui.chartscrollArea_2->setWidget(mychartview_y);
+	
 //
 //	LineChart *chart_z = new LineChart();
 //	chart_z->SetXY(frames, Z);
@@ -952,12 +944,16 @@ void MainWindow::readRec()
 		QString filepath = ".\\Record\\" + ui.lineEdit_rdate->text() + "\\" + ui.lineEdit_rsubjn->text() + "\\";
 		//obj.setFilePath(".\\Record\\2019-04-26\\ivan\\");
 		p_obj->setFilePath(filepath);
-		QString tfn = ui.lineEdit_rtn->text();
+		QString tfn = ui.lineEdit_rtn->text(); //取得trailname
 		QString tn = tfn.left(tfn.length() - 13); //从后面查找"/"位置
 		//QString tn = m_FilePath.right(m_FilePath.length() - first - 1); //从右边截取
 		p_obj->addtrail(tn);
 
+		QString RPM = tn.left(tn.length() - 2);
+		RPM = RPM.right(2);
+		p_obj->RPM = RPM.toInt();
 
+		qDebug() <<"RPM: "<< p_obj->RPM << endl;
 		//显示trail读取进度
 		ui.progressBar_tl->setValue(0);
 		ui.progressBar_tl->setRange(0, p_obj->getFrameNumber()); //还未读取到帧数，需要修正
@@ -972,14 +968,81 @@ void MainWindow::readRec()
 		ui.spinBox_Nframe->setRange(0, p_obj->getFrameNumber() - 1);
 
 		//写出Angles.csv和moment
-		pSender->writeTrialAngle(*p_obj);
-		p_obj->calcSpinebaseFMwithBag();
-		pSender->writeMoment(*p_obj);
+		//pSender->writeTrialAngle(*p_obj);
+		//p_obj->calcSpinebaseFMwithBag();
+		//pSender->writeMoment(*p_obj);
+		
+		
+		
+
+		//Filter
+		p_obj->setJoints_filted(Filter::LP_Filter(p_obj->getJoints(),3));
+		//p_obj->setJoints(Filter::LP_Filter(p_obj->getJoints(), 5));
+		p_obj->setSegments_filted(p_obj->buildSegments(p_obj->getJoints_filted()));
+		p_obj->calJointAngles_filted();
+
+
+		//画图
+		//脚踝的y坐标（上下）filt前后对比
+		LineChart *chart = new LineChart();
+		chart->plotJointPosition(*p_obj,JointType_AnkleLeft);
+		chart->setTitle("Position_Ankle_left");
+		chart->setAnimationOptions(QChart::NoAnimation);
+		//chart->axisY()->setRange(-0.5, 0.5);
+		QChartView *chartview_filtered = new QChartView();
+		chartview_filtered->setChart(chart);
+		chartview_filtered->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_2->setWidget(chartview_filtered);
+
+		//关节角度kneeleft filt前后对比
+		LineChart *chart_jA = new LineChart();
+		chart_jA->plotJointAngle(*p_obj);
+		chart_jA->setTitle("Knee_left Angle");
+		chart_jA->setAnimationOptions(QChart::NoAnimation);
+		//chart->axisY()->setRange(-0.5, 0.5);
+		QChartView *chartview_jA = new QChartView();
+		chartview_jA->setChart(chart_jA);
+		chartview_jA->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_KneeAngle_clip->setWidget(chartview_jA);
+
+		//建立Cycle
+		Cycle data(*p_obj);
+		//data.setPlotpart(JointType_KneeLeft, "y", 8);
+		data.setPlotMat(9);
+		LineChart *chart_c = new LineChart();
+		chart_c->plotCycle(Cycle::extractMatdata(data.getCycles_Angle()),data.getNorFrameMark());
+		chart_c->setTitle("Position_Ankle_left_y");
+		chart_c->legend()->hide();
+		chart_c->setAnimationOptions(QChart::NoAnimation);
+		QChartView *chartview_ori = new QChartView();
+		chartview_ori->setChart(chart_c);
+		chartview_ori->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_graph->setWidget(chartview_ori);
+
+		LineChart *poly = new LineChart();
+		poly->plotPolyfitRes(data.getPlfPara()[6], data.getNorFrameMark()[6], data.getLeftAnkleY()[6]);
+		poly->setTitle("Ankle_left_JointAngle[6]_polyFit");
+		poly->legend()->hide();
+		poly->setAnimationOptions(QChart::NoAnimation);
+		QChartView *chartview_pl = new QChartView();
+		chartview_pl->setChart(poly);
+		chartview_pl->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_3->setWidget(chartview_pl);
+		
+		LineChart *chart_m = new LineChart();
+		chart_m->plotMeanSqErr(data);
+		chart_m->setTitle("Ankle_left_JointAngle_MeanSqErr");
+		chart_m->legend()->hide();
+		chart_m->setAnimationOptions(QChart::NoAnimation);
+		QChartView *chartview_mse = new QChartView();
+		chartview_mse->setChart(chart_m);
+		chartview_mse->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_4->setWidget(chartview_mse);
 		
 		////opt
-		//p_optParameters = &(p_obj->getCaliInfo());
-		//OPT::optSingleF(p_obj->getJoints()[0]);
-
+		//p_obj->setOptJoints(OPT::Optframes(*p_obj));
+		
+		
 		////coord
 		//OBJ::coordSys coordtrunk;
 		//coordtrunk = p_obj->calCoordupTunkR(p_obj->getJoints()[0]);

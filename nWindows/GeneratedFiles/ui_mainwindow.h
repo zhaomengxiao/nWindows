@@ -173,6 +173,26 @@ public:
     QLineEdit *lineEdit_rsubjn;
     QLineEdit *lineEdit_rtn;
     QSpinBox *spinBox_Nframe;
+    QWidget *tab_3;
+    QGridLayout *gridLayout_12;
+    QScrollArea *scrollArea_graph;
+    QWidget *scrollAreaWidgetContents_2;
+    QScrollArea *scrollArea_3;
+    QWidget *scrollAreaWidgetContents_4;
+    QScrollArea *scrollArea_4;
+    QWidget *scrollAreaWidgetContents_5;
+    QScrollArea *scrollArea_2;
+    QWidget *scrollAreaWidgetContents_3;
+    QWidget *tab_4;
+    QGridLayout *gridLayout_13;
+    QScrollArea *scrollArea_KneeAngle_allcycle;
+    QWidget *scrollAreaWidgetContents_6;
+    QScrollArea *scrollArea_KneeAngle_poly;
+    QWidget *scrollAreaWidgetContents_7;
+    QScrollArea *scrollArea_KneeAngle_ave;
+    QWidget *scrollAreaWidgetContents_9;
+    QScrollArea *scrollArea_KneeAngle_clip;
+    QWidget *scrollAreaWidgetContents_8;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -1453,6 +1473,100 @@ public:
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/myimages/Resources/jilu.png"), QSize(), QIcon::Normal, QIcon::Off);
         tabWidget->addTab(tab_2, icon5, QString());
+        tab_3 = new QWidget();
+        tab_3->setObjectName(QStringLiteral("tab_3"));
+        gridLayout_12 = new QGridLayout(tab_3);
+        gridLayout_12->setSpacing(6);
+        gridLayout_12->setContentsMargins(11, 11, 11, 11);
+        gridLayout_12->setObjectName(QStringLiteral("gridLayout_12"));
+        scrollArea_graph = new QScrollArea(tab_3);
+        scrollArea_graph->setObjectName(QStringLiteral("scrollArea_graph"));
+        scrollArea_graph->setWidgetResizable(true);
+        scrollAreaWidgetContents_2 = new QWidget();
+        scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 404, 347));
+        scrollArea_graph->setWidget(scrollAreaWidgetContents_2);
+
+        gridLayout_12->addWidget(scrollArea_graph, 0, 0, 1, 1);
+
+        scrollArea_3 = new QScrollArea(tab_3);
+        scrollArea_3->setObjectName(QStringLiteral("scrollArea_3"));
+        scrollArea_3->setWidgetResizable(true);
+        scrollAreaWidgetContents_4 = new QWidget();
+        scrollAreaWidgetContents_4->setObjectName(QStringLiteral("scrollAreaWidgetContents_4"));
+        scrollAreaWidgetContents_4->setGeometry(QRect(0, 0, 404, 347));
+        scrollArea_3->setWidget(scrollAreaWidgetContents_4);
+
+        gridLayout_12->addWidget(scrollArea_3, 0, 1, 1, 1);
+
+        scrollArea_4 = new QScrollArea(tab_3);
+        scrollArea_4->setObjectName(QStringLiteral("scrollArea_4"));
+        scrollArea_4->setWidgetResizable(true);
+        scrollAreaWidgetContents_5 = new QWidget();
+        scrollAreaWidgetContents_5->setObjectName(QStringLiteral("scrollAreaWidgetContents_5"));
+        scrollAreaWidgetContents_5->setGeometry(QRect(0, 0, 404, 347));
+        scrollArea_4->setWidget(scrollAreaWidgetContents_5);
+
+        gridLayout_12->addWidget(scrollArea_4, 0, 2, 1, 1);
+
+        scrollArea_2 = new QScrollArea(tab_3);
+        scrollArea_2->setObjectName(QStringLiteral("scrollArea_2"));
+        scrollArea_2->setWidgetResizable(true);
+        scrollAreaWidgetContents_3 = new QWidget();
+        scrollAreaWidgetContents_3->setObjectName(QStringLiteral("scrollAreaWidgetContents_3"));
+        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 1228, 346));
+        scrollArea_2->setWidget(scrollAreaWidgetContents_3);
+
+        gridLayout_12->addWidget(scrollArea_2, 1, 0, 1, 3);
+
+        tabWidget->addTab(tab_3, QString());
+        tab_4 = new QWidget();
+        tab_4->setObjectName(QStringLiteral("tab_4"));
+        gridLayout_13 = new QGridLayout(tab_4);
+        gridLayout_13->setSpacing(6);
+        gridLayout_13->setContentsMargins(11, 11, 11, 11);
+        gridLayout_13->setObjectName(QStringLiteral("gridLayout_13"));
+        scrollArea_KneeAngle_allcycle = new QScrollArea(tab_4);
+        scrollArea_KneeAngle_allcycle->setObjectName(QStringLiteral("scrollArea_KneeAngle_allcycle"));
+        scrollArea_KneeAngle_allcycle->setWidgetResizable(true);
+        scrollAreaWidgetContents_6 = new QWidget();
+        scrollAreaWidgetContents_6->setObjectName(QStringLiteral("scrollAreaWidgetContents_6"));
+        scrollAreaWidgetContents_6->setGeometry(QRect(0, 0, 404, 347));
+        scrollArea_KneeAngle_allcycle->setWidget(scrollAreaWidgetContents_6);
+
+        gridLayout_13->addWidget(scrollArea_KneeAngle_allcycle, 0, 0, 1, 1);
+
+        scrollArea_KneeAngle_poly = new QScrollArea(tab_4);
+        scrollArea_KneeAngle_poly->setObjectName(QStringLiteral("scrollArea_KneeAngle_poly"));
+        scrollArea_KneeAngle_poly->setWidgetResizable(true);
+        scrollAreaWidgetContents_7 = new QWidget();
+        scrollAreaWidgetContents_7->setObjectName(QStringLiteral("scrollAreaWidgetContents_7"));
+        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 404, 347));
+        scrollArea_KneeAngle_poly->setWidget(scrollAreaWidgetContents_7);
+
+        gridLayout_13->addWidget(scrollArea_KneeAngle_poly, 0, 1, 1, 1);
+
+        scrollArea_KneeAngle_ave = new QScrollArea(tab_4);
+        scrollArea_KneeAngle_ave->setObjectName(QStringLiteral("scrollArea_KneeAngle_ave"));
+        scrollArea_KneeAngle_ave->setWidgetResizable(true);
+        scrollAreaWidgetContents_9 = new QWidget();
+        scrollAreaWidgetContents_9->setObjectName(QStringLiteral("scrollAreaWidgetContents_9"));
+        scrollAreaWidgetContents_9->setGeometry(QRect(0, 0, 404, 347));
+        scrollArea_KneeAngle_ave->setWidget(scrollAreaWidgetContents_9);
+
+        gridLayout_13->addWidget(scrollArea_KneeAngle_ave, 0, 2, 1, 1);
+
+        scrollArea_KneeAngle_clip = new QScrollArea(tab_4);
+        scrollArea_KneeAngle_clip->setObjectName(QStringLiteral("scrollArea_KneeAngle_clip"));
+        scrollArea_KneeAngle_clip->setWidgetResizable(true);
+        scrollAreaWidgetContents_8 = new QWidget();
+        scrollAreaWidgetContents_8->setObjectName(QStringLiteral("scrollAreaWidgetContents_8"));
+        scrollAreaWidgetContents_8->setGeometry(QRect(0, 0, 1228, 346));
+        scrollArea_KneeAngle_clip->setWidget(scrollAreaWidgetContents_8);
+
+        gridLayout_13->addWidget(scrollArea_KneeAngle_clip, 1, 0, 1, 3);
+
+        tabWidget->addTab(tab_4, QString());
 
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
 
@@ -1495,7 +1609,7 @@ public:
         QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), MainWindowClass, SLOT(Nframe(int)));
         QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), spinBox_Nframe, SLOT(setValue(int)));
 
-        tabWidget->setCurrentIndex(2);
+        tabWidget->setCurrentIndex(4);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);
@@ -1614,6 +1728,8 @@ public:
         radioButton->setText(QApplication::translate("MainWindowClass", "Offline", nullptr));
         pushButton_recon->setText(QApplication::translate("MainWindowClass", "Reconstruct", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Files", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "graph", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("MainWindowClass", "\351\241\265", nullptr));
     } // retranslateUi
 
 };
