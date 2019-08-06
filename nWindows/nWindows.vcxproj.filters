@@ -81,6 +81,9 @@
     <ClCompile Include="vtkshape.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="myMath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="cycle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="myMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

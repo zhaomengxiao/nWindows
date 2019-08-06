@@ -8,7 +8,8 @@ QImage  Mat2QImage(cv::Mat cvImg);
 //===============================
 extern FileREC *pSender ;
 extern OBJ::CaliInfo *p_optParameters;
-extern OBJ::Obj *p_obj;
+//extern OBJ::Obj *p_obj;
+extern std::vector<OBJ::Obj *> p_objs;
 extern int jointSelected;
 extern float force;
 extern float bodyWeight;
@@ -18,6 +19,7 @@ extern float bagZ;
 extern bool bag;
 extern bool isOffMode;
 extern int n_frame;//传出滑动条的数值控制三维绘制第几帧
+extern int n_obj;//传出要展示第几个obj;
 bool isSimpleMode{ false };
 
 //bool isTimeLapseMode{ false };
@@ -99,6 +101,692 @@ MainWindow::MainWindow(QWidget *parent)
 /*------------------------------------------*
 ******----------界面function-------------****
 *------------------------------------------*/
+
+void MainWindow::plotViconVsKinect(QString jointName)
+{
+	std::vector<Cycle> cycles;
+	for (auto p_obj:p_objs)
+	{
+		Cycle cycle_filt(*p_obj, "filt");
+
+		if (jointName == "KneeL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_KneeL, "x", 9);
+		}
+		else if (jointName == "HipL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_HipL, "x", 9);
+		}
+		else if (jointName == "AnkleL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_AnkleL, "x", 9);
+		}
+		else
+		{
+			qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+		}
+
+
+		cycles.push_back(cycle_filt);
+	}
+	
+
+	LineChart *chart = new LineChart();
+	chart->setColors(80);
+	
+	if (jointName == "KneeL")
+	{
+		chart->plotVicon_Kinect(cycles, p_objs[n_obj]->viconAngleData_KneeL);
+		chart->setTitle("KneeL Flex/Ext");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotVicon_Kinect(cycles, p_objs[n_obj]->viconAngleData_HipL);
+		chart->setTitle("HipL Flex/Ext");
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotVicon_Kinect(cycles, p_objs[n_obj]->viconAngleData_AnkleL);
+		chart->setTitle("AnkleL Dorsi/Plant");
+		chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+	}
+	
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee_opt->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip_opt->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle_opt->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+	}
+	
+}
+
+void MainWindow::plotNtrail(QString jointName)
+{
+	std::vector<Cycle> cycles;
+	for (auto p_obj : p_objs)
+	{
+		Cycle cycle(*p_obj, "filt");
+
+		if (jointName == "KneeL")
+		{
+			cycle.setPlotMat(OBJ::JAngleType_KneeL, "x", 9);
+		}
+		else if (jointName == "HipL")
+		{
+			cycle.setPlotMat(OBJ::JAngleType_HipL, "x", 9);
+		}
+		else if (jointName == "AnkleL")
+		{
+			cycle.setPlotMat(OBJ::JAngleType_AnkleL, "x", 9);
+		}
+		else
+		{
+			qDebug() << "plotNtrail ERROR, no fit JointName" << endl;
+		}
+		
+		cycles.push_back(cycle);
+	}
+	LineChart *chart = new LineChart();
+	chart->setColors(80);
+	chart->plotMeanSqErr(cycles);
+	
+	if (jointName == "KneeL")
+	{
+		chart->setTitle("KneeL Flex/Ext");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->setTitle("HipL Flex/Ext");
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->setTitle("AnkleL Dorsi/Plant");
+		chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotNtrail ERROR, no fit JointName" << endl;
+	}
+	
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+	
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotNtrail ERROR, no fit JointName" << endl;
+	}
+	
+}
+
+void MainWindow::plotNviconTrail(QString jointName)
+{
+	std::vector<std::vector<double>> viconDatas;
+	for (auto p_obj:p_objs)
+	{
+		if (jointName == "KneeL")
+		{
+			viconDatas.push_back(p_obj->viconAngleData_KneeL);
+		}
+		else if (jointName == "HipL")
+		{
+			viconDatas.push_back(p_obj->viconAngleData_HipL);
+		}
+		else if (jointName == "AnkleL")
+		{
+			viconDatas.push_back(p_obj->viconAngleData_AnkleL);
+		}
+		else
+		{
+			qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+		}
+		
+	}
+	LineChart *chart = new LineChart();
+	chart->setColors(80);
+	if (jointName == "KneeL")
+	{
+		chart->plotNvicon(viconDatas);
+		chart->setTitle("KneeL Flex/Ext");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotNvicon(viconDatas);
+		chart->setTitle("HipL Flex/Ext");
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotNvicon(viconDatas);
+		chart->setTitle("AnkleL Dorsi/Plant");
+		chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee_opt->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip_opt->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle_opt->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+
+}
+
+void MainWindow::plotSuperposition(QString jointName)
+{
+	stdMatd dataMat;
+	Cycle cycle(*p_objs[n_obj], "raw");
+	if (jointName == "KneeL")
+	{
+		dataMat = Cycle::extractMatdata(cycle.getCycles_Joints(), JointType_KneeLeft, "y");
+	}
+	else if (jointName == "HipL")
+	{
+		dataMat = Cycle::extractMatdata(cycle.getCycles_Joints(), JointType_HipLeft, "y");
+	}
+	else if (jointName == "AnkleL")
+	{
+		dataMat = Cycle::extractMatdata(cycle.getCycles_Joints(), JointType_AnkleLeft, "y");
+	}
+	else
+	{
+		qDebug() << "plotSuperposition ERROR, no fit JointName" << endl;
+	}
+	LineChart *chart = new LineChart();
+	
+	chart->setColors(80);
+	if (jointName == "KneeL")
+	{
+		chart->plotScatter(dataMat);
+		chart->setTitle("Knee Postion");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotScatter(dataMat);
+		chart->setTitle("Hip Postion");
+		
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotScatter(dataMat);
+		chart->setTitle("AnkleL Postion");
+		//chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee_opt->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip_opt->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle_opt->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+
+}
+
+
+
+void MainWindow::plotJointYZ(const OBJ::Obj & obj, QString jointName)
+{
+	LineChart *chart = new LineChart();
+
+	//chart->setColors(80);
+	if (jointName == "KneeL")
+	{
+		chart->plotKneeYZScatter_polyFit(obj);
+		chart->setTitle("Knee Postion");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotJointYZScatter(obj, JointType_HipLeft);
+		chart->setTitle("Hip Postion");
+
+	}
+	else if (jointName == "AnkleL")
+	{
+		/*chart->plotAnkleYZScatter_circleFit(obj);*/
+		chart->plotJointYZScatter(obj, JointType_AnkleLeft);
+		chart->setTitle("Ankle Postion");
+	}
+	else
+	{
+		qDebug() << "plotJointYZ ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee_Pyz->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip_Pyz->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle_Pyz->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+}
+
+void MainWindow::plotSuperposition_polyfit(QString jointName)
+{
+	stdMatd dataMat;
+	stdMatd MarkMat;
+	stdMatd polyPMat;
+	Cycle cycle(*p_objs[n_obj], "raw");
+	//MarkMat = cycle.getNorFrameMark();
+	if (jointName == "KneeL")
+	{
+		cycle.setPlotpart(JointType_KneeLeft, "y", 8);
+		dataMat = cycle.getDataMat();
+		MarkMat = cycle.getNorFrameMark();
+		polyPMat = cycle.getPlfPara();
+		/*dataMat = Cycle::extractMatdata(cycle.getCycles_Joints(), JointType_KneeLeft, "y");*/
+	}
+	else if (jointName == "HipL")
+	{
+		cycle.setPlotpart(JointType_HipLeft, "y", 8);
+		dataMat = cycle.getDataMat();
+		MarkMat = cycle.getNorFrameMark();
+		polyPMat = cycle.getPlfPara();
+	}
+	else if (jointName == "AnkleL")
+	{
+		cycle.setPlotpart(JointType_AnkleLeft, "y", 8);
+		dataMat = cycle.getDataMat();
+		MarkMat = cycle.getNorFrameMark();
+		polyPMat = cycle.getPlfPara();
+	}
+	else
+	{
+		qDebug() << "plotSuperposition ERROR, no fit JointName" << endl;
+	}
+	LineChart *chart = new LineChart();
+
+	chart->setColors(80);
+	if (jointName == "KneeL")
+	{
+		chart->plotScatter_fit(dataMat,MarkMat);
+		chart->setTitle("Knee Postion");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotScatter_fit(dataMat, MarkMat);
+		chart->setTitle("Hip Postion");
+
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotScatter_fit(dataMat, MarkMat);
+		chart->setTitle("AnkleL Postion");
+		//chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee_opt->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip_opt->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle_opt->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+}
+
+void MainWindow::plotSuperposition_polyfit_traj(const OBJ::Obj & obj, QString jointName)
+{
+	stdMatd dataMat;
+	stdMatd MarkMat;
+	stdMatd polyPMat;
+	Cycle cycle(*p_objs[n_obj], "raw");
+	//MarkMat = cycle.getNorFrameMark();
+	if (jointName == "KneeL")
+	{
+		cycle.setPlotpart(JointType_KneeLeft, "y", 8);
+		dataMat = cycle.getDataMat();
+		MarkMat = cycle.getNorFrameMark();
+		polyPMat = cycle.getPlfPara();
+		/*dataMat = Cycle::extractMatdata(cycle.getCycles_Joints(), JointType_KneeLeft, "y");*/
+	}
+	else if (jointName == "HipL")
+	{
+		cycle.setPlotpart(JointType_HipLeft, "y", 8);
+		dataMat = cycle.getDataMat();
+		MarkMat = cycle.getNorFrameMark();
+		polyPMat = cycle.getPlfPara();
+	}
+	else if (jointName == "AnkleL")
+	{
+		cycle.setPlotpart(JointType_AnkleLeft, "y", 8);
+		dataMat = cycle.getDataMat();
+		MarkMat = cycle.getNorFrameMark();
+		polyPMat = cycle.getPlfPara();
+	}
+	else
+	{
+		qDebug() << "plotSuperposition_polyfit_traj ERROR, no fit JointName" << endl;
+	}
+	
+	LineChart *chart = new LineChart();
+
+	chart->setColors(80);
+	if (jointName == "KneeL")
+	{
+		chart->plotKneeScatter_fit_traj(dataMat, MarkMat,obj);
+		chart->setTitle("Knee Postion");
+		
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotScatter_fit(dataMat, MarkMat);
+		chart->setTitle("Hip Postion");
+
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotAnkleScatter_fit_traj(dataMat, MarkMat, obj);
+		chart->setTitle("AnkleL Postion");
+		//chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotSuperposition_polyfit_traj ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee_opt->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip_opt->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle_opt->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotNviconTrail ERROR, no fit JointName" << endl;
+	}
+}
+
+void MainWindow::fitAnkleCircle(OBJ::Obj & obj)
+{
+	std::vector<double> vecX;
+	std::vector<double> vecY;
+	vecX.reserve(obj.getJoints().size());
+	vecY.reserve(obj.getJoints().size());
+	for (auto joints : obj.getJoints())
+	{
+		vecX.push_back(joints[JointType_AnkleLeft].jointPosition.z());
+		vecY.push_back(joints[JointType_AnkleLeft].jointPosition.y());
+	}
+	double centerX = 0;
+	double centerY = 0;
+	double radius = 0;
+	myMath::circleLeastFit(vecX, vecY, centerX, centerY, radius);
+	std::cout << "centerX:" << centerX << " , " << "centerY:" << centerY << " , " << "radius:" << radius << std::endl;
+
+	obj.ankleCircle.centerX = centerX;
+	obj.ankleCircle.centerY = centerY;
+	obj.ankleCircle.radius = radius;
+}
+
+void MainWindow::plotViconVsKinect_Fit(QString jointName)
+{
+
+	std::vector<Cycle> cycles;
+	for (auto p_obj : p_objs)
+	{
+		Cycle cycle_filt(*p_obj, "filt");
+
+		if (jointName == "KneeL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_KneeL, "x", 9);
+		}
+		else if (jointName == "HipL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_HipL, "x", 9);
+		}
+		else if (jointName == "AnkleL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_AnkleL, "x", 9);
+		}
+		else
+		{
+			qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+		}
+
+
+		cycles.push_back(cycle_filt);
+	}
+
+
+	LineChart *chart = new LineChart();
+	chart->setColors(80);
+
+	if (jointName == "KneeL")
+	{
+		chart->plotVicon_Kinect_Fit(cycles, p_objs[n_obj]->viconAngleData_KneeL,*p_objs[n_obj]);
+		chart->setTitle("KneeL Flex/Ext");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotVicon_Kinect(cycles, p_objs[n_obj]->viconAngleData_HipL);
+		chart->setTitle("HipL Flex/Ext");
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotVicon_Kinect(cycles, p_objs[n_obj]->viconAngleData_AnkleL);
+		chart->setTitle("AnkleL Dorsi/Plant");
+		chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+	}
+
+}
+
+void MainWindow::plotViconMeanSqErr(QString jointName)
+{
+	std::vector<Cycle> cycles;
+			
+	stdMatd viconMat;
+
+	for (auto p_obj : p_objs)
+	{
+		Cycle cycle_filt(*p_obj, "filt");
+		if (jointName == "KneeL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_KneeL, "x", 9);
+			viconMat.push_back(p_obj->viconAngleData_KneeL);
+		}
+		else if (jointName == "HipL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_HipL, "x", 9);
+			viconMat.push_back(p_obj->viconAngleData_HipL);
+		}
+		else if (jointName == "AnkleL")
+		{
+			cycle_filt.setPlotMat(OBJ::JAngleType_AnkleL, "x", 9);
+			viconMat.push_back(p_obj->viconAngleData_AnkleL);
+		}
+		else
+		{
+			qDebug() << "plotViconMeanSqErr ERROR, no fit JointName" << endl;
+		}
+		cycles.push_back(cycle_filt);
+
+	}
+
+
+	LineChart *chart = new LineChart();
+	chart->setColors(80);
+
+	if (jointName == "KneeL")
+	{
+		chart->plotNviconMeanSqErr_Knee(viconMat,cycles);
+		chart->setTitle("KneeL Flex/Ext");
+	}
+	else if (jointName == "HipL")
+	{
+		chart->plotNviconMeanSqErr_Hip(viconMat, cycles);
+		chart->setTitle("HipL Flex/Ext");
+	}
+	else if (jointName == "AnkleL")
+	{
+		chart->plotNviconMeanSqErr_Ankle(viconMat,cycles);
+		chart->setTitle("AnkleL Dorsi/Plant");
+		chart->axisY()->setRange(-60, 60);
+	}
+	else
+	{
+		qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+	}
+
+
+	QChartView *chartview = new QChartView();
+	chartview->setChart(chart);
+	chartview->setRenderHint(QPainter::Antialiasing);
+
+	if (jointName == "KneeL")
+	{
+		ui.scrollArea_Knee->setWidget(chartview);
+	}
+	else if (jointName == "HipL")
+	{
+		ui.scrollArea_Hip->setWidget(chartview);
+	}
+	else if (jointName == "AnkleL")
+	{
+		ui.scrollArea_Ankle->setWidget(chartview);
+	}
+	else
+	{
+		qDebug() << "plotViconVsKinect ERROR, no fit JointName" << endl;
+	}
+}
+
+
 
 //新建多个action
 void MainWindow::createAction()
@@ -598,6 +1286,25 @@ void MainWindow::Nframe(int i)
 	Dbg(n_frame);
 }
 
+void MainWindow::SetNObj(int i)
+{
+	n_obj = i;
+	Dbg("N Obj selected: ");
+	Dbg(n_obj);
+}
+
+void MainWindow::ListObjselect(QModelIndex qmI)
+{
+	n_obj = qmI.row();
+	ui.spinBox_Nobj->setValue(n_obj);
+
+	//显示obj的cali肢段长度
+	ui.lcdNumber_ThighL->display(p_objs[n_obj]->getCaliInfo().SegL[OBJ::SegType_LeftThigh]);
+	ui.lcdNumber_ThighR->display(p_objs[n_obj]->getCaliInfo().SegL[OBJ::SegType_RightThigh]);
+	ui.lcdNumber_ShankL->display(p_objs[n_obj]->getCaliInfo().SegL[OBJ::SegType_LeftShank]);
+	ui.lcdNumber_ShankR->display(p_objs[n_obj]->getCaliInfo().SegL[OBJ::SegType_RightShank]);
+}
+
 void MainWindow::SetCD(int t)
 {
 	countDown = t;
@@ -940,7 +1647,11 @@ void MainWindow::readRec()
 { 
 	if (ui.lineEdit_rtn->text().contains("_Position.csv"))
 	{
-		//OBJ::Obj obj;
+		//在obj数组中压入新的obj
+		OBJ::Obj *p_obj = new OBJ::Obj();
+		p_objs.push_back(p_obj);
+		ui.spinBox_Nobj->setRange(0, p_objs.size()-1);
+		
 		QString filepath = ".\\Record\\" + ui.lineEdit_rdate->text() + "\\" + ui.lineEdit_rsubjn->text() + "\\";
 		//obj.setFilePath(".\\Record\\2019-04-26\\ivan\\");
 		p_obj->setFilePath(filepath);
@@ -948,12 +1659,14 @@ void MainWindow::readRec()
 		QString tn = tfn.left(tfn.length() - 13); //从后面查找"/"位置
 		//QString tn = m_FilePath.right(m_FilePath.length() - first - 1); //从右边截取
 		p_obj->addtrail(tn);
-
+		ui.listWidget_objs->addItem(new QListWidgetItem(tn));//在list列表中显示已reconstruct之obj
 		QString RPM = tn.left(tn.length() - 2);
 		RPM = RPM.right(2);
 		p_obj->RPM = RPM.toInt();
 
 		qDebug() <<"RPM: "<< p_obj->RPM << endl;
+		
+		
 		//显示trail读取进度
 		ui.progressBar_tl->setValue(0);
 		ui.progressBar_tl->setRange(0, p_obj->getFrameNumber()); //还未读取到帧数，需要修正
@@ -982,93 +1695,16 @@ void MainWindow::readRec()
 		p_obj->calJointAngles_filted();
 
 
-		//画图
-		//脚踝的y坐标（上下）filt前后对比
-		LineChart *chart = new LineChart();
-		chart->plotJointPosition(*p_obj,JointType_AnkleLeft);
-		chart->setTitle("Position_Ankle_left");
-		chart->setAnimationOptions(QChart::NoAnimation);
-		//chart->axisY()->setRange(-0.5, 0.5);
-		QChartView *chartview_filtered = new QChartView();
-		chartview_filtered->setChart(chart);
-		chartview_filtered->setRenderHint(QPainter::Antialiasing);
-		ui.scrollArea_2->setWidget(chartview_filtered);
-
-		//关节角度kneeleft filt前后对比
-		LineChart *chart_jA = new LineChart();
-		chart_jA->plotJointAngle(*p_obj);
-		chart_jA->setTitle("Knee_left Angle");
-		chart_jA->setAnimationOptions(QChart::NoAnimation);
-		//chart->axisY()->setRange(-0.5, 0.5);
-		QChartView *chartview_jA = new QChartView();
-		chartview_jA->setChart(chart_jA);
-		chartview_jA->setRenderHint(QPainter::Antialiasing);
-		ui.scrollArea_KneeAngle_clip->setWidget(chartview_jA);
-
-		//建立Cycle
-		Cycle data(*p_obj);
-		//data.setPlotpart(JointType_KneeLeft, "y", 8);
-		data.setPlotMat(9);
-		LineChart *chart_c = new LineChart();
-		chart_c->plotCycle(Cycle::extractMatdata(data.getCycles_Angle()),data.getNorFrameMark());
-		chart_c->setTitle("Position_Ankle_left_y");
-		chart_c->legend()->hide();
-		chart_c->setAnimationOptions(QChart::NoAnimation);
-		QChartView *chartview_ori = new QChartView();
-		chartview_ori->setChart(chart_c);
-		chartview_ori->setRenderHint(QPainter::Antialiasing);
-		ui.scrollArea_graph->setWidget(chartview_ori);
-
-		LineChart *poly = new LineChart();
-		poly->plotPolyfitRes(data.getPlfPara()[6], data.getNorFrameMark()[6], data.getLeftAnkleY()[6]);
-		poly->setTitle("Ankle_left_JointAngle[6]_polyFit");
-		poly->legend()->hide();
-		poly->setAnimationOptions(QChart::NoAnimation);
-		QChartView *chartview_pl = new QChartView();
-		chartview_pl->setChart(poly);
-		chartview_pl->setRenderHint(QPainter::Antialiasing);
-		ui.scrollArea_3->setWidget(chartview_pl);
 		
-		LineChart *chart_m = new LineChart();
-		chart_m->plotMeanSqErr(data);
-		chart_m->setTitle("Ankle_left_JointAngle_MeanSqErr");
-		chart_m->legend()->hide();
-		chart_m->setAnimationOptions(QChart::NoAnimation);
-		QChartView *chartview_mse = new QChartView();
-		chartview_mse->setChart(chart_m);
-		chartview_mse->setRenderHint(QPainter::Antialiasing);
-		ui.scrollArea_4->setWidget(chartview_mse);
 		
 		////opt
-		//p_obj->setOptJoints(OPT::Optframes(*p_obj));
+		p_obj->setJoints_opted(OPT::Optframes(*p_obj));
+		p_obj->setSegments_opted(p_obj->buildSegments(p_obj->getJoints_opted()));
+		p_obj->calJointAngles_opted();
 		
+		//逆向動力學
+		p_obj->calCOMAcc(p_obj->getSegments_filted());
 		
-		////coord
-		//OBJ::coordSys coordtrunk;
-		//coordtrunk = p_obj->calCoordupTunkR(p_obj->getJoints()[0]);
-		//coordtrunk.print();
-		////打印trunk位置
-		//std::cout << "trunk" << std::endl;
-		//std::cout << p_obj->getJoints()[0][JointType_ShoulderLeft].jointPosition << std::endl;
-		//std::cout << p_obj->getJoints()[0][JointType_ShoulderRight].jointPosition << std::endl;
-		//std::cout << p_obj->getJoints()[0][JointType_SpineMid].jointPosition << std::endl;
-		//std::cout << "trunk t" << std::endl;
-		//std::cout << p_obj->Pg2l(p_obj->getJoints()[0][JointType_ShoulderLeft], coordtrunk) << std::endl;
-		//std::cout << p_obj->Pg2l(p_obj->getJoints()[0][JointType_ShoulderRight], coordtrunk) << std::endl;
-		//std::cout << p_obj->Pg2l(p_obj->getJoints()[0][JointType_SpineMid], coordtrunk) << std::endl;
-
-		////打印bag位置
-		//Eigen::Vector3f Pbag{0,0.2,0};
-		//Eigen::Vector3f Pbaglocal = p_obj->getJoints()[0][JointType_SpineMid].Pg2l(coordtrunk) + Pbag;
-		//Eigen::Vector3f PbagG = p_obj->Pl2g(Pbaglocal, coordtrunk);
-		//std::cout << "bag position" << std::endl;
-		//std::cout << PbagG << std::endl;
-		//////打印pelvis
-		//std::cout << "Pelvis" << std::endl;
-		//std::cout << p_obj->getJoints()[0][JointType_HipLeft].jointPosition << std::endl;
-		//std::cout << p_obj->getJoints()[0][JointType_HipRight].jointPosition << std::endl;
-		//std::cout << p_obj->getJoints()[0][JointType_SpineMid].jointPosition << std::endl;
-
 		//ui提示
 		ui.statusBar->showMessage("Reconstruct Success", 2000);
 		QMessageBox::information(this, "Reconstruct", "Reconstruct Success~");
@@ -1079,6 +1715,150 @@ void MainWindow::readRec()
 		ui.statusBar->showMessage("Reconstruct failed", 2000);
 		QMessageBox::information(this, "Reconstruct", "Please select position file.");
 	}
+}
+
+void MainWindow::plot()
+{
+	//画图
+	//脚踝的y坐标（上下）filt前后对比
+	LineChart *chart = new LineChart();
+	chart->plotJointPosition(*p_objs[n_obj], JointType_AnkleLeft);
+	chart->setTitle("Position_Ankle_left");
+	chart->setAnimationOptions(QChart::NoAnimation);
+	//chart->axisY()->setRange(-0.5, 0.5);
+	QChartView *chartview_filtered = new QChartView();
+	chartview_filtered->setChart(chart);
+	chartview_filtered->setRenderHint(QPainter::Antialiasing);
+	ui.scrollArea_footp->setWidget(chartview_filtered);
+
+	//关节角度kneeleft filt前后对比
+	LineChart *chart_jA = new LineChart();
+	chart_jA->plotJointAngle(*p_objs[n_obj], OBJ::JAngleType_KneeL);
+	chart_jA->setTitle("Knee_left Angle");
+	chart_jA->setAnimationOptions(QChart::NoAnimation);
+	//chart->axisY()->setRange(-0.5, 0.5);
+	QChartView *chartview_jA = new QChartView();
+	chartview_jA->setChart(chart_jA);
+	chartview_jA->setRenderHint(QPainter::Antialiasing);
+	ui.scrollArea_KneeAngle_clip->setWidget(chartview_jA);
+
+	//建立Cycle压入Cycles
+	//画hip角度不同trail间对比
+	plotNtrail("HipL");
+	
+	//画Knee角度不同trail间对比
+	plotNtrail("KneeL");
+	plotNtrail("AnkleL");
+	//画Knee角度不同opt之后的对比
+	if (p_objs[n_obj]->getJoints_opted().size()>0)
+	{
+#pragma region 画Knee角度opt之后的对比
+		std::vector<Cycle> cycles_KneeL_optdiff;
+
+		Cycle cycle_KneeL_filt(*(p_objs[n_obj]), "filt");
+		cycle_KneeL_filt.setPlotMat(OBJ::JAngleType_KneeL, "x", 9);
+
+		Cycle cycle_KneeL_opt(*(p_objs[n_obj]), "opt");
+		cycle_KneeL_opt.setPlotMat(OBJ::JAngleType_KneeL, "x", 9);
+
+		cycles_KneeL_optdiff.push_back(cycle_KneeL_filt);
+		cycles_KneeL_optdiff.push_back(cycle_KneeL_opt);
+
+		LineChart *chart_KneeL_optdiff = new LineChart();
+		chart_KneeL_optdiff->setColors(80);
+		chart_KneeL_optdiff->plotMeanSqErr(cycles_KneeL_optdiff);
+		chart_KneeL_optdiff->setTitle("KneeL JointAngle before and after Opt");
+
+		QChartView *chartview_KneeL_optdiff = new QChartView();
+		chartview_KneeL_optdiff->setChart(chart_KneeL_optdiff);
+		chartview_KneeL_optdiff->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_Knee_opt->setWidget(chartview_KneeL_optdiff);
+#pragma endregion
+		//画Hip角度不同opt之后的对比
+#pragma region 画Hip角度opt之后的对比
+		std::vector<Cycle> cycles_HipL_optdiff;
+
+		Cycle cycle_HipL_filt(*(p_objs[n_obj]), "filt");
+		cycle_HipL_filt.setPlotMat(OBJ::JAngleType_HipL, "x", 9);
+
+		Cycle cycle_HipL_opt(*(p_objs[n_obj]), "opt");
+		cycle_HipL_opt.setPlotMat(OBJ::JAngleType_HipL, "x", 9);
+
+		cycles_HipL_optdiff.push_back(cycle_HipL_filt);
+		cycles_HipL_optdiff.push_back(cycle_HipL_opt);
+
+		LineChart *chart_HipL_optdiff = new LineChart();
+		chart_HipL_optdiff->setColors(80);
+		chart_HipL_optdiff->plotMeanSqErr(cycles_HipL_optdiff);
+		chart_HipL_optdiff->setTitle("HipL JointAngle before and after Opt");
+
+		QChartView *chartview_HipL_optdiff = new QChartView();
+		chartview_HipL_optdiff->setChart(chart_HipL_optdiff);
+		chartview_HipL_optdiff->setRenderHint(QPainter::Antialiasing);
+		ui.scrollArea_Hip_opt->setWidget(chartview_HipL_optdiff);
+#pragma endregion
+		
+		
+	}
+	//画KneeL的Vicon和Kinect对比图
+	//plotViconVsKinect("KneeL");
+	//plotViconVsKinect("HipL");
+	//plotViconVsKinect("AnkleL");
+	
+	//plotNviconTrail("KneeL");
+	//plotNviconTrail("HipL");
+	//plotNviconTrail("AnkleL");
+	
+	/*LineChart *chart_c = new LineChart();
+	chart_c->plotCycle(Cycle::extractMatdata(data.getCycles_Angle(), OBJ::JAngleType_HipR, "x"), data.getNorFrameMark());
+	chart_c->setTitle("Position_Ankle_left_y");
+	chart_c->legend()->hide();
+	chart_c->setAnimationOptions(QChart::NoAnimation);
+	QChartView *chartview_ori = new QChartView();
+	chartview_ori->setChart(chart_c);
+	chartview_ori->setRenderHint(QPainter::Antialiasing);
+	ui.scrollArea_graph->setWidget(chartview_ori);*/
+	
+	//Cycle cycle_polyfit(*(p_objs[n_obj]), "raw");
+	//cycle_polyfit.setPlotpart(JointType_AnkleLeft, "y", 5);
+	//LineChart *poly = new LineChart();
+	//poly->plotPolyfitRes(cycle_polyfit.getPlfPara()[6], cycle_polyfit.getNorFrameMark()[6], cycle_polyfit.getDataMat()[6]);
+	//poly->setTitle("Ankle_left_JointAngle[6]_polyFit");
+	//poly->legend()->hide();
+	//poly->setAnimationOptions(QChart::NoAnimation);
+	//QChartView *chartview_pl = new QChartView();
+	//chartview_pl->setChart(poly);
+	//chartview_pl->setRenderHint(QPainter::Antialiasing);
+	//ui.scrollArea_Hip_opt->setWidget(chartview_pl);
+
+	
+	//plotSuperposition_polyfit("KneeL");
+	//plotSuperposition_polyfit("AnkleL");
+	
+	//fit trajectory
+	/*fitAnkleCircle(*p_objs[n_obj]);
+	p_objs[n_obj]->calTraject_Ankle();
+	p_objs[n_obj]->calTraject_Knee();
+	p_objs[n_obj]->calTraject_Hip();*/
+	
+
+
+	plotJointYZ(*p_objs[n_obj], "HipL");
+	plotJointYZ(*p_objs[n_obj], "KneeL");
+    plotJointYZ(*p_objs[n_obj], "AnkleL");
+	
+	/*plotSuperposition_polyfit("HipL");
+	plotSuperposition_polyfit_traj(*p_objs[n_obj], "AnkleL");
+	plotSuperposition_polyfit_traj(*p_objs[n_obj], "KneeL");*/
+	//畫角度
+	/*p_objs[n_obj]->calCycleAngles();
+	plotViconVsKinect_Fit("KneeL");*/
+	
+	//最後結果 Knee
+	plotViconMeanSqErr("AnkleL");
+	plotViconMeanSqErr("KneeL");
+	plotViconMeanSqErr("HipL");
+	
 }
 
 

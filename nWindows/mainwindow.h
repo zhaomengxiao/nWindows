@@ -102,6 +102,29 @@ private://**私有成员变量**
 	QString rootPath;
 public:
 	//int drawVTKscene();   //绘制3d场景
+	
+	//plot
+	//画Vicon vs Kinect 图
+	void plotViconVsKinect(QString jointName);
+	//画已重建的N个trail的对比图
+	void plotNtrail(QString jointName);
+	void plotNviconTrail(QString jointName);
+	//画出raw data叠加图
+	void plotSuperposition(QString jointName);
+	void plotJointYZ(const OBJ::Obj &obj, QString jointName);
+	void plotSuperposition_polyfit(QString jointName);
+	//画出raw data叠加图的基礎上對比Fit 後的軌跡
+	void plotSuperposition_polyfit_traj(const OBJ::Obj &obj, QString jointName);
+	//ankle 軌跡 fit圓
+	void fitAnkleCircle(OBJ::Obj &obj);
+	//Vicon vs Kinect fit
+	void plotViconVsKinect_Fit(QString jointName);
+
+	void plotViconMeanSqErr(QString jointName);
+
+	//儲存vicon mat
+	stdMatd viconMat;
+	
 private://**私有函数**
 	//界面
 	void createAction();   //创建动作
@@ -133,6 +156,8 @@ private slots:
 	void SimpleMode(bool);
 	void OffMode(bool);
 	void Nframe(int i);
+	void SetNObj(int i);
+	void ListObjselect(QModelIndex qmI);
 	void SetCD(int t);
 	void ResetCD();
 	void SetLT(QString str);
@@ -160,4 +185,7 @@ private slots:
 
 	//处理已收录的数据
 	void readRec();
+
+	//画图
+	void plot();
 };

@@ -161,38 +161,58 @@ public:
     QLabel *label_13;
     QWidget *tab_2;
     QGridLayout *gridLayout_4;
-    QTreeWidget *treeWidget;
-    QPushButton *pushButton_openrecord;
-    QSpacerItem *horizontalSpacer_11;
+    QSpinBox *spinBox_Nobj;
+    QSpinBox *spinBox_Nframe;
+    QListWidget *listWidget_objs;
     QRadioButton *radioButton;
     QPushButton *pushButton_recon;
     QSlider *horizontalSlider;
+    QPushButton *pushButton_openrecord;
+    QTreeWidget *treeWidget;
+    QSpacerItem *horizontalSpacer_11;
     QWidget *widget_rpath;
     QVBoxLayout *verticalLayout;
     QLineEdit *lineEdit_rdate;
     QLineEdit *lineEdit_rsubjn;
     QLineEdit *lineEdit_rtn;
-    QSpinBox *spinBox_Nframe;
+    QWidget *widget_SegLength;
+    QGridLayout *gridLayout_15;
+    QLCDNumber *lcdNumber_ThighR;
+    QLCDNumber *lcdNumber_ThighL;
+    QLabel *label_segLength;
+    QLCDNumber *lcdNumber_ShankL;
+    QLCDNumber *lcdNumber_ShankR;
     QWidget *tab_3;
     QGridLayout *gridLayout_12;
-    QScrollArea *scrollArea_graph;
+    QScrollArea *scrollArea_Hip;
     QWidget *scrollAreaWidgetContents_2;
-    QScrollArea *scrollArea_3;
-    QWidget *scrollAreaWidgetContents_4;
-    QScrollArea *scrollArea_4;
+    QScrollArea *scrollArea_Ankle;
     QWidget *scrollAreaWidgetContents_5;
-    QScrollArea *scrollArea_2;
+    QScrollArea *scrollArea_Knee;
+    QWidget *scrollAreaWidgetContents_4;
+    QPushButton *pushButton_plot;
+    QSpacerItem *horizontalSpacer_9;
+    QScrollArea *scrollArea_footp;
     QWidget *scrollAreaWidgetContents_3;
     QWidget *tab_4;
     QGridLayout *gridLayout_13;
-    QScrollArea *scrollArea_KneeAngle_allcycle;
-    QWidget *scrollAreaWidgetContents_6;
-    QScrollArea *scrollArea_KneeAngle_poly;
-    QWidget *scrollAreaWidgetContents_7;
-    QScrollArea *scrollArea_KneeAngle_ave;
-    QWidget *scrollAreaWidgetContents_9;
+    QPushButton *pushButton_2;
     QScrollArea *scrollArea_KneeAngle_clip;
     QWidget *scrollAreaWidgetContents_8;
+    QScrollArea *scrollArea_Knee_opt;
+    QWidget *scrollAreaWidgetContents_7;
+    QScrollArea *scrollArea_Ankle_opt;
+    QWidget *scrollAreaWidgetContents_9;
+    QScrollArea *scrollArea_Hip_opt;
+    QWidget *scrollAreaWidgetContents_6;
+    QWidget *tab_5;
+    QGridLayout *gridLayout_16;
+    QScrollArea *scrollArea_Hip_Pyz;
+    QWidget *scrollAreaWidgetContents_10;
+    QScrollArea *scrollArea_Ankle_Pyz;
+    QWidget *scrollAreaWidgetContents_12;
+    QScrollArea *scrollArea_Knee_Pyz;
+    QWidget *scrollAreaWidgetContents_11;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -201,7 +221,7 @@ public:
     {
         if (MainWindowClass->objectName().isEmpty())
             MainWindowClass->setObjectName(QStringLiteral("MainWindowClass"));
-        MainWindowClass->resize(1272, 897);
+        MainWindowClass->resize(1290, 897);
         centralWidget = new QWidget(MainWindowClass);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidget->setStyleSheet(QStringLiteral("background-color:#464652;color:#E8E8E8"));
@@ -232,6 +252,8 @@ public:
         sizePolicy.setVerticalStretch(0);
         sizePolicy.setHeightForWidth(tabWidget->sizePolicy().hasHeightForWidth());
         tabWidget->setSizePolicy(sizePolicy);
+        tabWidget->setMinimumSize(QSize(0, 0));
+        tabWidget->setMaximumSize(QSize(16777215, 16777215));
         QFont font;
         font.setFamily(QStringLiteral("Arial Black"));
         font.setPointSize(22);
@@ -695,7 +717,7 @@ public:
         scrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1211, 684));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1229, 684));
         gridLayout_26 = new QGridLayout(scrollAreaWidgetContents);
         gridLayout_26->setSpacing(6);
         gridLayout_26->setContentsMargins(11, 11, 11, 11);
@@ -1295,6 +1317,89 @@ public:
         gridLayout_4->setSpacing(6);
         gridLayout_4->setContentsMargins(11, 11, 11, 11);
         gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        spinBox_Nobj = new QSpinBox(tab_2);
+        spinBox_Nobj->setObjectName(QStringLiteral("spinBox_Nobj"));
+        spinBox_Nobj->setMinimumSize(QSize(100, 30));
+        spinBox_Nobj->setMaximumSize(QSize(100, 16777215));
+
+        gridLayout_4->addWidget(spinBox_Nobj, 3, 4, 1, 1);
+
+        spinBox_Nframe = new QSpinBox(tab_2);
+        spinBox_Nframe->setObjectName(QStringLiteral("spinBox_Nframe"));
+        spinBox_Nframe->setMinimumSize(QSize(40, 40));
+        spinBox_Nframe->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_4->addWidget(spinBox_Nframe, 3, 5, 1, 1);
+
+        listWidget_objs = new QListWidget(tab_2);
+        listWidget_objs->setObjectName(QStringLiteral("listWidget_objs"));
+        listWidget_objs->setMaximumSize(QSize(300, 16777215));
+
+        gridLayout_4->addWidget(listWidget_objs, 2, 0, 1, 1);
+
+        radioButton = new QRadioButton(tab_2);
+        radioButton->setObjectName(QStringLiteral("radioButton"));
+        radioButton->setMinimumSize(QSize(120, 60));
+        radioButton->setMaximumSize(QSize(120, 60));
+        radioButton->setStyleSheet(QLatin1String("QRadioButton{border-radius: 10px;\n"
+"font: 14pt \"Arial\";\n"
+"\n"
+"}\n"
+"\n"
+"QRadioButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QRadioButton::hover{\n"
+"background-color: rgb(76, 120, 65)}"));
+
+        gridLayout_4->addWidget(radioButton, 4, 3, 1, 1);
+
+        pushButton_recon = new QPushButton(tab_2);
+        pushButton_recon->setObjectName(QStringLiteral("pushButton_recon"));
+        pushButton_recon->setMinimumSize(QSize(120, 60));
+        pushButton_recon->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px;\n"
+"font: 14pt \"Arial\";\n"
+"\n"
+"}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+
+        gridLayout_4->addWidget(pushButton_recon, 3, 3, 1, 1);
+
+        horizontalSlider = new QSlider(tab_2);
+        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
+        horizontalSlider->setMinimumSize(QSize(500, 0));
+        horizontalSlider->setOrientation(Qt::Horizontal);
+
+        gridLayout_4->addWidget(horizontalSlider, 4, 4, 1, 2);
+
+        pushButton_openrecord = new QPushButton(tab_2);
+        pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
+        pushButton_openrecord->setMinimumSize(QSize(100, 30));
+        QFont font6;
+        font6.setFamily(QStringLiteral("Arial"));
+        font6.setPointSize(14);
+        pushButton_openrecord->setFont(font6);
+        pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
+"\n"
+"QPushButton::!hover{\n"
+"background-color: rgb(105, 165, 90)}\n"
+"\n"
+"QPushButton::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+""));
+        QIcon icon4;
+        icon4.addFile(QStringLiteral(":/tree/Resources/shuaxin.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pushButton_openrecord->setIcon(icon4);
+        pushButton_openrecord->setFlat(false);
+
+        gridLayout_4->addWidget(pushButton_openrecord, 0, 0, 1, 1);
+
         treeWidget = new QTreeWidget(tab_2);
         treeWidget->setObjectName(QStringLiteral("treeWidget"));
         treeWidget->setMinimumSize(QSize(1000, 500));
@@ -1352,73 +1457,11 @@ public:
         treeWidget->setAnimated(true);
         treeWidget->header()->setVisible(false);
 
-        gridLayout_4->addWidget(treeWidget, 1, 0, 1, 5);
-
-        pushButton_openrecord = new QPushButton(tab_2);
-        pushButton_openrecord->setObjectName(QStringLiteral("pushButton_openrecord"));
-        pushButton_openrecord->setMinimumSize(QSize(100, 30));
-        QFont font6;
-        font6.setFamily(QStringLiteral("Arial"));
-        font6.setPointSize(14);
-        pushButton_openrecord->setFont(font6);
-        pushButton_openrecord->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-""));
-        QIcon icon4;
-        icon4.addFile(QStringLiteral(":/tree/Resources/shuaxin.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pushButton_openrecord->setIcon(icon4);
-        pushButton_openrecord->setFlat(false);
-
-        gridLayout_4->addWidget(pushButton_openrecord, 0, 0, 1, 1);
+        gridLayout_4->addWidget(treeWidget, 2, 1, 1, 5);
 
         horizontalSpacer_11 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_4->addItem(horizontalSpacer_11, 0, 1, 1, 1);
-
-        radioButton = new QRadioButton(tab_2);
-        radioButton->setObjectName(QStringLiteral("radioButton"));
-        radioButton->setMinimumSize(QSize(120, 60));
-        radioButton->setMaximumSize(QSize(120, 60));
-        radioButton->setStyleSheet(QLatin1String("QRadioButton{border-radius: 10px;\n"
-"font: 14pt \"Arial\";\n"
-"\n"
-"}\n"
-"\n"
-"QRadioButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QRadioButton::hover{\n"
-"background-color: rgb(76, 120, 65)}"));
-
-        gridLayout_4->addWidget(radioButton, 3, 2, 1, 1);
-
-        pushButton_recon = new QPushButton(tab_2);
-        pushButton_recon->setObjectName(QStringLiteral("pushButton_recon"));
-        pushButton_recon->setMinimumSize(QSize(120, 60));
-        pushButton_recon->setStyleSheet(QLatin1String("QPushButton{border-radius: 10px;\n"
-"font: 14pt \"Arial\";\n"
-"\n"
-"}\n"
-"\n"
-"QPushButton::!hover{\n"
-"background-color: rgb(105, 165, 90)}\n"
-"\n"
-"QPushButton::hover{\n"
-"background-color: rgb(76, 120, 65)}\n"
-""));
-
-        gridLayout_4->addWidget(pushButton_recon, 2, 2, 1, 1);
-
-        horizontalSlider = new QSlider(tab_2);
-        horizontalSlider->setObjectName(QStringLiteral("horizontalSlider"));
-        horizontalSlider->setOrientation(Qt::Horizontal);
-
-        gridLayout_4->addWidget(horizontalSlider, 3, 4, 1, 1);
+        gridLayout_4->addItem(horizontalSpacer_11, 0, 1, 1, 4);
 
         widget_rpath = new QWidget(tab_2);
         widget_rpath->setObjectName(QStringLiteral("widget_rpath"));
@@ -1461,14 +1504,53 @@ public:
         verticalLayout->addWidget(lineEdit_rtn);
 
 
-        gridLayout_4->addWidget(widget_rpath, 2, 0, 2, 2);
+        gridLayout_4->addWidget(widget_rpath, 3, 0, 2, 2);
 
-        spinBox_Nframe = new QSpinBox(tab_2);
-        spinBox_Nframe->setObjectName(QStringLiteral("spinBox_Nframe"));
-        spinBox_Nframe->setMinimumSize(QSize(40, 40));
-        spinBox_Nframe->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+        widget_SegLength = new QWidget(tab_2);
+        widget_SegLength->setObjectName(QStringLiteral("widget_SegLength"));
+        widget_SegLength->setStyleSheet(QLatin1String("QWidget{border-radius: 10px}\n"
+"\n"
+"QWidget::!hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"\n"
+"QWidget::hover{\n"
+"background-color: rgb(76, 120, 65)}\n"
+"QWidget{font: 14pt \"Arial\";}"));
+        gridLayout_15 = new QGridLayout(widget_SegLength);
+        gridLayout_15->setSpacing(6);
+        gridLayout_15->setContentsMargins(11, 11, 11, 11);
+        gridLayout_15->setObjectName(QStringLiteral("gridLayout_15"));
+        lcdNumber_ThighR = new QLCDNumber(widget_SegLength);
+        lcdNumber_ThighR->setObjectName(QStringLiteral("lcdNumber_ThighR"));
+        lcdNumber_ThighR->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
 
-        gridLayout_4->addWidget(spinBox_Nframe, 2, 4, 1, 1);
+        gridLayout_15->addWidget(lcdNumber_ThighR, 2, 2, 1, 1);
+
+        lcdNumber_ThighL = new QLCDNumber(widget_SegLength);
+        lcdNumber_ThighL->setObjectName(QStringLiteral("lcdNumber_ThighL"));
+        lcdNumber_ThighL->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_15->addWidget(lcdNumber_ThighL, 2, 1, 1, 1);
+
+        label_segLength = new QLabel(widget_SegLength);
+        label_segLength->setObjectName(QStringLiteral("label_segLength"));
+
+        gridLayout_15->addWidget(label_segLength, 0, 0, 1, 3);
+
+        lcdNumber_ShankL = new QLCDNumber(widget_SegLength);
+        lcdNumber_ShankL->setObjectName(QStringLiteral("lcdNumber_ShankL"));
+        lcdNumber_ShankL->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_15->addWidget(lcdNumber_ShankL, 3, 1, 1, 1);
+
+        lcdNumber_ShankR = new QLCDNumber(widget_SegLength);
+        lcdNumber_ShankR->setObjectName(QStringLiteral("lcdNumber_ShankR"));
+        lcdNumber_ShankR->setStyleSheet(QStringLiteral("background-color: rgb(0, 0, 0);"));
+
+        gridLayout_15->addWidget(lcdNumber_ShankR, 3, 2, 1, 1);
+
+
+        gridLayout_4->addWidget(widget_SegLength, 3, 2, 2, 1);
 
         QIcon icon5;
         icon5.addFile(QStringLiteral(":/myimages/Resources/jilu.png"), QSize(), QIcon::Normal, QIcon::Off);
@@ -1479,45 +1561,57 @@ public:
         gridLayout_12->setSpacing(6);
         gridLayout_12->setContentsMargins(11, 11, 11, 11);
         gridLayout_12->setObjectName(QStringLiteral("gridLayout_12"));
-        scrollArea_graph = new QScrollArea(tab_3);
-        scrollArea_graph->setObjectName(QStringLiteral("scrollArea_graph"));
-        scrollArea_graph->setWidgetResizable(true);
+        scrollArea_Hip = new QScrollArea(tab_3);
+        scrollArea_Hip->setObjectName(QStringLiteral("scrollArea_Hip"));
+        scrollArea_Hip->setMaximumSize(QSize(200, 16777215));
+        scrollArea_Hip->setWidgetResizable(true);
         scrollAreaWidgetContents_2 = new QWidget();
         scrollAreaWidgetContents_2->setObjectName(QStringLiteral("scrollAreaWidgetContents_2"));
-        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 404, 347));
-        scrollArea_graph->setWidget(scrollAreaWidgetContents_2);
+        scrollAreaWidgetContents_2->setGeometry(QRect(0, 0, 198, 332));
+        scrollArea_Hip->setWidget(scrollAreaWidgetContents_2);
 
-        gridLayout_12->addWidget(scrollArea_graph, 0, 0, 1, 1);
+        gridLayout_12->addWidget(scrollArea_Hip, 0, 0, 1, 1);
 
-        scrollArea_3 = new QScrollArea(tab_3);
-        scrollArea_3->setObjectName(QStringLiteral("scrollArea_3"));
-        scrollArea_3->setWidgetResizable(true);
-        scrollAreaWidgetContents_4 = new QWidget();
-        scrollAreaWidgetContents_4->setObjectName(QStringLiteral("scrollAreaWidgetContents_4"));
-        scrollAreaWidgetContents_4->setGeometry(QRect(0, 0, 404, 347));
-        scrollArea_3->setWidget(scrollAreaWidgetContents_4);
-
-        gridLayout_12->addWidget(scrollArea_3, 0, 1, 1, 1);
-
-        scrollArea_4 = new QScrollArea(tab_3);
-        scrollArea_4->setObjectName(QStringLiteral("scrollArea_4"));
-        scrollArea_4->setWidgetResizable(true);
+        scrollArea_Ankle = new QScrollArea(tab_3);
+        scrollArea_Ankle->setObjectName(QStringLiteral("scrollArea_Ankle"));
+        scrollArea_Ankle->setMaximumSize(QSize(200, 16777215));
+        scrollArea_Ankle->setWidgetResizable(true);
         scrollAreaWidgetContents_5 = new QWidget();
         scrollAreaWidgetContents_5->setObjectName(QStringLiteral("scrollAreaWidgetContents_5"));
-        scrollAreaWidgetContents_5->setGeometry(QRect(0, 0, 404, 347));
-        scrollArea_4->setWidget(scrollAreaWidgetContents_5);
+        scrollAreaWidgetContents_5->setGeometry(QRect(0, 0, 198, 332));
+        scrollArea_Ankle->setWidget(scrollAreaWidgetContents_5);
 
-        gridLayout_12->addWidget(scrollArea_4, 0, 2, 1, 1);
+        gridLayout_12->addWidget(scrollArea_Ankle, 0, 2, 1, 1);
 
-        scrollArea_2 = new QScrollArea(tab_3);
-        scrollArea_2->setObjectName(QStringLiteral("scrollArea_2"));
-        scrollArea_2->setWidgetResizable(true);
+        scrollArea_Knee = new QScrollArea(tab_3);
+        scrollArea_Knee->setObjectName(QStringLiteral("scrollArea_Knee"));
+        scrollArea_Knee->setMaximumSize(QSize(200, 16777215));
+        scrollArea_Knee->setWidgetResizable(true);
+        scrollAreaWidgetContents_4 = new QWidget();
+        scrollAreaWidgetContents_4->setObjectName(QStringLiteral("scrollAreaWidgetContents_4"));
+        scrollAreaWidgetContents_4->setGeometry(QRect(0, 0, 198, 332));
+        scrollArea_Knee->setWidget(scrollAreaWidgetContents_4);
+
+        gridLayout_12->addWidget(scrollArea_Knee, 0, 1, 1, 1);
+
+        pushButton_plot = new QPushButton(tab_3);
+        pushButton_plot->setObjectName(QStringLiteral("pushButton_plot"));
+
+        gridLayout_12->addWidget(pushButton_plot, 2, 0, 1, 1);
+
+        horizontalSpacer_9 = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+
+        gridLayout_12->addItem(horizontalSpacer_9, 0, 3, 1, 1);
+
+        scrollArea_footp = new QScrollArea(tab_3);
+        scrollArea_footp->setObjectName(QStringLiteral("scrollArea_footp"));
+        scrollArea_footp->setWidgetResizable(true);
         scrollAreaWidgetContents_3 = new QWidget();
         scrollAreaWidgetContents_3->setObjectName(QStringLiteral("scrollAreaWidgetContents_3"));
-        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 1228, 346));
-        scrollArea_2->setWidget(scrollAreaWidgetContents_3);
+        scrollAreaWidgetContents_3->setGeometry(QRect(0, 0, 1246, 332));
+        scrollArea_footp->setWidget(scrollAreaWidgetContents_3);
 
-        gridLayout_12->addWidget(scrollArea_2, 1, 0, 1, 3);
+        gridLayout_12->addWidget(scrollArea_footp, 1, 0, 1, 4);
 
         tabWidget->addTab(tab_3, QString());
         tab_4 = new QWidget();
@@ -1526,54 +1620,102 @@ public:
         gridLayout_13->setSpacing(6);
         gridLayout_13->setContentsMargins(11, 11, 11, 11);
         gridLayout_13->setObjectName(QStringLiteral("gridLayout_13"));
-        scrollArea_KneeAngle_allcycle = new QScrollArea(tab_4);
-        scrollArea_KneeAngle_allcycle->setObjectName(QStringLiteral("scrollArea_KneeAngle_allcycle"));
-        scrollArea_KneeAngle_allcycle->setWidgetResizable(true);
-        scrollAreaWidgetContents_6 = new QWidget();
-        scrollAreaWidgetContents_6->setObjectName(QStringLiteral("scrollAreaWidgetContents_6"));
-        scrollAreaWidgetContents_6->setGeometry(QRect(0, 0, 404, 347));
-        scrollArea_KneeAngle_allcycle->setWidget(scrollAreaWidgetContents_6);
+        pushButton_2 = new QPushButton(tab_4);
+        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
 
-        gridLayout_13->addWidget(scrollArea_KneeAngle_allcycle, 0, 0, 1, 1);
-
-        scrollArea_KneeAngle_poly = new QScrollArea(tab_4);
-        scrollArea_KneeAngle_poly->setObjectName(QStringLiteral("scrollArea_KneeAngle_poly"));
-        scrollArea_KneeAngle_poly->setWidgetResizable(true);
-        scrollAreaWidgetContents_7 = new QWidget();
-        scrollAreaWidgetContents_7->setObjectName(QStringLiteral("scrollAreaWidgetContents_7"));
-        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 404, 347));
-        scrollArea_KneeAngle_poly->setWidget(scrollAreaWidgetContents_7);
-
-        gridLayout_13->addWidget(scrollArea_KneeAngle_poly, 0, 1, 1, 1);
-
-        scrollArea_KneeAngle_ave = new QScrollArea(tab_4);
-        scrollArea_KneeAngle_ave->setObjectName(QStringLiteral("scrollArea_KneeAngle_ave"));
-        scrollArea_KneeAngle_ave->setWidgetResizable(true);
-        scrollAreaWidgetContents_9 = new QWidget();
-        scrollAreaWidgetContents_9->setObjectName(QStringLiteral("scrollAreaWidgetContents_9"));
-        scrollAreaWidgetContents_9->setGeometry(QRect(0, 0, 404, 347));
-        scrollArea_KneeAngle_ave->setWidget(scrollAreaWidgetContents_9);
-
-        gridLayout_13->addWidget(scrollArea_KneeAngle_ave, 0, 2, 1, 1);
+        gridLayout_13->addWidget(pushButton_2, 2, 0, 1, 1);
 
         scrollArea_KneeAngle_clip = new QScrollArea(tab_4);
         scrollArea_KneeAngle_clip->setObjectName(QStringLiteral("scrollArea_KneeAngle_clip"));
         scrollArea_KneeAngle_clip->setWidgetResizable(true);
         scrollAreaWidgetContents_8 = new QWidget();
         scrollAreaWidgetContents_8->setObjectName(QStringLiteral("scrollAreaWidgetContents_8"));
-        scrollAreaWidgetContents_8->setGeometry(QRect(0, 0, 1228, 346));
+        scrollAreaWidgetContents_8->setGeometry(QRect(0, 0, 1246, 332));
         scrollArea_KneeAngle_clip->setWidget(scrollAreaWidgetContents_8);
 
-        gridLayout_13->addWidget(scrollArea_KneeAngle_clip, 1, 0, 1, 3);
+        gridLayout_13->addWidget(scrollArea_KneeAngle_clip, 1, 0, 1, 4);
+
+        scrollArea_Knee_opt = new QScrollArea(tab_4);
+        scrollArea_Knee_opt->setObjectName(QStringLiteral("scrollArea_Knee_opt"));
+        scrollArea_Knee_opt->setMaximumSize(QSize(1000, 16777215));
+        scrollArea_Knee_opt->setWidgetResizable(true);
+        scrollAreaWidgetContents_7 = new QWidget();
+        scrollAreaWidgetContents_7->setObjectName(QStringLiteral("scrollAreaWidgetContents_7"));
+        scrollAreaWidgetContents_7->setGeometry(QRect(0, 0, 408, 332));
+        scrollArea_Knee_opt->setWidget(scrollAreaWidgetContents_7);
+
+        gridLayout_13->addWidget(scrollArea_Knee_opt, 0, 1, 1, 1);
+
+        scrollArea_Ankle_opt = new QScrollArea(tab_4);
+        scrollArea_Ankle_opt->setObjectName(QStringLiteral("scrollArea_Ankle_opt"));
+        scrollArea_Ankle_opt->setMaximumSize(QSize(1000, 16777215));
+        scrollArea_Ankle_opt->setWidgetResizable(true);
+        scrollAreaWidgetContents_9 = new QWidget();
+        scrollAreaWidgetContents_9->setObjectName(QStringLiteral("scrollAreaWidgetContents_9"));
+        scrollAreaWidgetContents_9->setGeometry(QRect(0, 0, 408, 332));
+        scrollArea_Ankle_opt->setWidget(scrollAreaWidgetContents_9);
+
+        gridLayout_13->addWidget(scrollArea_Ankle_opt, 0, 2, 1, 1);
+
+        scrollArea_Hip_opt = new QScrollArea(tab_4);
+        scrollArea_Hip_opt->setObjectName(QStringLiteral("scrollArea_Hip_opt"));
+        scrollArea_Hip_opt->setMaximumSize(QSize(1000, 16777215));
+        scrollArea_Hip_opt->setWidgetResizable(true);
+        scrollAreaWidgetContents_6 = new QWidget();
+        scrollAreaWidgetContents_6->setObjectName(QStringLiteral("scrollAreaWidgetContents_6"));
+        scrollAreaWidgetContents_6->setGeometry(QRect(0, 0, 408, 332));
+        scrollArea_Hip_opt->setWidget(scrollAreaWidgetContents_6);
+
+        gridLayout_13->addWidget(scrollArea_Hip_opt, 0, 0, 1, 1);
 
         tabWidget->addTab(tab_4, QString());
+        tab_5 = new QWidget();
+        tab_5->setObjectName(QStringLiteral("tab_5"));
+        gridLayout_16 = new QGridLayout(tab_5);
+        gridLayout_16->setSpacing(6);
+        gridLayout_16->setContentsMargins(11, 11, 11, 11);
+        gridLayout_16->setObjectName(QStringLiteral("gridLayout_16"));
+        scrollArea_Hip_Pyz = new QScrollArea(tab_5);
+        scrollArea_Hip_Pyz->setObjectName(QStringLiteral("scrollArea_Hip_Pyz"));
+        scrollArea_Hip_Pyz->setMaximumSize(QSize(1000, 1000));
+        scrollArea_Hip_Pyz->setWidgetResizable(true);
+        scrollAreaWidgetContents_10 = new QWidget();
+        scrollAreaWidgetContents_10->setObjectName(QStringLiteral("scrollAreaWidgetContents_10"));
+        scrollAreaWidgetContents_10->setGeometry(QRect(0, 0, 410, 701));
+        scrollArea_Hip_Pyz->setWidget(scrollAreaWidgetContents_10);
+
+        gridLayout_16->addWidget(scrollArea_Hip_Pyz, 0, 0, 1, 1);
+
+        scrollArea_Ankle_Pyz = new QScrollArea(tab_5);
+        scrollArea_Ankle_Pyz->setObjectName(QStringLiteral("scrollArea_Ankle_Pyz"));
+        scrollArea_Ankle_Pyz->setMaximumSize(QSize(1000, 1000));
+        scrollArea_Ankle_Pyz->setWidgetResizable(true);
+        scrollAreaWidgetContents_12 = new QWidget();
+        scrollAreaWidgetContents_12->setObjectName(QStringLiteral("scrollAreaWidgetContents_12"));
+        scrollAreaWidgetContents_12->setGeometry(QRect(0, 0, 410, 701));
+        scrollArea_Ankle_Pyz->setWidget(scrollAreaWidgetContents_12);
+
+        gridLayout_16->addWidget(scrollArea_Ankle_Pyz, 0, 2, 1, 1);
+
+        scrollArea_Knee_Pyz = new QScrollArea(tab_5);
+        scrollArea_Knee_Pyz->setObjectName(QStringLiteral("scrollArea_Knee_Pyz"));
+        scrollArea_Knee_Pyz->setMaximumSize(QSize(1000, 1000));
+        scrollArea_Knee_Pyz->setWidgetResizable(true);
+        scrollAreaWidgetContents_11 = new QWidget();
+        scrollAreaWidgetContents_11->setObjectName(QStringLiteral("scrollAreaWidgetContents_11"));
+        scrollAreaWidgetContents_11->setGeometry(QRect(0, 0, 410, 701));
+        scrollArea_Knee_Pyz->setWidget(scrollAreaWidgetContents_11);
+
+        gridLayout_16->addWidget(scrollArea_Knee_Pyz, 0, 1, 1, 1);
+
+        tabWidget->addTab(tab_5, QString());
 
         gridLayout->addWidget(tabWidget, 0, 0, 1, 1);
 
         MainWindowClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindowClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1272, 23));
+        menuBar->setGeometry(QRect(0, 0, 1290, 23));
         MainWindowClass->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindowClass);
         mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
@@ -1608,8 +1750,11 @@ public:
         QObject::connect(radioButton, SIGNAL(clicked(bool)), MainWindowClass, SLOT(OffMode(bool)));
         QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), MainWindowClass, SLOT(Nframe(int)));
         QObject::connect(horizontalSlider, SIGNAL(sliderMoved(int)), spinBox_Nframe, SLOT(setValue(int)));
+        QObject::connect(spinBox_Nobj, SIGNAL(valueChanged(int)), MainWindowClass, SLOT(SetNObj(int)));
+        QObject::connect(listWidget_objs, SIGNAL(doubleClicked(QModelIndex)), MainWindowClass, SLOT(ListObjselect(QModelIndex)));
+        QObject::connect(pushButton_plot, SIGNAL(clicked()), MainWindowClass, SLOT(plot()));
 
-        tabWidget->setCurrentIndex(4);
+        tabWidget->setCurrentIndex(5);
 
 
         QMetaObject::connectSlotsByName(MainWindowClass);
@@ -1722,14 +1867,18 @@ public:
 
         label_13->setText(QApplication::translate("MainWindowClass", "min", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab), QApplication::translate("MainWindowClass", "Control Panel ", nullptr));
-        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
-        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindowClass", "Data Base", nullptr));
-        pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "Refresh", nullptr));
         radioButton->setText(QApplication::translate("MainWindowClass", "Offline", nullptr));
         pushButton_recon->setText(QApplication::translate("MainWindowClass", "Reconstruct", nullptr));
+        pushButton_openrecord->setText(QApplication::translate("MainWindowClass", "Refresh", nullptr));
+        QTreeWidgetItem *___qtreewidgetitem = treeWidget->headerItem();
+        ___qtreewidgetitem->setText(0, QApplication::translate("MainWindowClass", "Data Base", nullptr));
+        label_segLength->setText(QApplication::translate("MainWindowClass", "Seg Length", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_2), QApplication::translate("MainWindowClass", "Files", nullptr));
+        pushButton_plot->setText(QApplication::translate("MainWindowClass", "PLOT", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_3), QApplication::translate("MainWindowClass", "graph", nullptr));
+        pushButton_2->setText(QApplication::translate("MainWindowClass", "PushButton", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_4), QApplication::translate("MainWindowClass", "\351\241\265", nullptr));
+        tabWidget->setTabText(tabWidget->indexOf(tab_5), QApplication::translate("MainWindowClass", "\351\241\265", nullptr));
     } // retranslateUi
 
 };

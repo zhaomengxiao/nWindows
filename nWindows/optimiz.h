@@ -1,5 +1,5 @@
 #pragma once
-
+#include <Kinect.h>
 #include <dlib/global_optimization.h>
 #include <obj.h>
 #include <dlib/geometry.h>
@@ -9,8 +9,8 @@ namespace OPT{
 	typedef dlib::matrix<double, 0, 1> column_vector;
 
 	//执行对一帧的最佳化
-	OBJ::OptJoints optSingleF(const OBJ::Obj &obj, int frameNum);
-	std::vector< OBJ::OptJoints> Optframes(const OBJ::Obj &obj);
+	OBJ::Joints optSingleF(const OBJ::Obj &obj, int frameNum);
+	std::vector<OBJ::Joints> Optframes(const OBJ::Obj &obj);
 	//math
 	vec subtract(const OBJ::Joint &A, const OBJ::Joint &B);
 	double norm(vec v);

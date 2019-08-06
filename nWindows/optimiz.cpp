@@ -5,7 +5,7 @@
 
 using namespace OPT;
 
-OBJ::OptJoints OPT::optSingleF(const OBJ::Obj &obj,int frameNum)
+OBJ::Joints OPT::optSingleF(const OBJ::Obj &obj,int frameNum)
 {
 #pragma region Pelvis Opt
 
@@ -36,14 +36,14 @@ OBJ::OptJoints OPT::optSingleF(const OBJ::Obj &obj,int frameNum)
 	std::cout << "seg length:" << L1 << "," << L2 << "," << L3 << "," << L4 << std::endl;
 	#pragma endregion
 
-	#pragma region 取得下肢相对于pelvis之局部坐标用于最佳化
+	#pragma region 取得下肢相对于pelvis之局部坐标用于最佳化(已平滑过的动作)
 	OBJ::coordSys lcoord_pelvis = obj.getSegments()[frameNum][OBJ::SegType_Pelvis].lcoord;
-	Eigen::Vector3f HipLeft_local = OBJ::Obj::Pg2l(obj.getJoints()[frameNum][JointType_HipLeft], lcoord_pelvis);
-	Eigen::Vector3f HipRight_local = OBJ::Obj::Pg2l(obj.getJoints()[frameNum][JointType_HipRight], lcoord_pelvis);
-	Eigen::Vector3f KneeLeft_local = OBJ::Obj::Pg2l(obj.getJoints()[frameNum][JointType_KneeLeft], lcoord_pelvis);
-	Eigen::Vector3f KneeRight_local = OBJ::Obj::Pg2l(obj.getJoints()[frameNum][JointType_KneeRight], lcoord_pelvis);
-	Eigen::Vector3f AnkleLeft_local = OBJ::Obj::Pg2l(obj.getJoints()[frameNum][JointType_AnkleLeft], lcoord_pelvis);
-	Eigen::Vector3f AnkleRight_local = OBJ::Obj::Pg2l(obj.getJoints()[frameNum][JointType_AnkleRight], lcoord_pelvis);
+	Eigen::Vector3f HipLeft_local = OBJ::Obj::Pg2l(obj.getJoints_filted()[frameNum][JointType_HipLeft], lcoord_pelvis);
+	Eigen::Vector3f HipRight_local = OBJ::Obj::Pg2l(obj.getJoints_filted()[frameNum][JointType_HipRight], lcoord_pelvis);
+	Eigen::Vector3f KneeLeft_local = OBJ::Obj::Pg2l(obj.getJoints_filted()[frameNum][JointType_KneeLeft], lcoord_pelvis);
+	Eigen::Vector3f KneeRight_local = OBJ::Obj::Pg2l(obj.getJoints_filted()[frameNum][JointType_KneeRight], lcoord_pelvis);
+	Eigen::Vector3f AnkleLeft_local = OBJ::Obj::Pg2l(obj.getJoints_filted()[frameNum][JointType_AnkleLeft], lcoord_pelvis);
+	Eigen::Vector3f AnkleRight_local = OBJ::Obj::Pg2l(obj.getJoints_filted()[frameNum][JointType_AnkleRight], lcoord_pelvis);
 	#pragma endregion
 
 	//Cost function to minimize (lambda function)
@@ -82,7 +82,7 @@ OBJ::OptJoints OPT::optSingleF(const OBJ::Obj &obj,int frameNum)
 		#pragma endregion
 
 		double cost{ 0.0 };
-		double w0{ 0.1 }, w1{ 0.20 }, w2{ 0.2 }, w3{ 0.25 }, w4{ 0.25 };
+		double w0{ 0.2 }, w1{ 0.3 }, w2{ 0.1 }, w3{ 0.3 }, w4{ 0.1 };  //w0 hip w1 w3 knee w2 w4 ankle  不准的点weighting低
 		cost = (w0*((_y0 - y0)*(_y0 - y0) + (_z0 - z0)*(_z0 - z0))
 			+ w1 * ((_y1 - y1)*(_y1 - y1) + (_z1 - z1)*(_z1 - z1))
 			+ w2 * ((_y2 - y2)*(_y2 - y2) + (_z2 - z2)*(_z2 - z2))
@@ -96,15 +96,15 @@ OBJ::OptJoints OPT::optSingleF(const OBJ::Obj &obj,int frameNum)
 	// To optimize this difficult function all we need to do is call
 	// find_min_global()
 	auto result = dlib::find_min_global(cfun_4Link,
-		{ -0.05,-0.1,-PI / 2.0 , -PI / 2.0,-PI / 2.0,-PI / 2.0 }, // lower bounds
-		{ 0.05,0.1,PI / 2.0,PI / 2.0,PI / 2.0,PI / 2.0 }, // upper bounds
+		{ -0.001,-0.001,-PI / 2.0 , -PI / 2.0,-PI / 2.0,-PI / 2.0 }, // lower bounds
+		{ 0.001,0.001,PI / 2.0,PI / 2.0,PI / 2.0,PI / 2.0 }, // upper bounds
 		dlib::max_function_calls(150));
 
-	std::cout.precision(5);
-	// These cout statements will show that find_min_global() found the
-	// globally optimal solution to 9 digits of precision:
-	std::cout << "complex holder table function solution y (should be -21.9210397): " << result.y << endl;
-	std::cout << "complex holder table function solution x:\n" << result.x *180.0 / PI << endl;
+	//std::cout.precision(5);
+	//// These cout statements will show that find_min_global() found the
+	//// globally optimal solution to 9 digits of precision:
+	//std::cout << "complex holder table function solution y (should be -21.9210397): " << result.y << endl;
+	//std::cout << "complex holder table function solution x:\n" << result.x *180.0 / PI << endl;
 
 	//计算opt后之global坐标
 	double Y_opt = result.x(0);
@@ -142,14 +142,23 @@ OBJ::OptJoints OPT::optSingleF(const OBJ::Obj &obj,int frameNum)
 	Eigen::Vector3f KneeRight_g_opt = OBJ::Obj::Pl2g(KneeRight_local_opt, lcoord_pelvis);
 	Eigen::Vector3f AnkleRight_g_opt = OBJ::Obj::Pl2g(AnkleRight_local_opt, lcoord_pelvis);
 
-	OBJ::OptJoints res{ HipLeft_g_opt,HipRight_g_opt,KneeLeft_g_opt ,AnkleLeft_g_opt ,KneeRight_g_opt ,AnkleRight_g_opt };
+	OBJ::Joints res;
+	res = obj.getJoints_filted()[frameNum];
+	
+	res[JointType_HipLeft].jointPosition = HipLeft_g_opt;
+	res[JointType_HipRight].jointPosition = HipRight_g_opt;
+	res[JointType_KneeLeft].jointPosition = KneeLeft_g_opt;
+	res[JointType_KneeRight].jointPosition = KneeRight_g_opt;
+	res[JointType_AnkleLeft].jointPosition = AnkleLeft_g_opt;
+	res[JointType_AnkleRight].jointPosition = AnkleRight_g_opt;
+	//OBJ::OptJoints res{ HipLeft_g_opt,HipRight_g_opt,KneeLeft_g_opt ,AnkleLeft_g_opt ,KneeRight_g_opt ,AnkleRight_g_opt };
 	return  res;
 }
 
-std::vector<OBJ::OptJoints> OPT::Optframes(const OBJ::Obj & obj)
+std::vector<OBJ::Joints> OPT::Optframes(const OBJ::Obj & obj)
 {
-	std::vector<OBJ::OptJoints> res{ unsigned __int64( obj.getFrameNumber())};
-	
+	//std::vector<OBJ::OptJoints> res{ unsigned __int64( obj.getFrameNumber())};
+	std::vector<OBJ::Joints> res{ unsigned __int64(obj.getFrameNumber()) };
 
 	dlib::parallel_for(0, obj.getFrameNumber(), [&](int i) {
 		// The i variable is the loop counter as in a normal for loop.  So we simply need
@@ -164,45 +173,6 @@ std::vector<OBJ::OptJoints> OPT::Optframes(const OBJ::Obj & obj)
 	return res;
 }
 
-	
-//#pragma region Leg_left opt
-//
-//	vec kneeLeft_local = OPT::subtract(joints[JointType_KneeLeft], joints[JointType_HipLeft]);
-//	vec ankleLeft_local = OPT::subtract(joints[JointType_AnkleLeft], joints[JointType_HipLeft]);
-//	
-//	column_vector  Leg_left_OptVar = {
-//		kneeLeft_local.x(), kneeLeft_local.y(), kneeLeft_local.z(),
-//		ankleLeft_local.x(), ankleLeft_local.y(), ankleLeft_local.z(),
-//	};
-//	std::cout << "Leg_left Opt:\n";
-//	std::cout << "start point:\n" << Leg_left_OptVar << std::endl;
-//
-//	dlib::find_min_using_approximate_derivatives(dlib::bfgs_search_strategy(),
-//		dlib::objective_delta_stop_strategy(1e-7),
-//		cfun_Leg_L, Leg_left_OptVar, 0);
-//	std::cout << "opt solution:\n" << Leg_left_OptVar << std::endl;
-//#pragma endregion
-//
-//#pragma region Leg_right opt
-//
-//	vec kneeRight_local = OPT::subtract(joints[JointType_KneeRight], joints[JointType_HipRight]);
-//	vec ankleRight_local = OPT::subtract(joints[JointType_AnkleRight], joints[JointType_HipLeft]);
-//
-//	column_vector  Leg_right_OptVar = {
-//		kneeRight_local.x(), kneeRight_local.y(), kneeRight_local.z(),
-//		ankleRight_local.x(), ankleRight_local.y(), ankleRight_local.z()
-//	};
-//	std::cout << "Leg_right Opt:\n";
-//	std::cout << "start point:\n" << Leg_right_OptVar << std::endl;
-//
-//	dlib::find_min_using_approximate_derivatives(dlib::bfgs_search_strategy(),
-//		dlib::objective_delta_stop_strategy(1e-7),
-//		cfun_Leg_R, Leg_right_OptVar, 0);
-//	std::cout << "opt solution:\n" << Leg_right_OptVar << std::endl;
-//#pragma endregion
-
-//}
-
 dlib::vector<double, 3> OPT::subtract(const OBJ::Joint & A,const OBJ::Joint & B)
 {
 	vec res(A.jointPosition.x()- B.jointPosition.x(), A.jointPosition.y() - B.jointPosition.y(), A.jointPosition.z() - B.jointPosition.z());
@@ -214,52 +184,3 @@ double OPT::norm(vec v)
 {
 	return sqrtf(v.x()*v.x() + v.y()*v.y() + v.y()*v.y());
 }
-//double OPT::cfun_Trunk(const column_vector &x)
-//{
-//	/*vec _a{ x(0)*100.0,x(1)*100.0 ,x(2)*100.0 };
-//	vec _b{ x(3)*100.0,x(4)*100.0 ,x(5)*100.0 };
-//	
-//	double _length = OPT::norm(_a.cross(_b)) / 2.0 ;
-//	double length = p_optParameters->SegL[OBJ::SegType_Pelvis];
-//	double err = (_length - length)*(_length - length);
-//
-//	return err;*/
-//}
-
-//double OPT::cfun_Leg_L(const column_vector & x)
-//{
-//	/*double _thighLength = (x(0)) * (x(0)) +
-//						  (x(1)) * (x(1)) +
-//						  (x(2)) * (x(2));
-//	_thighLength = sqrt(_thighLength)*100.0;
-//	double _shankLength = (x(3) - x(0)) * (x(3) - x(0)) +
-//						  (x(4) - x(1)) * (x(4) - x(1)) +
-//						  (x(5) - x(2)) * (x(5) - x(2));
-//	_shankLength = sqrt(_shankLength)*100.0;
-//	
-//	double thighLength = p_optParameters->SegL[OBJ::SegType_LeftThigh];
-//	double shankLength = p_optParameters->SegL[OBJ::SegType_LeftShank];
-//
-//	double err = (_thighLength - thighLength)*(_thighLength - thighLength)
-//		       + (_shankLength - shankLength)*(_shankLength - shankLength);
-//	return err;*/
-//}
-
-//double OPT::cfun_Leg_R(const column_vector & x)
-//{
-//	/*double _thighLength = (x(0)) * (x(0)) +
-//		(x(1)) * (x(1)) +
-//		(x(2)) * (x(2));
-//	_thighLength = sqrt(_thighLength)*100.0;
-//	double _shankLength = (x(3) - x(0)) * (x(3) - x(0)) +
-//		(x(4) - x(1)) * (x(4) - x(1)) +
-//		(x(5) - x(2)) * (x(5) - x(2));
-//	_shankLength = sqrt(_shankLength)*100.0;
-//
-//	double thighLength = p_optParameters->SegL[OBJ::SegType_RightThigh];
-//	double shankLength = p_optParameters->SegL[OBJ::SegType_RightShank];
-//
-//	double err = (_thighLength - thighLength)*(_thighLength - thighLength)
-//		+ (_shankLength - shankLength)*(_shankLength - shankLength);
-//	return err;*/
-//}

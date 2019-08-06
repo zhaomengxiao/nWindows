@@ -8,6 +8,7 @@
 #include <vector>
 #include <math.h>
 #include <Kinect.h>
+#include "myMath.h"
 #define PI 3.14159265
 
 //struct coordSys {
@@ -71,61 +72,7 @@ namespace OBJ
 {
 	//包含读取Cali文件后计算得到之资料
 	
-	//包含所有的关节角度
-	struct JointAngles
-	{
-		float		KneeR{ 0.0 };
-		float		KneeL{ 0.0 };
-		float		ElbowR{ 0.0 };
-		float		ElbowL{ 0.0 };
-		float		Spine{ 0.0 };
-		float		ShouderR{ 0.0 };
-		float		ShouderL{ 0.0 };
 
-		JointAngles operator+(const JointAngles& b)
-		{
-			JointAngles ja;
-			ja.KneeR = this->KneeR + b.KneeR;
-			ja.KneeL = this->KneeL + b.KneeL;
-			ja.ElbowR = this->ElbowR + b.ElbowR;
-			ja.ElbowL = this->ElbowL + b.ElbowL;
-			ja.Spine = this->Spine + b.Spine;
-			ja.ShouderR = this->ShouderR + b.ShouderR;
-			ja.ShouderL = this->ShouderL + b.ShouderL;
-			return ja;
-		}
-
-		JointAngles operator-(const JointAngles& b)
-		{
-			JointAngles ja;
-			ja.KneeR = this->KneeR - b.KneeR;
-			ja.KneeL = this->KneeL - b.KneeL;
-			ja.ElbowR = this->ElbowR - b.ElbowR;
-			ja.ElbowL = this->ElbowL - b.ElbowL;
-			ja.Spine = this->Spine - b.Spine;
-			ja.ShouderR = this->ShouderR - b.ShouderR;
-			ja.ShouderL = this->ShouderL - b.ShouderL;
-			return ja;
-		}
-
-		JointAngles operator/(int b)
-		{
-			if (b == 0)
-			{
-				qDebug() << "cant divide 0" << endl;
-			}
-			JointAngles ja;
-			ja.KneeR = this->KneeR / b;
-			ja.KneeL = this->KneeL / b;
-			ja.ElbowR = this->ElbowR / b;
-			ja.ElbowL = this->ElbowL / b;
-			ja.Spine = this->Spine / b;
-			ja.ShouderR = this->ShouderR / b;
-			ja.ShouderL = this->ShouderL / b;
-			return ja;
-		}
-
-	};
 	
 	struct coordSys {
 		Eigen::Vector3f axis_x{ 0,0,0 };
@@ -164,7 +111,9 @@ namespace OBJ
 		JAngleType_Spine	= 6,
 		JAngleType_ShouderR = 7,
 		JAngleType_ShouderL = 8,
-		JAngleType_Count = (JAngleType_ShouderL + 1)
+		JAngleType_AnkleR   = 9,
+		JAngleType_AnkleL   = 10,
+		JAngleType_Count = (JAngleType_AnkleL + 1)
 	};
 	class Joint
 	{
@@ -245,12 +194,19 @@ namespace OBJ
 		//局部坐标系
 		coordSys lcoord;
 		//惯性参数
+		float H;
+		float dH;
 		//肢段长度
 		float	length;
 		//肢段质量
 		float	mass;
 		//肢段的质量中心
-		Eigen::Vector3f segcom;
+		Eigen::Vector3f segCOM;
+		Eigen::Vector3f segCOMAcc; //每個剛體之質量中心加速度
+		Eigen::Vector3f rCOM2P; //從肢段質心至近端的向量
+		Eigen::Vector3f rCOM2D; //從肢段質心至遠端的向量（單位：m）
+		Eigen::Vector3f Fd; //关节远端受力（單位：N） 
+		Eigen::Vector3f Fp; //关节近端受力
 
 		
 	public:
@@ -277,19 +233,28 @@ namespace OBJ
 	};
 
 	
-	struct CaliInfo
-	{
-		JointAngles caliJA;//初始角度
-		float		caliH;//Kinect计算得之身高
-		std::array<float, SegType_Count> SegL; //Kinect 计算得之肢段长度
-	};
+	
 
 	//一个frame的关节资讯
 	typedef std::array<OBJ::Joint, JointType_Count> Joints;
 	//一个frame的肢段资讯
 	typedef std::array<OBJ::Segment, OBJ::SegType_Count> Segs;
 	typedef std::array< Eigen::Vector3f, 6> OptJoints;
-	
+	typedef std::array< OBJ::JointAngle, OBJ::JAngleType_Count> Angles;
+	typedef std::array<double,3> CycleAngles;
+	struct CaliInfo
+	{
+		Angles caliJA;//初始角度
+		float		caliH;//Kinect计算得之身高
+		std::array<float, SegType_Count> SegL; //Kinect 计算得之肢段长度
+	};
+
+	struct Circle{
+		double centerX;
+		double centerY;
+		double radius;
+	};
+
 	class Obj
 	{
 	public:
@@ -297,16 +262,42 @@ namespace OBJ
 		~Obj();
 		Obj(const std::vector<Joints>& frames_j);
 	public:
+		QString trailName;
 		QString path_ford;  //包含受试者资料的文件夹的路径
 		QString path_cali;	
 		QString path_subjInfo;
 		QString path_trail;
 		QString path_angle;
 		QString path_moment;
+		//vicon data
+		QString path_ViconAngle_HipL;
+		QString path_ViconAngle_KneeL;
+		QString path_ViconAngle_AnkleL;
+		std::vector<double> viconAngleData_HipL;
+		std::vector<double> viconAngleData_KneeL;
+		std::vector<double> viconAngleData_AnkleL;
+
 		std::vector<Joints> cali_JointFrames;
 		std::vector<Segs> cali_SegFrames;
 		int RPM;
 		
+		//Fit data
+		Circle ankleCircle;
+		std::vector<Eigen::Vector3d> Trajectory_Ankle;
+		std::vector<Eigen::Vector3d> Trajectory_Knee;
+		std::vector<Eigen::Vector3d> Trajectory_Hip;
+		std::vector<CycleAngles> cycleAngleframes;
+
+		void calTraject_Ankle();
+		void calTraject_Knee();
+		void calTraject_Hip();
+
+		void buildModelJframes();
+		void buildModelSegFrames();
+
+		CycleAngles calJointAngle(coordSys pelvis, Eigen::Vector3d hip, Eigen::Vector3d knee, Eigen::Vector3d ankle);
+		double calKneeAngle(Eigen::Vector3d hip, Eigen::Vector3d knee, Eigen::Vector3d ankle);
+		void calCycleAngles();
 	private:
 		
 	
@@ -322,9 +313,9 @@ namespace OBJ
 		
 		
 		//从肢段信息计算二维关节的角度
-		std::vector<JointAngles>	m_2dJointAngles;
-		std::vector<JointAngles>	m_2dJointAngles_filted;
-		std::vector<JointAngles>	m_2dJointAngles_opted;
+		std::vector<Angles>	m_JointAngles;
+		std::vector<Angles>	m_JointAngles_filted;
+		std::vector<Angles>	m_JointAngles_opted;
 		//腰部所受外力产生之力矩
 		std::vector<Eigen::Vector3f> m_moments;
 		//局部坐标系
@@ -337,7 +328,7 @@ namespace OBJ
 		std::vector<Joints>			m_framesJ_filted;	//储存filter之后的关节点信息
 		std::vector<Segs>			m_framesS_filted;	//储存filter之后的肢段
 		//储存最佳化后之资料
-		std::vector<OptJoints>		m_framesOptJ;
+		//std::vector<OptJoints>		m_framesOptJ;
 		std::vector<Joints>			m_framesJ_opted;	//储存opt之后的关节点信息
 		std::vector<Segs>			m_framesS_opted;	//储存opt之后的肢段
 		
@@ -356,26 +347,29 @@ namespace OBJ
 		std::vector<Segs> getSegments_filted()const;
 		std::vector<Segs> getSegments_opted()const;
 		
-		std::vector<JointAngles> getJointAngles()const;
-		std::vector<JointAngles> getJointAngles_filted()const;
-		std::vector<JointAngles> getJointAngles_opted()const;
+		std::vector<Angles> getJointAngles()const;
+		std::vector<Angles> getJointAngles_filted()const;
+		std::vector<Angles> getJointAngles_opted()const;
 		std::vector<Eigen::Vector3f> getMoments();
 		std::array<Eigen::Vector3f, 13> getCOMs(const Segs & segs);
 		int getFrameNumber()const;
 		std::vector<Eigen::Vector3f> getForcePosi();
-		std::vector<OptJoints> getOptJ()const;
+
 		#pragma endregion
 		
 		#pragma region Set
 		void setSubjInfo(SubjInfo &subjinfo);
 		void setJoints(const std::vector<Joints> &frames_J);
 		void setJoints_filted(const std::vector<Joints> &frames_J_filted);
+		void setJoints_opted(const std::vector<Joints> &frames_J_opted);
 		void setSegments(const std::vector<Segs> &frames_S);
 		void setSegments_filted(const std::vector<Segs> &frames_S);
-		void setJointAngles(std::vector<JointAngles> &frames_JA);
-		void setJointAngles(const std::vector<Segs> &frames_S);
-		void setOptJoints(const std::vector<OptJoints> &frames_optJ);
-		void setJoints_opted(const std::vector<Joints> &frames_J_opted);
+		void setSegments_opted(const std::vector<Segs> &frames_S_opted);
+		void setJointAngles(std::vector<Angles> &frames_JA);
+		void setJointAngles_opted(std::vector<Angles> &frames_JA);
+		
+		//void setOptJoints(const std::vector<OptJoints> &frames_optJ);
+		
 		#pragma endregion
 
 		
@@ -393,8 +387,12 @@ namespace OBJ
 		//计算一个肢段与一个局部坐标系之z轴之交角
 		float calJointAngle(const Segment &seg, const coordSys &coord);
 		//计算所有关节角度，可以输入一帧也可以输入多帧
-		JointAngles calAllJointAngles(const Segs &segments); //1 frame
-		std::vector<JointAngles> calAllJointAngles(const std::vector<Segs> &frames_S); //n frame
+		Angles calAllJointAngles(const Segs &segments); //1 frame
+		std::vector<Angles> calAllJointAngles(const std::vector<Segs> &frames_S); //n frame
+		//计算近端关节受力
+		void calJointForce(Segment &seg, Eigen::Vector3f fd);
+		void calLeftLimbJointForce(std::vector<Segs> & nframeSegs,std::vector<Eigen::Vector3f> exForces);
+		void calCOMAcc(std::vector<Segs> & nframeSegs);
 		//建立body坐标系
 		coordSys calCoordupTunkR(const Joints &joints);
 		coordSys calCoordPelvisR(const Joints &joints);

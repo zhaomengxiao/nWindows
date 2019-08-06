@@ -11,12 +11,31 @@ Cycle::~Cycle()
 {
 }
 
-Cycle::Cycle(const OBJ::Obj & obj)
+Cycle::Cycle(const OBJ::Obj & obj, QString filtorOpt)
 {
 	m_jframes = obj.getJoints();
-	splitFrames = getExtremeFrame(obj.getJoints_filted(),obj.RPM);
-	m_cycles_joints = getCycle_joints(obj.getJoints_filted());
-	m_cycles_jAngles = getCycle_Angles(obj.getJointAngles_filted());
+	if (filtorOpt == "filt")
+	{
+		splitFrames = getExtremeFrame(obj.getJoints_filted(), obj.RPM);
+		m_cycles_joints = calCycle_joints(obj.getJoints_filted());
+		m_cycles_jAngles = calCycle_Angles(obj.getJointAngles_filted());
+	}
+	else if (filtorOpt == "opt")
+	{
+		splitFrames = getExtremeFrame(obj.getJoints_filted(), obj.RPM);
+		m_cycles_joints = calCycle_joints(obj.getJoints_opted());
+		m_cycles_jAngles = calCycle_Angles(obj.getJointAngles_opted());
+	}
+	else if (filtorOpt == "raw") {
+		splitFrames = getExtremeFrame(obj.getJoints_filted(), obj.RPM);
+		m_cycles_joints = calCycle_joints(obj.getJoints());
+		m_cycles_jAngles = calCycle_Angles(obj.getJointAngles());
+	}
+	else {
+		qDebug() << "Cycle construct Error: NO fit data type/raw/opt/filt" << endl;
+	}
+	
+	
 	
 	m_norframeMark = calNorFrameMark(m_cycles_joints);
 }
@@ -64,7 +83,7 @@ std::vector<int> Cycle::getExtremeFrame(const std::vector<OBJ::Joints>& jframes,
 	return res;
 }
 
-std::vector<std::vector<OBJ::Joints>> Cycle::getCycle_joints(const jframes & jf)
+std::vector<std::vector<OBJ::Joints>> Cycle::calCycle_joints(const jframes & jf)
 {
 	
 	cycles_joints res;
@@ -73,16 +92,16 @@ std::vector<std::vector<OBJ::Joints>> Cycle::getCycle_joints(const jframes & jf)
 	{
 		res.push_back(std::vector<OBJ::Joints>(jf.begin() + splitFrames[i], jf.begin() + splitFrames[i + 1]));
 	}
-	if (res.size() >4)
+	if (res.size() >3)
 	{
-		std::vector<std::vector<OBJ::Joints>> cutoff = std::vector<std::vector<OBJ::Joints>>(res.begin() + 2, res.end() - 2);
+		std::vector<std::vector<OBJ::Joints>> cutoff = std::vector<std::vector<OBJ::Joints>>(res.begin() + 1, res.end() - 1);
 		return cutoff;
 	}
 	return res;
 	
 	
 }
-cycles_jAngles Cycle::getCycle_Angles(const jAngleframes & jAf)
+cycles_jAngles Cycle::calCycle_Angles(const jAngleframes & jAf)
 {
 	cycles_jAngles res;
 	res.reserve(splitFrames.size());
@@ -90,9 +109,9 @@ cycles_jAngles Cycle::getCycle_Angles(const jAngleframes & jAf)
 	{
 		res.push_back(jAngleframes(jAf.begin() + splitFrames[i], jAf.begin() + splitFrames[i + 1]));
 	}
-	if (res.size() > 4)
+	if (res.size() > 3)
 	{
-		cycles_jAngles cutoff = cycles_jAngles(res.begin() + 2, res.end() - 2);
+		cycles_jAngles cutoff = cycles_jAngles(res.begin() + 1, res.end() - 1);
 		return cutoff;
 	}
 	return res;
@@ -156,7 +175,7 @@ stdMatd Cycle::extractMatdata(const cycles_joints & cycs, JointType jt, QString 
 	return res;
 }
 
-stdMatd Cycle::extractMatdata(const cycles_jAngles & cycs)
+stdMatd Cycle::extractMatdata(const cycles_jAngles & cycs, OBJ::JAngleType jAt, QString xyz)
 {
 	stdMatd res;
 	res.reserve(cycs.size());
@@ -166,8 +185,20 @@ stdMatd Cycle::extractMatdata(const cycles_jAngles & cycs)
 		AngleData.clear();
 		AngleData.reserve(cycle.size());
 		for (int i = 0; i < cycle.size(); i++)
-		{			
-			AngleData.push_back(cycle[i].KneeL);
+		{
+			if (xyz == QString("x") || xyz == QString("X"))
+			{
+				AngleData.push_back(cycle[i][jAt].Angle_x);
+			}
+			else if (xyz == QString("y") || xyz == QString("Y"))
+			{
+				AngleData.push_back(cycle[i][jAt].Angle_y);
+			}
+			else
+			{
+				AngleData.push_back(cycle[i][jAt].Angle_z);
+			}
+			
 		}
 		res.push_back(AngleData);
 	}
@@ -256,7 +287,7 @@ const stdMatd Cycle::getNorFrameMark()
 	return m_norframeMark;
 }
 
-const stdMatd Cycle::getLeftAnkleY()
+const stdMatd Cycle::getDataMat()
 {
 	return m_plotdata;
 }
@@ -287,52 +318,15 @@ void Cycle::setPlotpart(JointType jt, QString xyz, int n)
 	m_meanSqErr = calMeanSqErr(m_plfP_plotdata, m_aveP_plotdata);
 }
 
-void Cycle::setPlotMat(int n)
+void Cycle::setPlotMat(OBJ::JAngleType jAt, QString xyz, int n)
 {
-	m_plotdata = extractMatdata(m_cycles_jAngles);
+	m_plotdata = extractMatdata(m_cycles_jAngles, jAt, xyz);
 
 	m_plfP_plotdata = polyfit(m_norframeMark, m_plotdata, n);
 
 	m_aveP_plotdata = calAvePara(m_plfP_plotdata);
 
 	m_meanSqErr = calMeanSqErr(m_plfP_plotdata, m_aveP_plotdata);
-}
-
-std::vector<double> Cycle::polyfit(std::vector<double> x, std::vector<double> y, int n)
-{
-	Eigen::VectorXd vecX = stdVector_2_VectorXd(x);
-	Eigen::VectorXd vecY = stdVector_2_VectorXd(y);
-	int size = vecX.size();
-	int x_num = n + 1;//所求未知数个数
-	//构造矩阵U和Y
-
-	Eigen::MatrixXd U, Y;
-	U.resize(size, x_num);
-	Y.resize(size, 1);
-
-	for (int i = 0; i < U.rows(); ++i) {
-		for (int j = 0; j < U.cols(); ++j)
-		{
-			U(i, j) = pow(vecX[i], j);
-		}
-	}
-
-	for (int i = 0; i < vecY.rows(); ++i) {
-		{
-			Y(i, 0) = vecY[i];
-		}
-	}
-
-	//矩阵运算，获得系数矩阵K
-
-	Eigen::VectorXd K;
-	K.resize(x_num);
-	K = (U.transpose()*U).inverse() *U.transpose()*Y;
-
-	//std::cout << "poly fit parameter:" << std::endl;
-	//std::cout << K << std::endl;
-
-	return VectorXd_2_stdVector(K);
 }
 
 stdMatd Cycle::polyfit(stdMatd matx, stdMatd maty, int n)
@@ -343,29 +337,9 @@ stdMatd Cycle::polyfit(stdMatd matx, stdMatd maty, int n)
 	{
 		std::vector<double> x(matx[i]);
 		std::vector<double> y(maty[i]);
-		std::vector<double> p = polyfit(x, y, n);
+		std::vector<double> p = myMath::polyfit(x, y, n);
 		res.push_back(p);
 	}
 	return res;
 }
 
-Eigen::VectorXd Cycle::stdVector_2_VectorXd(std::vector<double> vec)
-{
-	Eigen::VectorXd res(vec.size());
-	for (int i = 0; i < vec.size(); i++)
-	{
-		res(i) = vec[i];
-	}
-	return res;
-}
-
-std::vector<double> Cycle::VectorXd_2_stdVector(Eigen::VectorXd v)
-{
-	std::vector<double> res;
-	res.reserve(v.size());
-	for (int i = 0; i < v.size(); i++)
-	{
-		res.push_back(v(i));
-	}
-	return res;
-}

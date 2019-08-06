@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1272</width>
+    <width>1290</width>
     <height>897</height>
    </rect>
   </property>
@@ -58,6 +58,18 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>16777215</height>
+       </size>
+      </property>
       <property name="font">
        <font>
         <family>Arial Black</family>
@@ -86,7 +98,7 @@ background-color: rgb(0, 39, 0);
 </string>
       </property>
       <property name="currentIndex">
-       <number>4</number>
+       <number>3</number>
       </property>
       <property name="iconSize">
        <size>
@@ -1025,7 +1037,7 @@ font: 87 10pt &quot;Arial Black&quot;;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1211</width>
+             <width>1229</width>
              <height>684</height>
             </rect>
            </property>
@@ -2126,7 +2138,152 @@ QWidget{font: 14pt &quot;Arial&quot;;}</string>
         <string>Files</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
-        <item row="1" column="0" colspan="5">
+        <item row="3" column="4">
+         <widget class="QSpinBox" name="spinBox_Nobj">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>100</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="5">
+         <widget class="QSpinBox" name="spinBox_Nframe">
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(0, 0, 0);</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QListWidget" name="listWidget_objs">
+          <property name="maximumSize">
+           <size>
+            <width>300</width>
+            <height>16777215</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="3">
+         <widget class="QRadioButton" name="radioButton">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QRadioButton{border-radius: 10px;
+font: 14pt &quot;Arial&quot;;
+
+}
+
+QRadioButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QRadioButton::hover{
+background-color: rgb(76, 120, 65)}</string>
+          </property>
+          <property name="text">
+           <string>Offline</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QPushButton" name="pushButton_recon">
+          <property name="minimumSize">
+           <size>
+            <width>120</width>
+            <height>60</height>
+           </size>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px;
+font: 14pt &quot;Arial&quot;;
+
+}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+          </property>
+          <property name="text">
+           <string>Reconstruct</string>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="4" colspan="2">
+         <widget class="QSlider" name="horizontalSlider">
+          <property name="minimumSize">
+           <size>
+            <width>500</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QPushButton" name="pushButton_openrecord">
+          <property name="minimumSize">
+           <size>
+            <width>100</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Arial</family>
+            <pointsize>14</pointsize>
+           </font>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QPushButton{border-radius: 10px}
+
+QPushButton::!hover{
+background-color: rgb(105, 165, 90)}
+
+QPushButton::hover{
+background-color: rgb(76, 120, 65)}
+</string>
+          </property>
+          <property name="text">
+           <string>Refresh</string>
+          </property>
+          <property name="icon">
+           <iconset resource="treewidget.qrc">
+            <normaloff>:/tree/Resources/shuaxin.png</normaloff>:/tree/Resources/shuaxin.png</iconset>
+          </property>
+          <property name="flat">
+           <bool>false</bool>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="5">
          <widget class="QTreeWidget" name="treeWidget">
           <property name="minimumSize">
            <size>
@@ -2201,43 +2358,7 @@ QHeaderView::section{
           </column>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QPushButton" name="pushButton_openrecord">
-          <property name="minimumSize">
-           <size>
-            <width>100</width>
-            <height>30</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <family>Arial</family>
-            <pointsize>14</pointsize>
-           </font>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{border-radius: 10px}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}
-</string>
-          </property>
-          <property name="text">
-           <string>Refresh</string>
-          </property>
-          <property name="icon">
-           <iconset resource="treewidget.qrc">
-            <normaloff>:/tree/Resources/shuaxin.png</normaloff>:/tree/Resources/shuaxin.png</iconset>
-          </property>
-          <property name="flat">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
+        <item row="0" column="1" colspan="4">
          <spacer name="horizontalSpacer_11">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -2250,71 +2371,7 @@ background-color: rgb(76, 120, 65)}
           </property>
          </spacer>
         </item>
-        <item row="3" column="2">
-         <widget class="QRadioButton" name="radioButton">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>120</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QRadioButton{border-radius: 10px;
-font: 14pt &quot;Arial&quot;;
-
-}
-
-QRadioButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QRadioButton::hover{
-background-color: rgb(76, 120, 65)}</string>
-          </property>
-          <property name="text">
-           <string>Offline</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="2">
-         <widget class="QPushButton" name="pushButton_recon">
-          <property name="minimumSize">
-           <size>
-            <width>120</width>
-            <height>60</height>
-           </size>
-          </property>
-          <property name="styleSheet">
-           <string notr="true">QPushButton{border-radius: 10px;
-font: 14pt &quot;Arial&quot;;
-
-}
-
-QPushButton::!hover{
-background-color: rgb(105, 165, 90)}
-
-QPushButton::hover{
-background-color: rgb(76, 120, 65)}
-</string>
-          </property>
-          <property name="text">
-           <string>Reconstruct</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="4">
-         <widget class="QSlider" name="horizontalSlider">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0" rowspan="2" colspan="2">
+        <item row="3" column="0" rowspan="2" colspan="2">
          <widget class="QWidget" name="widget_rpath" native="true">
           <property name="minimumSize">
            <size>
@@ -2364,17 +2421,55 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
           </layout>
          </widget>
         </item>
-        <item row="2" column="4">
-         <widget class="QSpinBox" name="spinBox_Nframe">
-          <property name="minimumSize">
-           <size>
-            <width>40</width>
-            <height>40</height>
-           </size>
-          </property>
+        <item row="3" column="2" rowspan="2">
+         <widget class="QWidget" name="widget_SegLength" native="true">
           <property name="styleSheet">
-           <string notr="true">background-color: rgb(0, 0, 0);</string>
+           <string notr="true">QWidget{border-radius: 10px}
+
+QWidget::!hover{
+background-color: rgb(76, 120, 65)}
+
+QWidget::hover{
+background-color: rgb(76, 120, 65)}
+QWidget{font: 14pt &quot;Arial&quot;;}</string>
           </property>
+          <layout class="QGridLayout" name="gridLayout_15">
+           <item row="2" column="2">
+            <widget class="QLCDNumber" name="lcdNumber_ThighR">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 0, 0);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLCDNumber" name="lcdNumber_ThighL">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 0, 0);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="0" colspan="3">
+            <widget class="QLabel" name="label_segLength">
+             <property name="text">
+              <string>Seg Length</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLCDNumber" name="lcdNumber_ShankL">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 0, 0);</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="2">
+            <widget class="QLCDNumber" name="lcdNumber_ShankR">
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 0, 0);</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </widget>
         </item>
        </layout>
@@ -2385,7 +2480,13 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_12">
         <item row="0" column="0">
-         <widget class="QScrollArea" name="scrollArea_graph">
+         <widget class="QScrollArea" name="scrollArea_Hip">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -2394,32 +2495,21 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>404</width>
-             <height>347</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="QScrollArea" name="scrollArea_3">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents_4">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>404</width>
-             <height>347</height>
+             <width>198</width>
+             <height>332</height>
             </rect>
            </property>
           </widget>
          </widget>
         </item>
         <item row="0" column="2">
-         <widget class="QScrollArea" name="scrollArea_4">
+         <widget class="QScrollArea" name="scrollArea_Ankle">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -2428,15 +2518,58 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>404</width>
-             <height>347</height>
+             <width>198</width>
+             <height>332</height>
             </rect>
            </property>
           </widget>
          </widget>
         </item>
-        <item row="1" column="0" colspan="3">
-         <widget class="QScrollArea" name="scrollArea_2">
+        <item row="0" column="1">
+         <widget class="QScrollArea" name="scrollArea_Knee">
+          <property name="maximumSize">
+           <size>
+            <width>200</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_4">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>198</width>
+             <height>332</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="pushButton_plot">
+          <property name="text">
+           <string>PLOT</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_9">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="0" colspan="4">
+         <widget class="QScrollArea" name="scrollArea_footp">
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
@@ -2445,8 +2578,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1228</width>
-             <height>346</height>
+             <width>1246</width>
+             <height>332</height>
             </rect>
            </property>
           </widget>
@@ -2459,58 +2592,14 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
         <string>页</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_13">
-        <item row="0" column="0">
-         <widget class="QScrollArea" name="scrollArea_KneeAngle_allcycle">
-          <property name="widgetResizable">
-           <bool>true</bool>
+        <item row="2" column="0">
+         <widget class="QPushButton" name="pushButton_2">
+          <property name="text">
+           <string>PushButton</string>
           </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents_6">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>404</width>
-             <height>347</height>
-            </rect>
-           </property>
-          </widget>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="QScrollArea" name="scrollArea_KneeAngle_poly">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents_7">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>404</width>
-             <height>347</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QScrollArea" name="scrollArea_KneeAngle_ave">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents_9">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>404</width>
-             <height>347</height>
-            </rect>
-           </property>
-          </widget>
-         </widget>
-        </item>
-        <item row="1" column="0" colspan="3">
+        <item row="1" column="0" colspan="4">
          <widget class="QScrollArea" name="scrollArea_KneeAngle_clip">
           <property name="widgetResizable">
            <bool>true</bool>
@@ -2520,8 +2609,153 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>1228</width>
-             <height>346</height>
+             <width>1246</width>
+             <height>332</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QScrollArea" name="scrollArea_Knee_opt">
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_7">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>408</width>
+             <height>332</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QScrollArea" name="scrollArea_Ankle_opt">
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_9">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>408</width>
+             <height>332</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QScrollArea" name="scrollArea_Hip_opt">
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>16777215</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_6">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>408</width>
+             <height>332</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_5">
+       <attribute name="title">
+        <string>页</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_16">
+        <item row="0" column="0">
+         <widget class="QScrollArea" name="scrollArea_Hip_Pyz">
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>1000</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_10">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>410</width>
+             <height>701</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QScrollArea" name="scrollArea_Ankle_Pyz">
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>1000</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_12">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>410</width>
+             <height>701</height>
+            </rect>
+           </property>
+          </widget>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QScrollArea" name="scrollArea_Knee_Pyz">
+          <property name="maximumSize">
+           <size>
+            <width>1000</width>
+            <height>1000</height>
+           </size>
+          </property>
+          <property name="widgetResizable">
+           <bool>true</bool>
+          </property>
+          <widget class="QWidget" name="scrollAreaWidgetContents_11">
+           <property name="geometry">
+            <rect>
+             <x>0</x>
+             <y>0</y>
+             <width>410</width>
+             <height>701</height>
             </rect>
            </property>
           </widget>
@@ -2538,7 +2772,7 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1272</width>
+     <width>1290</width>
      <height>23</height>
     </rect>
    </property>
@@ -2567,7 +2801,7 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>startRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1080</x>
+     <x>1156</x>
      <y>703</y>
     </hint>
     <hint type="destinationlabel">
@@ -2583,7 +2817,7 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>stopRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1168</x>
+     <x>1244</x>
      <y>703</y>
     </hint>
     <hint type="destinationlabel">
@@ -2599,7 +2833,7 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>Click(QTreeWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>283</x>
+     <x>589</x>
      <y>501</y>
     </hint>
     <hint type="destinationlabel">
@@ -2615,7 +2849,7 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>DoubleClick(QTreeWidgetItem*)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>148</x>
+     <x>454</x>
      <y>511</y>
     </hint>
     <hint type="destinationlabel">
@@ -2711,7 +2945,7 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>newTrail()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1213</x>
+     <x>1289</x>
      <y>586</y>
     </hint>
     <hint type="destinationlabel">
@@ -2727,8 +2961,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>SetCD(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
-     <y>707</y>
+     <x>422</x>
+     <y>713</y>
     </hint>
     <hint type="destinationlabel">
      <x>231</x>
@@ -2743,8 +2977,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
-     <y>707</y>
+     <x>422</x>
+     <y>713</y>
     </hint>
     <hint type="destinationlabel">
      <x>45</x>
@@ -2763,8 +2997,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
      <y>678</y>
     </hint>
     <hint type="destinationlabel">
-     <x>338</x>
-     <y>707</y>
+     <x>422</x>
+     <y>713</y>
     </hint>
    </hints>
   </connection>
@@ -2775,8 +3009,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>ResetCD()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>338</x>
-     <y>631</y>
+     <x>422</x>
+     <y>637</y>
     </hint>
     <hint type="destinationlabel">
      <x>79</x>
@@ -2823,8 +3057,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>readRec()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>633</x>
-     <y>718</y>
+     <x>819</x>
+     <y>728</y>
     </hint>
     <hint type="destinationlabel">
      <x>414</x>
@@ -2871,8 +3105,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
    <slot>LineEdit_bagZ(QString)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>667</x>
-     <y>569</y>
+     <x>832</x>
+     <y>574</y>
     </hint>
     <hint type="destinationlabel">
      <x>1049</x>
@@ -2955,8 +3189,56 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
      <y>764</y>
     </hint>
     <hint type="destinationlabel">
-     <x>856</x>
-     <y>699</y>
+     <x>1325</x>
+     <y>718</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spinBox_Nobj</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>SetNObj(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>834</x>
+     <y>702</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>799</x>
+     <y>896</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listWidget_objs</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>ListObjselect(QModelIndex)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>154</x>
+     <y>314</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>0</x>
+     <y>313</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_plot</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>plot()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>52</x>
+     <y>780</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>-100</x>
+     <y>778</y>
     </hint>
    </hints>
   </connection>
@@ -2989,5 +3271,8 @@ font: 87 18pt &quot;Arial Black&quot;;</string>
   <slot>readRec()</slot>
   <slot>OffMode(bool)</slot>
   <slot>Nframe(int)</slot>
+  <slot>SetNObj(int)</slot>
+  <slot>ListObjselect(QModelIndex)</slot>
+  <slot>plot()</slot>
  </slots>
 </ui>

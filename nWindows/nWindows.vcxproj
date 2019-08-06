@@ -243,6 +243,7 @@
     <ClCompile Include="linechart.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="myMath.cpp" />
     <ClCompile Include="motiondetect.cpp" />
     <ClCompile Include="myKinect.cpp" />
     <ClCompile Include="obj.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="cycle.h" />
     <ClInclude Include="filter.h" />
+    <ClInclude Include="myMath.h" />
     <ClInclude Include="motiondetect.h" />
     <ClInclude Include="obj.h" />
     <ClInclude Include="optimiz.h" />

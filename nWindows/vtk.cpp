@@ -19,25 +19,37 @@ void VTK::addActor()
 	axes->SetPosition(0, 0, 0);
 	axes->SetTotalLength(500, 500, 500);
 	this->p_renderer->AddActor(axes);
-	//com 为红色
-	for (int i = 0; i < 13; i++)
-	{
-		COMSphere[i].Actor()->GetProperty()->SetColor(1, 0, 0);
-	}
+	
+
 	// Add the actor to the scene
 	//this->p_renderer->AddActor(this->p_actor);
 	this->p_renderer->AddActor(arrow.Actor());
 	for (int i = 0; i < 13; i++)
 	{
+		COMSphere[i].Actor()->GetProperty()->SetColor(1, 0, 0);//设置com 为红色
 		this->p_renderer->AddActor(COMSphere[i].Actor());
+	}
+	for (int i = 0; i < 13; i++)
+	{
+		COMSphere_opted[i].Actor()->GetProperty()->SetColor(0, 0, 1);//设置comSphere的颜色
+		this->p_renderer->AddActor(COMSphere_opted[i].Actor());
 	}
 	for (int i = 0; i < 25; i++)
 	{
 		this->p_renderer->AddActor(jointsSphere[i].Actor());
 	}
+	for (int i = 0; i < 25; i++)
+	{
+		this->p_renderer->AddActor(jointsSphere_opted[i].Actor());
+	}
 	for (int i = 0; i < 13; i++)
 	{
 		this->p_renderer->AddActor(SegLines[i].Actor());
+	}
+	for (int i = 0; i < 13; i++)
+	{
+		SegLines_opted[i].Actor()->GetProperty()->SetColor(1, 0, 0); //设置Seg_opt 的颜色
+		this->p_renderer->AddActor(SegLines_opted[i].Actor());
 	}
 	for (int i = 0; i < 2; i++)
 	{
@@ -45,11 +57,11 @@ void VTK::addActor()
 		this->p_renderer->AddActor(Coords[i].Actor_axisY());
 		this->p_renderer->AddActor(Coords[i].Actor_axisZ());
 	}
-	for (int i = 0; i < 4; i++)
+	/*for (int i = 0; i < 4; i++)
 	{
 		this->p_renderer->AddActor(OptSegLines[i].Actor());
 		OptSegLines[i].Actor()->GetProperty()->SetColor(1, 0, 0);
-	}
+	}*/
 	p_renderer->AddActor(camera.Actor());
 	p_renderer->SetBackground(.1, .2, .3); // Background color green
 	p_renderer->ResetCamera();
@@ -89,16 +101,19 @@ int VTK::setCallback()
 	for (int i = 0; i < 13; i++)
 	{
 		cb->actor_COMs[i] = COMSphere[i].Actor();
+		cb->actor_COMs_opted[i] = COMSphere_opted[i].Actor();
 	}
 	//joint center
 	for (int i = 0; i < 25; i++)
 	{
 		cb->actor_joints[i] = jointsSphere[i].Actor();
+		cb->actor_joints_opted[i] = jointsSphere_opted[i].Actor();
 	}
 	//Segs
 	for (int i = 0; i < 13; i++)
 	{
 		cb->source_Segs[i] = SegLines[i].LineSource();
+		cb->source_Segs_opted[i] = SegLines_opted[i].LineSource();
 	}
 
 	for (int i = 0; i < Coords.size(); i++)
@@ -109,10 +124,10 @@ int VTK::setCallback()
 
 	}
 
-	for (int i = 0; i < 4; i++)
+	/*for (int i = 0; i < 4; i++)
 	{
 		cb->source_OptSegs[i] = OptSegLines[i].LineSource();
-	}
+	}*/
 	//+++^^^add more cb sign up above^^^+++
 
 	p_renderWindowInteractor->AddObserver(vtkCommand::TimerEvent, cb);

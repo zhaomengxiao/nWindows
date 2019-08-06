@@ -128,7 +128,7 @@ public:
 	void readTrail(OBJ::Obj &obj);
 	void readSubjInfo(OBJ::Obj &obj);
 	void readCali(OBJ::Obj &obj);
-
+	static std::vector<double> readViconAngle(QString filepath);
 	//把obj中的内容转到csv文件
 	void writeTrialAngle(OBJ::Obj &obj);
 	void writeMoment(OBJ::Obj &obj);

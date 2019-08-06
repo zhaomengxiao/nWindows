@@ -204,12 +204,13 @@ void FileREC::stop()
 //从Obj中设定的路径读取一个trail
 void FileREC::readTrail(OBJ::Obj &obj)
 {
-
+	//
 	std::string  pt = (obj.path_trail).toStdString();
 
 	QFile * p_file = new QFile(QString::fromStdString(pt));
 	if (!p_file->open(QIODevice::ReadOnly)) {
 		qDebug() << "cant read joint file" << endl;
+		return;
 	}
 	QTextStream	*p_stream = new QTextStream(p_file);
 
@@ -264,6 +265,11 @@ void FileREC::readTrail(OBJ::Obj &obj)
 	obj.setSegments(obj.buildSegments(frames_joint));
 	obj.calTrailJointAngle();
 	p_file->close();
+
+	//如果有vicon data 读取
+	obj.viconAngleData_HipL = readViconAngle(obj.path_ViconAngle_HipL);
+	obj.viconAngleData_KneeL = readViconAngle(obj.path_ViconAngle_KneeL);
+	obj.viconAngleData_AnkleL = readViconAngle(obj.path_ViconAngle_AnkleL);
 }
 //设定Obj的subject info 和 calibration
 void FileREC::readSubjInfo(OBJ::Obj &obj)
@@ -349,6 +355,29 @@ void FileREC::readCali(OBJ::Obj & obj)
 	obj.cali();
 	p_file->close();
 }
+
+std::vector<double> FileREC::readViconAngle(QString filepath)
+{
+	std::vector<double> res;
+	QFile * p_file = new QFile(filepath);
+	if (!p_file->open(QIODevice::ReadOnly)) {
+		qDebug() << "cant read SubjInfo file!" << endl;
+		return res;
+	}
+	QTextStream	*p_stream = new QTextStream(p_file);
+
+	p_stream->seek(0);//seek可以把文件流指针移到想要的位置
+	//存下整个表
+	while (!p_stream->atEnd())
+	{
+		QString fetures = p_stream->readLine();
+		//QStringList blocks = fetures.split(",", QString::SkipEmptyParts);
+		res.push_back(fetures.toDouble());	
+	}
+	p_file->close();
+	qDebug() << "vicon angle loaded" << endl;
+	return res;
+}
 void FileREC::writeTrialAngle(OBJ::Obj & obj)
 {
 	//新建csv文件
@@ -375,10 +404,13 @@ void FileREC::writeTrialAngle(OBJ::Obj & obj)
 	{
 		frameNum++;
 		//扣除了初始角度
-		jointsAnglefile << frameNum << "," << obj.getCaliInfo().caliJA.ElbowR - frame.ElbowR << ","
-			<< obj.getCaliInfo().caliJA.ElbowL - frame.ElbowL << "," << obj.getCaliInfo().caliJA.KneeR - frame.KneeR << ","
-			<< obj.getCaliInfo().caliJA.KneeL - frame.KneeL << "," << obj.getCaliInfo().caliJA.ShouderR - frame.ShouderR << ","
-			<< obj.getCaliInfo().caliJA.ShouderL - frame.ShouderL << "," << obj.getCaliInfo().caliJA.Spine - frame.Spine << std::endl;
+		jointsAnglefile << frameNum << "," << (obj.getCaliInfo().caliJA[OBJ::JAngleType_ElbowR] - frame[OBJ::JAngleType_ElbowR]).Angle_x << ","
+			<< (obj.getCaliInfo().caliJA[OBJ::JAngleType_ElbowL] - frame[OBJ::JAngleType_ElbowL]).Angle_x << "," 
+			<< (obj.getCaliInfo().caliJA[OBJ::JAngleType_KneeR] - frame[OBJ::JAngleType_KneeR]).Angle_x << ","
+			<< (obj.getCaliInfo().caliJA[OBJ::JAngleType_KneeL] - frame[OBJ::JAngleType_KneeL]).Angle_x << "," 
+			<< (obj.getCaliInfo().caliJA[OBJ::JAngleType_ShouderR] - frame[OBJ::JAngleType_ShouderR]).Angle_x << ","
+			<< (obj.getCaliInfo().caliJA[OBJ::JAngleType_ShouderL] - frame[OBJ::JAngleType_ShouderL]).Angle_x << "," 
+			<< (obj.getCaliInfo().caliJA[OBJ::JAngleType_Spine] - frame[OBJ::JAngleType_Spine]).Angle_x << std::endl;
 	}
 	jointsAnglefile.close();
 

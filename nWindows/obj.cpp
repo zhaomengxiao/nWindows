@@ -148,47 +148,51 @@ OBJ::Segment::Segment(const Joint & jp, const Joint & jd, const SegType & st)
 	switch (SegmentType)
 	{
 	case SegType_LeftThigh://thigh
-		segcom = coordP + (coordD - coordP)* 0.433;
+		segCOM = coordP + (coordD - coordP)* 0.433;
 		break;
 	case SegType_RightThigh://thigh
-		segcom = coordP + (coordD - coordP) * 0.433;
+		segCOM = coordP + (coordD - coordP) * 0.433;
 		break;
 	case SegType_LeftShank://shank
-		segcom = coordP + (coordD - coordP) * 0.433;
+		segCOM = coordP + (coordD - coordP) * 0.433;
 		break;
 	case SegType_RightShank://shank
-		segcom = coordP + (coordD - coordP) * 0.433;
+		segCOM = coordP + (coordD - coordP) * 0.433;
 		break;
 	case SegType_LeftFoot://foot
-		segcom = coordP + (coordD - coordP) * 0.5;
+		segCOM = coordP + (coordD - coordP) * 0.5;
 		break;
 	case SegType_RightFoot://foot
-		segcom = coordP + (coordD - coordP) * 0.5;
+		segCOM = coordP + (coordD - coordP) * 0.5;
 		break;
 	case SegType_LeftUpperArm://Upper arm
-		segcom = coordP + (coordD - coordP) * 0.436;
+		segCOM = coordP + (coordD - coordP) * 0.436;
 		break;
 	case SegType_RightUpperArm://Upper arm
-		segcom = coordP + (coordD - coordP) * 0.436;
+		segCOM = coordP + (coordD - coordP) * 0.436;
 		break;
 	case SegType_LeftForArmHand://forearm and hand
-		segcom = coordP + (coordD - coordP) * 0.682;
+		segCOM = coordP + (coordD - coordP) * 0.682;
 		break;
 	case SegType_RightForArmHand://forearm and hand
-		segcom = coordP + (coordD - coordP) * 0.682;
+		segCOM = coordP + (coordD - coordP) * 0.682;
 		break;
 	case SegType_Pelvis://Pelvis
-		segcom = coordP + (coordD - coordP) * 0.105;
+		segCOM = coordP + (coordD - coordP) * 0.105;
 		break;
 	case SegType_ThoraxAbdomen://Thorax and abdomen
-		segcom = coordP + (coordD - coordP) * 0.63;
+		segCOM = coordP + (coordD - coordP) * 0.63;
 		break;
 	case SegType_HeadNeck://Head and neck
-		segcom = coordP + (coordD - coordP) * 1.0;
+		segCOM = coordP + (coordD - coordP) * 1.0;
 		break;
 	default:
 		break;
 	}
+
+	rCOM2D = coordD - segCOM;
+	rCOM2P = coordP - segCOM;
+
 }
 
 void Segment::calSegCOM()
@@ -199,43 +203,43 @@ void Segment::calSegCOM()
 	switch (SegmentType)
 	{
 	case SegType_LeftThigh://thigh
-		segcom = coordP + (coordD - coordP)* 0.433;
+		segCOM = coordP + (coordD - coordP)* 0.433;
 		break;
 	case SegType_RightThigh://thigh
-		segcom = coordP + (coordD - coordP) * 0.433;
+		segCOM = coordP + (coordD - coordP) * 0.433;
 		break;
 	case SegType_LeftShank://shank
-		segcom = coordP + (coordD - coordP) * 0.433;
+		segCOM = coordP + (coordD - coordP) * 0.433;
 		break;
 	case SegType_RightShank://shank
-		segcom = coordP + (coordD - coordP) * 0.433;
+		segCOM = coordP + (coordD - coordP) * 0.433;
 		break;
 	case SegType_LeftFoot://foot
-		segcom = coordP + (coordD - coordP) * 0.5;
+		segCOM = coordP + (coordD - coordP) * 0.5;
 		break;
 	case SegType_RightFoot://foot
-		segcom = coordP + (coordD - coordP) * 0.5;
+		segCOM = coordP + (coordD - coordP) * 0.5;
 		break;
 	case SegType_LeftUpperArm://Upper arm
-		segcom = coordP + (coordD - coordP) * 0.436;
+		segCOM = coordP + (coordD - coordP) * 0.436;
 		break;
 	case SegType_RightUpperArm://Upper arm
-		segcom = coordP + (coordD - coordP) * 0.436;
+		segCOM = coordP + (coordD - coordP) * 0.436;
 		break;
 	case SegType_LeftForArmHand://forearm and hand
-		segcom = coordP + (coordD - coordP) * 0.682;
+		segCOM = coordP + (coordD - coordP) * 0.682;
 		break;
 	case SegType_RightForArmHand://forearm and hand
-		segcom = coordP + (coordD - coordP) * 0.682;
+		segCOM = coordP + (coordD - coordP) * 0.682;
 		break;
 	case SegType_Pelvis://Pelvis
-		segcom = coordP + (coordD - coordP) * 0.105;
+		segCOM = coordP + (coordD - coordP) * 0.105;
 		break;
 	case SegType_ThoraxAbdomen://Thorax and abdomen
-		segcom = coordP + (coordD - coordP) * 0.63;
+		segCOM = coordP + (coordD - coordP) * 0.63;
 		break;
 	case SegType_HeadNeck://Head and neck
-		segcom = coordP + (coordD - coordP) * 1.0;
+		segCOM = coordP + (coordD - coordP) * 1.0;
 		break;
 	default:
 		break;
@@ -314,6 +318,163 @@ Obj::Obj(const std::vector<Joints>& frames_j)
 	//build segments
 
 }
+
+void OBJ::Obj::calTraject_Ankle()
+{
+	try
+	{
+		//從Ankle Fit 得到的圓方程轉換到0-360的 z ，y 坐標 (z 是橫軸、深度 /y 是縱軸、高度
+		Trajectory_Ankle.reserve(361);
+		
+		Trajectory_Hip.reserve(361);
+		for (int i = 0; i < 361; i++)
+		{
+			double valueZ = ankleCircle.radius * cos(double(270 - i) / 180.0*PI) + ankleCircle.centerX;
+			double valueY = ankleCircle.radius * sin(double(270 - i) / 180.0*PI) + ankleCircle.centerY;
+
+			Trajectory_Ankle.push_back(Eigen::Vector3d(0.0, valueY, valueZ));
+		}
+	}
+	catch (const std::exception& e)
+	{
+		qDebug() << e.what() << endl;
+	}
+	
+
+	
+}
+
+void OBJ::Obj::calTraject_Knee()
+{
+	std::vector<double> vecX;
+	std::vector<double> vecY;
+	vecX.reserve(m_nFrames);
+	vecY.reserve(m_nFrames);
+
+	double maxZ = m_framesJ[0][JointType_KneeLeft].jointPosition.z();
+	double minZ = m_framesJ[0][JointType_KneeLeft].jointPosition.z();
+	int maxZframe = 0;
+	int minZframe = 0;
+	for (int i = 0; i < m_framesJ.size(); i++)
+	{
+		double valueZ = m_framesJ[i][JointType_KneeLeft].jointPosition.z();
+		double valueY = m_framesJ[i][JointType_KneeLeft].jointPosition.y();
+		vecX.push_back(valueZ);
+		vecY.push_back(valueY);
+		//取得軌跡兩端的端點
+		if (valueZ > maxZ){
+			maxZ = valueZ;
+			maxZframe = i;
+		}
+		if (valueZ < minZ) {
+			minZ = valueZ;
+			minZframe = i;
+		}
+	}
+	std::vector<double> polyP = myMath::polyfit(vecX, vecY, 5);
+
+	std::vector<double> polyX;
+	double left = m_framesJ[minZframe][JointType_KneeLeft].jointPosition.z()-0.01;
+	double right = m_framesJ[maxZframe][JointType_KneeLeft].jointPosition.z();
+	double tmp = left;
+	int n = 0;
+	while (tmp < right )
+	{
+		polyX.push_back(tmp);
+		n++;
+		tmp += ((right - left)/180);
+	}
+	Trajectory_Knee.clear();
+	Trajectory_Knee.reserve(polyX.size()*2);
+	std::vector <Eigen::Vector3d> halfTraj_b;
+	halfTraj_b.reserve(polyX.size());
+	std::vector<double> polyRes = myMath::polyRes(polyP, polyX);
+	for (int i = 0; i < polyX.size(); i++)
+	{
+		halfTraj_b.push_back(Eigen::Vector3d( 0.0, polyRes[i], polyX[i])); //後半的軌跡
+	}
+	std::reverse(halfTraj_b.begin(), halfTraj_b.end()); //halfTraj_f
+	Trajectory_Knee.insert(Trajectory_Knee.end(), halfTraj_b.begin(), halfTraj_b.end());
+	std::reverse(halfTraj_b.begin(), halfTraj_b.end()); //halftraj_b
+	Trajectory_Knee.insert(Trajectory_Knee.end(), halfTraj_b.begin() + 1, halfTraj_b.end());
+	qDebug() << "Trajectory_Knee.size: " <<Trajectory_Knee.size() << endl;
+}
+
+void OBJ::Obj::calTraject_Hip()
+{
+	////取所有數據的平均點
+	Eigen::Vector3d aveHip{0.0,0.0,0.0};
+	for (auto joints:m_framesJ)
+	{
+		aveHip = aveHip + 
+			Eigen::Vector3d(double(joints[JointType_HipLeft].jointPosition.x()),
+				double(joints[JointType_HipLeft].jointPosition.y()), 
+				double(joints[JointType_HipLeft].jointPosition.z()));
+	}
+	aveHip = aveHip / double(m_framesJ.size());
+	Trajectory_Hip.clear();
+	Trajectory_Hip.reserve(361);
+	for (int i = 0; i < 361; i++)
+	{
+		Trajectory_Hip.push_back(aveHip);
+	}
+	qDebug() << "Hip.y"<<aveHip.y()<<"Hip.z"<< aveHip.z() << endl;
+}
+
+void OBJ::Obj::buildModelJframes()
+{
+
+}
+
+CycleAngles OBJ::Obj::calJointAngle(coordSys coord_pelvis, Eigen::Vector3d hip, Eigen::Vector3d knee, Eigen::Vector3d ankle)
+{
+	//Knee angle
+	Eigen::Vector3d vector1(hip-knee);
+	Eigen::Vector3d vector2(ankle - knee);
+
+	double normv1 = vector1.norm();
+	double normv2 = vector2.norm();
+	double costheta_Knee = vector1.dot(vector2) / (normv1*normv2);
+	double angle_Knee = RadianToDegree(acos(costheta_Knee));
+
+	//hip angle
+	//Eigen::Vector3f pD_l = Pg2l(knee, coord_pelvis);
+	//Eigen::Vector3f pP_l = Pg2l(seg.Jproximal, coord_pelvis);
+	/*Eigen::Vector3d vec1 = knee - hip;
+	Eigen::Vector3d vec2 = coord_pelvis.axis_z;
+
+	double costheta_hip = (vec1.dot(vec2)) / (vec1.norm()*vec2.norm());
+	double angle_Hip = RadianToDegree(acos(costheta_hip));*/
+	
+	
+
+	return CycleAngles{ 0.0 , angle_Knee,0.0 };
+}
+
+double OBJ::Obj::calKneeAngle(Eigen::Vector3d hip, Eigen::Vector3d knee, Eigen::Vector3d ankle)
+{
+	//Knee angle
+	Eigen::Vector3d vector1(hip - knee);
+	Eigen::Vector3d vector2(ankle - knee);
+
+	double normv1 = vector1.norm();
+	double normv2 = vector2.norm();
+	double costheta_Knee = vector1.dot(vector2) / (normv1*normv2);
+	double angle_Knee = RadianToDegree(acos(costheta_Knee));
+
+	return angle_Knee;
+}
+
+void OBJ::Obj::calCycleAngles()
+{
+	cycleAngleframes.reserve(361);
+	for (int i = 0; i < 361; i++)
+	{
+		CycleAngles angles{ 0.0,180.0 - calKneeAngle(Trajectory_Hip[i], Trajectory_Knee[i], Trajectory_Ankle[i]),0.0 };
+		cycleAngleframes.push_back(angles);
+	}
+	
+}
  
 void OBJ::Obj::setJoints(const std::vector<Joints> &frames_j)
 {
@@ -338,20 +499,22 @@ void OBJ::Obj::setSegments_filted(const std::vector<Segs>& frames_S)
 	m_framesS_filted = frames_S;
 }
 
-void OBJ::Obj::setJointAngles(std::vector<JointAngles>& frames_JA)
+void OBJ::Obj::setSegments_opted(const std::vector<Segs>& frames_S_opted)
 {
-	m_2dJointAngles = frames_JA;
+	m_framesS_opted = frames_S_opted;
 }
 
-void OBJ::Obj::setJointAngles(const std::vector<Segs> &frames_S)
+void OBJ::Obj::setJointAngles(std::vector<Angles>& frames_JA)
 {
-	
+	m_JointAngles = frames_JA;
 }
 
-void OBJ::Obj::setOptJoints(const std::vector<OptJoints>& frames_optJ)
+void OBJ::Obj::setJointAngles_opted(std::vector<Angles>& frames_JA)
 {
-	m_framesOptJ = frames_optJ;
+	m_JointAngles_opted = frames_JA;
 }
+
+
 
 void OBJ::Obj::setJoints_opted(const std::vector<Joints>& frames_J_opted)
 {
@@ -424,9 +587,13 @@ void OBJ::Obj::setFilePath(QString path)
 
 void OBJ::Obj::addtrail(QString trailname)
 {
+	trailName = trailname;
 	path_trail = path_ford + trailname + "_Position.csv";
 	path_angle = path_ford + trailname + "_Angles.csv";
 	path_moment = path_ford + trailname + "_Moment.csv";
+	path_ViconAngle_HipL = path_ford + trailname + "_ViconAngle_HipL.csv";
+	path_ViconAngle_KneeL = path_ford + trailname + "_ViconAngle_KneeL.csv";
+	path_ViconAngle_AnkleL = path_ford + trailname + "_ViconAngle_AnkleL.csv";
 }
 
 
@@ -469,22 +636,26 @@ float OBJ::Obj::calJointAngle(const Segment & seg, const coordSys & coord)
 	return theta;
 }
 
-JointAngles OBJ::Obj::calAllJointAngles(const Segs &segments)
+Angles OBJ::Obj::calAllJointAngles(const Segs &segments)
 {
-	JointAngles ja;
-	ja.ElbowL = calJointAngle(segments[SegType_LeftUpperArm], segments[SegType_LeftForArmHand]);
-	ja.ElbowR = calJointAngle(segments[SegType_RightUpperArm], segments[SegType_RightForArmHand]);
-	ja.KneeL  = calJointAngle(segments[SegType_LeftThigh], segments[SegType_LeftShank]);
-	ja.KneeR  = calJointAngle(segments[SegType_RightThigh], segments[SegType_RightShank]);
-	ja.Spine = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_Pelvis]);
-	ja.ShouderL = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_LeftUpperArm]);
-	ja.ShouderR = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_RightUpperArm]);
+	Angles ja;
+	ja[JAngleType_ElbowL].Angle_x = calJointAngle(segments[SegType_LeftUpperArm], segments[SegType_LeftForArmHand]);
+	ja[JAngleType_ElbowR].Angle_x = calJointAngle(segments[SegType_RightUpperArm], segments[SegType_RightForArmHand]);
+	ja[JAngleType_KneeL].Angle_x  = 180.0 - calJointAngle(segments[SegType_LeftThigh], segments[SegType_LeftShank]);
+	ja[JAngleType_KneeR].Angle_x  = 180.0 - calJointAngle(segments[SegType_RightThigh], segments[SegType_RightShank]);
+	ja[JAngleType_Spine].Angle_x = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_Pelvis]);
+	ja[JAngleType_ShouderL].Angle_x = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_LeftUpperArm]);
+	ja[JAngleType_ShouderR].Angle_x = calJointAngle(segments[SegType_ThoraxAbdomen], segments[SegType_RightUpperArm]);
+	ja[JAngleType_HipL].Angle_x = calJointAngle(segments[SegType_LeftThigh], segments[SegType_Pelvis].lcoord);
+	ja[JAngleType_HipR].Angle_x = calJointAngle(segments[SegType_RightThigh], segments[SegType_Pelvis].lcoord);
+	ja[JAngleType_AnkleL].Angle_x = -110.0 + calJointAngle(segments[SegType_LeftFoot], segments[SegType_LeftShank]);
+	ja[JAngleType_AnkleR].Angle_x = -110.0 + calJointAngle(segments[SegType_RightFoot], segments[SegType_RightShank]);
 	return ja;
 }
 
-std::vector<JointAngles> OBJ::Obj::calAllJointAngles(const std::vector<Segs>& frames_S)
+std::vector<Angles> OBJ::Obj::calAllJointAngles(const std::vector<Segs>& frames_S)
 {
-	std::vector<JointAngles> op;
+	std::vector<Angles> op;
 	op.clear();
 	op.reserve(frames_S.size());
 
@@ -494,6 +665,72 @@ std::vector<JointAngles> OBJ::Obj::calAllJointAngles(const std::vector<Segs>& fr
 	}
 	return op;
 }
+
+void OBJ::Obj::calJointForce(Segment & seg, Eigen::Vector3f fd)
+{
+	seg.Fd = fd;
+	Eigen::Vector3f g = Eigen::Vector3f(0.0, -9.8, 0.0);
+	seg.Fp = seg.mass * seg.segCOMAcc - seg.Fd - seg.mass * g;
+	
+}
+
+void OBJ::Obj::calLeftLimbJointForce(std::vector<Segs>& nframeSegs,std::vector<Eigen::Vector3f> exForces)//左下肢
+{
+	int nframe = 0;
+	for (auto segs : nframeSegs)
+	{
+		calJointForce(segs[SegType_LeftFoot], exForces[nframe]);
+		calJointForce(segs[SegType_LeftShank], segs[SegType_LeftFoot].Fp);
+		calJointForce(segs[SegType_LeftThigh], segs[SegType_LeftShank].Fp);
+		nframe++;
+	}
+}
+
+void OBJ::Obj::calCOMAcc(std::vector<Segs> & nframeSegs)
+{
+
+	for (int nSeg = 0; nSeg < nframeSegs[0].size(); nSeg++)
+	{
+		std::vector<double> nfCOM_x(nframeSegs.size());
+		std::vector<double> nfCOM_y(nframeSegs.size());
+		std::vector<double> nfCOM_z(nframeSegs.size());
+		for (int nframe = 0; nframe < nframeSegs.size(); nframe++)
+		{
+			nfCOM_x[nframe] = double(nframeSegs[nframe][nSeg].segCOM.x());
+			nfCOM_y[nframe] = double(nframeSegs[nframe][nSeg].segCOM.y());
+			nfCOM_z[nframe] = double(nframeSegs[nframe][nSeg].segCOM.z());
+		}
+		//ployfit
+		std::vector<double> xAxis(nframeSegs.size());
+		for (int i = 0; i < nframeSegs.size(); i++)
+		{
+			xAxis[i] = double(i);
+		}
+		std::vector<double> P_x	= myMath::polyfit(xAxis, nfCOM_x, 8);
+		std::vector<double> P_y = myMath::polyfit(xAxis, nfCOM_y, 8);
+		std::vector<double> P_z = myMath::polyfit(xAxis, nfCOM_z, 8);
+
+
+		std::vector<double> dP_x = myMath::polyDer(P_x, 2); //對COM位置做兩次微分，得加速度
+		std::vector<double> dP_y = myMath::polyDer(P_y, 2);
+		std::vector<double> dP_z = myMath::polyDer(P_z, 2);
+
+		//把ployfit得到的多項式還原到數據點
+		std::vector<double> nfCOMacc_x = myMath::polyRes(dP_x, xAxis);
+		std::vector<double> nfCOMacc_y = myMath::polyRes(dP_y, xAxis);
+		std::vector<double> nfCOMacc_z = myMath::polyRes(dP_z, xAxis);
+		//把COM加速度塞回Segs中
+		for (int nframe = 0; nframe < nframeSegs.size(); nframe++)
+		{
+			nframeSegs[nframe][nSeg].segCOMAcc.x() = nfCOMacc_x[nframe];
+			nframeSegs[nframe][nSeg].segCOMAcc.y() = nfCOMacc_y[nframe];
+			nframeSegs[nframe][nSeg].segCOMAcc.z() = nfCOMacc_z[nframe];
+		}
+	}
+	qDebug() << "segCOMacc seted" << endl;
+}
+
+
 
 coordSys OBJ::Obj::calCoordupTunkR(const Joints &joints)
 {
@@ -559,19 +796,25 @@ void OBJ::Obj::cali()
 		#pragma region 计算初始关节角度
 
 		cali_SegFrames = buildSegments(cali_JointFrames);
-		std::vector<JointAngles> allJointAngles;
-		JointAngles ja;
+		std::vector<Angles> allJointAngles;
+		Angles ja;
 		for (auto segments : cali_SegFrames)
 		{
 			ja = calAllJointAngles(segments);
 			allJointAngles.push_back(ja);
 		}
-		JointAngles sumJA;
+		Angles sumJA;
 		for (auto jointAngles : allJointAngles)
 		{
-			sumJA = sumJA + jointAngles;
+			for (int i = 0; i < JAngleType_Count; i++)
+			{
+				sumJA[i] = sumJA[i] + jointAngles[i];
+			}
 		}
-		sumJA = sumJA / allJointAngles.size();
+		for (int i = 0; i < JAngleType_Count; i++)
+		{
+			sumJA[i] = sumJA[i] / allJointAngles.size();
+		}
 		m_caliInfo.caliJA = sumJA;
 
 		#pragma endregion
@@ -613,7 +856,7 @@ void OBJ::Obj::cali()
 
 void OBJ::Obj::calTrailJointAngle()
 {
-	m_2dJointAngles = calAllJointAngles(m_framesS);
+	m_JointAngles = calAllJointAngles(m_framesS);
 }
 
 
@@ -622,7 +865,7 @@ void OBJ::Obj::calJointAngles_filted()
 {
 	if (!m_framesS_filted.empty())
 	{
-		m_2dJointAngles_filted = calAllJointAngles(m_framesS_filted);
+		m_JointAngles_filted = calAllJointAngles(m_framesS_filted);
 	}
 	else
 	{
@@ -635,7 +878,7 @@ void OBJ::Obj::calJointAngles_opted()
 {
 	if (!m_framesS_filted.empty())
 	{
-		m_2dJointAngles_opted = calAllJointAngles(m_framesS_opted);
+		m_JointAngles_opted = calAllJointAngles(m_framesS_opted);
 	}
 	else
 	{
@@ -667,12 +910,12 @@ void OBJ::Obj::calcSpinebaseFMwithBag()
 
 		Eigen::Vector3f vforce(0, -m_subjInfo.bagWeight * 9.8,0);//bagweight:KG
 		Eigen::Vector3f spinebaseXYZ = m_framesJ[i][JointType_SpineBase].jointPosition;
-		Eigen::Vector3f M_spinebase = ((m_framesS[i][SegType_LeftUpperArm].segcom - spinebaseXYZ).cross(upperArm_M) 
-			+ (m_framesS[i][SegType_RightUpperArm].segcom - spinebaseXYZ).cross(upperArm_M)
-			+ (m_framesS[i][SegType_LeftForArmHand].segcom - spinebaseXYZ).cross(fArmhand_M) 
-			+ (m_framesS[i][SegType_RightForArmHand].segcom - spinebaseXYZ).cross(fArmhand_M)
-			+ (m_framesS[i][SegType_ThoraxAbdomen].segcom - spinebaseXYZ).cross(ThoraxAbdomen_M)
-			+ (m_framesS[i][SegType_HeadNeck].segcom - spinebaseXYZ).cross(Headneck_M)) 
+		Eigen::Vector3f M_spinebase = ((m_framesS[i][SegType_LeftUpperArm].segCOM - spinebaseXYZ).cross(upperArm_M) 
+			+ (m_framesS[i][SegType_RightUpperArm].segCOM - spinebaseXYZ).cross(upperArm_M)
+			+ (m_framesS[i][SegType_LeftForArmHand].segCOM - spinebaseXYZ).cross(fArmhand_M) 
+			+ (m_framesS[i][SegType_RightForArmHand].segCOM - spinebaseXYZ).cross(fArmhand_M)
+			+ (m_framesS[i][SegType_ThoraxAbdomen].segCOM - spinebaseXYZ).cross(ThoraxAbdomen_M)
+			+ (m_framesS[i][SegType_HeadNeck].segCOM - spinebaseXYZ).cross(Headneck_M)) 
 			+ (PbagG - spinebaseXYZ).cross(vforce);
 		m_fp_g.push_back(PbagG);
 		m_moments.push_back(M_spinebase);
@@ -723,19 +966,19 @@ std::vector<Segs> OBJ::Obj::getSegments_opted() const
 	return m_framesS_opted;
 }
 
-std::vector<JointAngles> OBJ::Obj::getJointAngles() const
+std::vector<Angles> OBJ::Obj::getJointAngles() const
 {
-	return m_2dJointAngles;
+	return m_JointAngles;
 }
 
-std::vector<JointAngles> OBJ::Obj::getJointAngles_filted() const
+std::vector<Angles> OBJ::Obj::getJointAngles_filted() const
 {
-	return m_2dJointAngles_filted;
+	return m_JointAngles_filted;
 }
 
-std::vector<JointAngles> OBJ::Obj::getJointAngles_opted() const
+std::vector<Angles> OBJ::Obj::getJointAngles_opted() const
 {
-	return m_2dJointAngles_opted;
+	return m_JointAngles_opted;
 }
 
 std::vector<Eigen::Vector3f> OBJ::Obj::getMoments()
@@ -748,7 +991,7 @@ std::array<Eigen::Vector3f, 13> OBJ::Obj::getCOMs(const Segs & segs)
 	std::array<Eigen::Vector3f, 13> coms;
 	for (int i = 0; i < 13; i++)
 	{
-		coms[i] = segs[i].segcom;
+		coms[i] = segs[i].segCOM;
 	}
 	return coms;
 }
@@ -761,11 +1004,6 @@ int OBJ::Obj::getFrameNumber()const
 std::vector<Eigen::Vector3f> OBJ::Obj::getForcePosi()
 {
 	return m_fp_g;
-}
-
-std::vector<OptJoints> OBJ::Obj::getOptJ() const
-{
-	return m_framesOptJ;
 }
 
 void OBJ::Obj::setSubjInfo(SubjInfo & subjinfo)
